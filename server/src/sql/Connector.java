@@ -81,8 +81,17 @@ import java.util.Properties;
 
                     ResultSet resTo = statement2.executeQuery("SELECT * from to where id_to="+idTo);
                     resTo.next();
-                    Location To = Location.getByName(resFurnish.getString("furnish_value"));
+                    Location to = new Location(resRoutes.getLong("to_x"),
+                            resRoutes.getDouble("to_y"),
+                            resRoutes.getString("to_name"));
                     resTo.close();
+
+                    ResultSet resFrom = statement2.executeQuery("SELECT * from to where id_from="+idFrom);
+                    resFrom.next();
+                    Location from = new Location(resRoutes.getLong("from_x"),
+                            resRoutes.getDouble("from_y"),
+                            resRoutes.getString("from_name"));
+                    resFrom.close();
 
                     Route nextRoute = new Route (id, name, coordinates, creationDate, from, to, distance, creatorID);
                     ServerMain.routes.put(key,nextRoute); //тут у к*****а какие-то мапы зачем они там боже если бы мы знали но мы не знаем
