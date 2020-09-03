@@ -1,14 +1,10 @@
 package sql;
+import routes.*;
 import utility.ServerMain;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
     public class Connector {
@@ -20,6 +16,7 @@ import java.util.Properties;
             String password = " ";
             String connection = " ";
             String driver = " ";
+
             try{
                 fis = new FileInputStream("config.properties");
                 property.load(fis); //загружаем в абстракцию настроек записи из файла
@@ -28,7 +25,7 @@ import java.util.Properties;
                 connection = property.getProperty("db.host"); //закрепляем хост в переменную
                 driver = property.getProperty("db.driver"); //закрепляем драйвер в переменную
             } catch (IOException e){
-                System.out.println("Нет файла. Выход");
+                System.out.println("Файл не найден. Выход");
                 System.exit(0);
             }
             Class.forName(driver);
@@ -36,61 +33,76 @@ import java.util.Properties;
                 Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
                 Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
             ) {
+                ResultSet resRoutes = statement.executeQuery("SELECT * from routes"); //заполненние запроса. возвращает результат. представляет из себя таблицу
+                while (resRoutes.next()){ //перебор строк результата
+                    Integer key = resRoutes.getInt("key");
 
-                 ResultSet resultFlats = statement.executeQuery("SELECT * from flats"); //заполненние запроса. возвращает результат. представляет из себя таблицу
-                while (resultFlats.next()){ //перебор строк результата
-//                    Integer key = resultFlats.getInt("key");
-//                    Long id = resultFlats.getLong("id");
-//                    String name = resultFlats.getString("name");
-//                    Long id_coord = resultFlats.getLong("id_coordinates");
-//                    ZonedDateTime creationDate = resultFlats.getDate("creation_date").toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow"));
-//                    Integer area = resultFlats.getInt("area");
-//                    Long numberOfRooms = resultFlats.getLong("number_of_rooms");
-//                    Boolean newOrNot = resultFlats.getBoolean("new");
-//                    Long id_furnish = resultFlats.getLong("id_furnish");
-//                    Long id_transport = resultFlats.getLong("id_transport");
-//                    Long id_house = resultFlats.getLong("id_house");
-//                    ResultSet resFurnish = statement2.executeQuery("SELECT * from furnish where id_furnish="+id_furnish);
-//                    resFurnish.next();
-//                    Furnish furnish = Furnish.getByName(resFurnish.getString("furnish_value"));
-//                    resFurnish.close();
-//
-//                    ResultSet resTransport = statement2.executeQuery("select * from transport where id_transport="+id_transport);
-//                    resTransport.next();
-//                    Transport transport = Transport.getByName(resTransport.getString("transport_value"));
-//                    resTransport.close();
-//
-//                    ResultSet resHouse = statement2.executeQuery("select * from house where id_house="+id_house);
-//                    resHouse.next();
-//                    House house = new House(resHouse.getString("house_name"),
-//                            resHouse.getLong("year"),
-//                            resHouse.getLong("number_of_floors"));
-//                    resHouse.close();
-//
-//                    ResultSet coord = statement2.executeQuery("SELECT * from coordinates where id_coordinates="+id_coord);
-//
-//                    coord.next();
-//                    Float x = coord.getFloat("x");
-//                    Float y = coord.getFloat("y");
-//                    Coordinates coordinates = new Coordinates(x,y);
-//                    coord.close();
-//                    Flat nextFlat = new Flat(id,name,coordinates,creationDate,area,numberOfRooms, newOrNot, furnish, transport, house);
-//                    MainServer.flats.put(key,nextFlat);
-//                }
-//                resultFlats.close();
-//                ResultSet resultLogPass = statement.executeQuery("SELECT * from log_pas");
-//                while(resultLogPass.next()){
-//                    String login = resultLogPass.getString("login");
-//                    String passwordForLog = resultLogPass.getString("password");
-//                    ServerMain.loginPass.put(login,passwordForLog);
-//                }
-//                ResultSet resultRealtion = statement.executeQuery("select * from relation");
-//                while (resultRealtion.next()){
-//                    String login = resultRealtion.getString("login");
-//                    Integer key = resultRealtion.getInt("key");
-//                    ServerMain.relation.put(key,login);
-//                }
-//
+                    Long id = resRoutes.getLong("id");
+                    String name = resRoutes.getString("name");
+                    //ZonedDateTime creationDate = resRoutes.getDate("creation_date").toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow"));
+                    java.time.LocalDate creationDate = resRoutes.getDate("creation_date").toLocalDate();
+                    //Integer area = resRoutes.getInt("area");
+                    //Long numberOfRooms = resRoutes.getLong("number_of_rooms");
+                    //Boolean newOrNot = resRoutes.getBoolean("new");
+                    Float distance = resRoutes.getFloat("distance");
+                    Long creatorID = resRoutes.getLong("creator_ID");
+
+                    // понятия не имею что это такое ниже написано но оно написано
+                    Long idCoord = resRoutes.getLong("id_coordinates");
+                    //Long id_furnish = resRoutes.getLong("id_furnish");
+                    //Long id_transport = resRoutes.getLong("id_transport");
+                    //Long id_house = resRoutes.getLong("id_house");
+                    Long idTo = resRoutes.getLong("id_to");
+                    Long idFrom = resRoutes.getLong("id_from");
+
+                    ResultSet coord = statement2.executeQuery("SELECT * from coordinates where id_coordinates="+idCoord);
+                    coord.next();
+                    Integer x = coord.getInt("x");
+                    Float y = coord.getFloat("y");
+                    Coordinates coordinates = new Coordinates(x,y);
+                    coord.close();
+
+                    //ResultSet resFurnish = statement2.executeQuery("SELECT * from furnish where id_furnish="+id_furnish);
+                    //resFurnish.next();
+                    //Furnish furnish = Furnish.getByName(resFurnish.getString("furnish_value"));
+                    //resFurnish.close();
+
+                    //ResultSet resTransport = statement2.executeQuery("select * from transport where id_transport="+id_transport);
+                    //resTransport.next();
+                    //Transport transport = Transport.getByName(resTransport.getString("transport_value"));
+                    //resTransport.close();
+
+                    //ResultSet resHouse = statement2.executeQuery("select * from house where id_house="+id_house);
+                    //resHouse.next();
+                    //House house = new House(resHouse.getString("house_name"),
+                           // resHouse.getLong("year"),
+                           // resHouse.getLong("number_of_floors"));
+                    //resHouse.close();
+
+                    ResultSet resTo = statement2.executeQuery("SELECT * from to where id_to="+idTo);
+                    resTo.next();
+                    Location To = Location.getByName(resFurnish.getString("furnish_value"));
+                    resTo.close();
+
+                    Route nextRoute = new Route (id, name, coordinates, creationDate, from, to, distance, creatorID);
+                    ServerMain.routes.put(key,nextRoute); //тут у к*****а какие-то мапы зачем они там боже если бы мы знали но мы не знаем
+                }
+                resRoutes.close();
+
+                //че тут ниже два блока тоже не очень понятно но надо значит надо
+                ResultSet resultLogPass = statement.executeQuery("SELECT * from log_pas");
+                while(resultLogPass.next()){
+                    String login = resultLogPass.getString("login");
+                    String passwordForLog = resultLogPass.getString("password");
+                    ServerMain.loginPass.put(login,passwordForLog); //и тут
+                }
+                ResultSet resultRealtion = statement.executeQuery("select * from relation");
+                while (resultRealtion.next()){
+                    String login = resultRealtion.getString("login");
+                    Integer key = resultRealtion.getInt("key");
+                    ServerMain.relation.put(key,login); //и тут
+                }
+
             }
         }
 
