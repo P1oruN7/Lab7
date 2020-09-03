@@ -22,6 +22,10 @@ public class Route implements Comparable<Route>, Serializable {
 
     public Route() {}
 
+    public Route(Long id, String name, Coordinates coordinates, LocalDate creationDate, Location from, Location to, Float distance, Long creatorID) {
+
+    }
+
     @Override
     public String toString() {
         return "Route(" +
