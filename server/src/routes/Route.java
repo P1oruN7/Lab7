@@ -19,6 +19,7 @@ public class Route implements Comparable<Route>, Serializable {
     private Location to; //Поле не может быть null
     private Float distance; //Поле может быть null, Значение поля должно быть больше 1
     private Long creatorID; //Поле не может быть null. Значение id создателя объекта
+
     public Route() {}
 
     @Override
