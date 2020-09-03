@@ -33,12 +33,12 @@ import java.util.Properties;
             }
             Class.forName(driver);
             try(Connection connection1 = DriverManager.getConnection(connection,user,password); //подключаемся к бд
-                Statement statement = connection1.createStatement(); //штука для взаимодействия с бд
-                Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд
+                Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
+                Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
             ) {
 
-//                 ResultSet resultFlats = statement.executeQuery("SELECT * from flats");
-//                while (resultFlats.next()){
+                 ResultSet resultFlats = statement.executeQuery("SELECT * from flats"); //заполненние запроса. возвращает результат. представляет из себя таблицу
+                while (resultFlats.next()){ //перебор строк результата
 //                    Integer key = resultFlats.getInt("key");
 //                    Long id = resultFlats.getLong("id");
 //                    String name = resultFlats.getString("name");
