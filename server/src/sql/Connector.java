@@ -134,19 +134,22 @@ import java.util.Properties;
                 System.exit(0);
             }
             Class.forName(driver);
-            try(Connection connection1 = DriverManager.getConnection(connection,user,password);
+            try(Connection connection1 = DriverManager.getConnection(connection,user,password); //в лекциях говорят не делать так чтобы подавались юзер и пассворд
+                //надо чтобы было как то через пропертиз но я в рот не е*у очевидно как и зачем и почему
                 Statement statement = connection1.createStatement(); Statement statement2 = connection1.createStatement();){
                 statement.execute("delete from relation");
                 statement.execute("delete from log_pas");
-                statement.execute("delete from flats");
-                statement.execute("alter sequence flats_id_seq restart with 1");
-                statement.execute("delete from coordinates");
-                statement.execute("alter sequence coordinates_id_coordinates_seq restart with 1;");
-                statement.execute("delete from house");
-                statement.execute("alter sequence house_id_house_seq restart with 1;");
+
+                //ниже закомменченно потому что че это ваще такое падажжите потом разберемся
+                //statement.execute("delete from outes");
+                //statement.execute("alter sequence flats_id_seq restart with 1");
+                //statement.execute("delete from coordinates");
+                //statement.execute("alter sequence coordinates_id_coordinates_seq restart with 1;");
+                //statement.execute("delete from house");
+                //statement.execute("alter sequence house_id_house_seq restart with 1;");
 
 
-
+//вот тут ниже чета про их мапы дурацкие это я еще не понимаю так что ну тоже закомменченно
 //                MainServer.flats.entrySet()
 //                        .stream()
 //                        .forEach(x -> {
