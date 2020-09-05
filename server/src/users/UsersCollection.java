@@ -13,28 +13,17 @@ public class UsersCollection {
 
 
     /**
-     * Метод поиска пользователя по id
+     * Метод поиска пользователя по login
      *
-     * @param id id
+     * @param String login
      * @return элемент коллекции пользователей
      */
-    public User searchById(long id) {
+    public User п(String login) {
         for (User u : Users) {
-            if (u.getId().equals(id))
+            if (u.getLogin().equals(login))
                 return u;
         }
         return null;
     }
-    /**
-     * Метод для создания уникального id пользователя
-     *
-     * @return уникальный id (long)
-     */
-    public long generateUniqueID() {
-        long id;
-        do {
-            id = IDGenerator.generateNewID();
-        } while (this.searchById(id) != null); // тут надо будет сделать поиск по бд
-        return id;
-    }
+
 }
