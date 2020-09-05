@@ -18,11 +18,11 @@ public class Route implements Comparable<Route>, Serializable {
     private Location from; //Поле может быть null
     private Location to; //Поле не может быть null
     private Float distance; //Поле может быть null, Значение поля должно быть больше 1
-    private Long creatorID; //Поле не может быть null. Значение id создателя объекта
+    private String creatorLogin; //Поле не может быть null. Значение id создателя объекта
 
     public Route() {}
 
-    public Route(Long id, String name, Coordinates coordinates, LocalDate creationDate, Location from, Location to, Float distance, Long creatorID) {
+    public Route(Long id, String name, Coordinates coordinates, LocalDate creationDate, Location from, Location to, Float distance, String creatorLogin) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -30,7 +30,7 @@ public class Route implements Comparable<Route>, Serializable {
         this.from = from;
         this.to = to;
         this.distance = distance;
-        this.creatorID = creatorID;
+        this.creatorLogin = creatorLogin;
     }
 
     @Override
@@ -102,11 +102,12 @@ public class Route implements Comparable<Route>, Serializable {
     }
 
     @XmlElement
-    public Long getCreatorID(){
-        return creatorID;
+    public String getCreatorLogin(){
+        return creatorLogin;
     }
-    public void setCreatorID(Long CreatorID){
-        this.creatorID = CreatorID;
+
+    public void setCreatorLogin(String creatorLogin){
+        this.creatorLogin = creatorLogin;
     }
 
     @XmlElement
