@@ -1,7 +1,13 @@
 package users;
 
+import common.Command;
+import utility.ClientReceiver;
+
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Класс пользователя
@@ -104,7 +110,7 @@ public class User {
             System.out.println("\nПароль не соответствует критериям. Попробуйте сделать другой.");
         }
         if (registerInBase(login, password) ) {
-            System.out.println("\nПользователь успешно зарегестрирован.");
+            //System.out.println("\nПользователь успешно зарегестрирован.");
             return true;
         } else {
             System.out.println("\nПользователь не был зарегестрирован. Попробуйте ещё раз.");
@@ -125,14 +131,14 @@ public class User {
             login = utility.ClientMain.reader.readLine().trim();
             if (login == "" || login == null) return false;
             if (checkingLogin(login)) break;
-            System.out.println("\nПользователя с такими именем не существует.");
+          //  System.out.println("\nПользователя с такими именем не существует.");
         }
         while (true) {
             System.out.println("\nВведите пароль: ");
             password = utility.ClientMain.reader.readLine().trim();
             if ( (password == "" || password == null) && thisUserHasNoPassword(login) ) break;
             if (checkingPassword(login, password)) break;
-            System.out.println("\nНеверный пароль.");
+          //  System.out.println("\nНеверный пароль.");
             return false;
         }
         System.out.println("\nВход выполнен успешно.");
@@ -145,7 +151,19 @@ public class User {
      * @return есть ли пользователь с таким именем
      */
     public static boolean checkingLogin(String login){
-
+        Boolean b = false;
+        Map<Command, String> commandStringMap =  new HashMap<>();
+        common.commands.Checking check = new common.commands.Checking ();
+        commandStringMap.put(check, "1"+login.trim());
+        try {
+            String s2 = new String(ClientReceiver.receiveObject());
+            b = Boolean.parseBoolean( s2 );
+            if (b) System.out.println("\\nПользователя с такими именем не существует.");
+            else System.out.println("Такой логин уже занят. Придумайте другой.");
+        } catch (SocketTimeoutException e) {
+            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
+        }
+        return b;
     }
 
 
@@ -170,7 +188,19 @@ public class User {
      * @return соответсвует ли пароль логину
      */
     public static boolean checkingPassword (String login, String password){
-
+        Boolean b = false;
+        Map<Command, String> commandStringMap =  new HashMap<>();
+        common.commands.Checking check = new common.commands.Checking ();
+        commandStringMap.put(check, "2"+password.trim());
+        try {
+            String s2 = new String(ClientReceiver.receiveObject());
+            b = Boolean.parseBoolean( s2 );
+            if (b) System.out.println("\nПароль верный");
+            else System.out.println("Пароль неверный. Попробуйте ещё раз");
+        } catch (SocketTimeoutException e) {
+            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
+        }
+        return b;
     }
 
 
@@ -181,7 +211,19 @@ public class User {
      * @return внесён ли пользователь в базу
      */
     public static boolean registerInBase(String login, String password){
-
+        Boolean b = false;
+        Map<Command, String> commandStringMap =  new HashMap<>();
+        common.commands.Checking check = new common.commands.Checking ();
+        commandStringMap.put(check, "3"+login.trim() + " " + password.trim());
+        try {
+            String s2 = new String(ClientReceiver.receiveObject());
+            b = Boolean.parseBoolean( s2 );
+            if (b) System.out.println("\nПользователь успешно зарегестрирован");
+            else System.out.println("Во время регистрации произошла ошибка. Попробуйте ещё раз");
+        } catch (SocketTimeoutException e) {
+            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
+        }
+        return b;
     }
 
     /**
@@ -189,7 +231,19 @@ public class User {
      * @param login логин
      * @return пустой ли пароль
      */
-    public static boolean thisUserHasNoPassword(String login) {
+    public static boolean thisUserHasNoPassword (String login) throws IOException{
+        Boolean b = false;
+        Map<Command, String> commandStringMap =  new HashMap<>();
+        common.commands.Checking check = new common.commands.Checking ();
+        commandStringMap.put(check, "4"+login.trim());
+        try {
+            String s2 = new String(ClientReceiver.receiveObject());
+            b = Boolean.parseBoolean( s2 );
+        } catch (SocketTimeoutException e) {
+            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
+          //  login();
+        }
+        return b;
 
     }
 }
