@@ -3,6 +3,7 @@ package users;
 import common.Command;
 import utility.ClientMain;
 import utility.ClientReceiver;
+import utility.ClientSender;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -155,13 +156,14 @@ public class User {
      * @return есть ли пользователь с таким именем
      */
     public static boolean checkingLogin(String login){
-        Boolean b = false;
-        Map<Command, String> commandStringMap =  new HashMap<>();
-        common.commands.Checking check = new common.commands.Checking ();
-        commandStringMap.put(check, "1"+login.trim());
+        Boolean b = false; //возвращаемое значение
+        Map<Command, String> commandStringMap =  new HashMap<>(); //мапа для отправки (одна!)
+        common.commands.Checking check = new common.commands.Checking (); // создание экземпляра чек (надо)
+        commandStringMap.put(check, "1"+login.trim()); //формирование мапы. 1 - код проверки логина
+        ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
-            String s2 = new String(ClientReceiver.receiveObject());
-            b = Boolean.parseBoolean( s2 );
+            String s2 = new String(ClientReceiver.receiveObject()); //попытка получить строку
+            b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или нет
             if (b) System.out.println("\\nПользователя с такими именем не существует.");
             else System.out.println("Такой логин уже занят. Придумайте другой.");
         } catch (SocketTimeoutException e) {
@@ -192,13 +194,14 @@ public class User {
      * @return соответсвует ли пароль логину
      */
     public static boolean checkingPassword (String login, String password){
-        Boolean b = false;
-        Map<Command, String> commandStringMap =  new HashMap<>();
-        common.commands.Checking check = new common.commands.Checking ();
-        commandStringMap.put(check, "2"+password.trim());
+        Boolean b = false; //возвращаемое значение
+        Map<Command, String> commandStringMap =  new HashMap<>();  //мапа для отправки (одна!)
+        common.commands.Checking check = new common.commands.Checking ();// создание экземпляра чек (надо)
+        commandStringMap.put(check, "2"+login.trim() + " " + password.trim()); //формирование мапы. 2 - код проверки логина+пароля
+        ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
-            String s2 = new String(ClientReceiver.receiveObject());
-            b = Boolean.parseBoolean( s2 );
+            String s2 = new String(ClientReceiver.receiveObject()); //попытка получить строку
+            b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или нет
             if (b) System.out.println("\nПароль верный");
             else System.out.println("Пароль неверный. Попробуйте ещё раз");
         } catch (SocketTimeoutException e) {
@@ -215,13 +218,14 @@ public class User {
      * @return внесён ли пользователь в базу
      */
     public static boolean registerInBase(String login, String password){
-        Boolean b = false;
-        Map<Command, String> commandStringMap =  new HashMap<>();
-        common.commands.Checking check = new common.commands.Checking ();
-        commandStringMap.put(check, "3"+login.trim() + " " + password.trim());
+        Boolean b = false; //возвращаемое значение
+        Map<Command, String> commandStringMap =  new HashMap<>();//мапа для отправки (одна!)
+        common.commands.Checking check = new common.commands.Checking ();// создание экземпляра чек (надо)
+        commandStringMap.put(check, "3"+login.trim() + " " + password.trim()); //формирование мапы. 3 - код регистрации в бд
+        ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
-            String s2 = new String(ClientReceiver.receiveObject());
-            b = Boolean.parseBoolean( s2 );
+            String s2 = new String(ClientReceiver.receiveObject()); //попытка получить строку
+            b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или нет
             if (b) System.out.println("\nПользователь успешно зарегестрирован");
             else System.out.println("Во время регистрации произошла ошибка. Попробуйте ещё раз");
         } catch (SocketTimeoutException e) {
@@ -237,12 +241,13 @@ public class User {
      */
     public static boolean thisUserHasNoPassword (String login) throws IOException{
         Boolean b = false;
-        Map<Command, String> commandStringMap =  new HashMap<>();
-        common.commands.Checking check = new common.commands.Checking ();
-        commandStringMap.put(check, "4"+login.trim());
+        Map<Command, String> commandStringMap =  new HashMap<>(); //мапа для отправки (одна!)
+        common.commands.Checking check = new common.commands.Checking ();// создание экземпляра чек (надо)
+        commandStringMap.put(check, "4"+login.trim()); //формирование мапы. 4 - код проверки пустости пароля
+        ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
-            String s2 = new String(ClientReceiver.receiveObject());
-            b = Boolean.parseBoolean( s2 );
+            String s2 = new String(ClientReceiver.receiveObject()); //попытка получить строку
+            b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или неты
         } catch (SocketTimeoutException e) {
             System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
           //  login();
