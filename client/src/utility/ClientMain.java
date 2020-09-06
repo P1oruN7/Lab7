@@ -4,6 +4,7 @@ import common.Invoker;
 import common.commands.*;
 import common.Command;
 import sun.misc.Signal;
+import users.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +21,8 @@ public class ClientMain {
     public static BufferedReader reader = null;
     public static int port;
     public static InetAddress address;
+    private static String login;
+    private static String password;
 
 
     /**
@@ -121,6 +124,12 @@ public class ClientMain {
             System.exit(0);
 
         }
+        try{
+        User.authorization(); }
+        catch (IOException e) {
+            System.out.println("Произошла ошибка. Завершение программы.");
+            System.exit(0);
+        }
         while (work) {
             Map<Command, String> commandparamMap = null;
             System.out.print("Введите команду:  ");
@@ -140,6 +149,23 @@ public class ClientMain {
                 }
             }
         }
+    }
+
+
+    public static String getLogin() {
+        return login;
+    }
+
+    public static String getPassword() {
+        return password;
+    }
+
+    public static void setLogin(String login) {
+        ClientMain.login = login;
+    }
+
+    public static void setPassword(String password) {
+        ClientMain.password = password;
     }
 }
 
