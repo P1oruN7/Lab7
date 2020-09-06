@@ -1,6 +1,7 @@
 package users;
 
 import common.Command;
+import utility.ClientMain;
 import utility.ClientReceiver;
 
 import java.io.IOException;
@@ -137,10 +138,13 @@ public class User {
             System.out.println("\nВведите пароль: ");
             password = utility.ClientMain.reader.readLine().trim();
             if ( (password == "" || password == null) && thisUserHasNoPassword(login) ) break;
+            password = utility.Hash.encryptThisString(password);
             if (checkingPassword(login, password)) break;
           //  System.out.println("\nНеверный пароль.");
             return false;
         }
+        ClientMain.setLogin(login);
+        ClientMain.setPassword(password);
         System.out.println("\nВход выполнен успешно.");
         return true;
     }
