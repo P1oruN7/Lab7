@@ -4,7 +4,7 @@ import utility.ServerMain;
 
 public class UserCheck {
 
-    //тут можно проверить существование такого персон
+    //тут можно проверить существование такого персонажа
 
     public boolean loginCheck (String login, Long ObjectID){
         return ServerMain.c.searchById(ObjectID).getCreatorLogin().equals(login); //странный метод какой-то это ок ваще не
