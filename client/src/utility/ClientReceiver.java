@@ -14,10 +14,9 @@ public class ClientReceiver {
     public static Map<String, Integer> answer;
 
     /**
-     * Получить
-     * @return массивчик байтиков
+     * Получить массивчик байтиков
      */
-    public static void receive() throws SocketTimeoutException {
+    public static void receive(){
         byte[] buffer = new byte[1000000];
         try {
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
@@ -50,15 +49,17 @@ public class ClientReceiver {
     }
 
 
-    public static byte[] receiveObject () throws SocketTimeoutException{
+    public static byte[] receiveObject (){
         try {
-            DatagramChannel datagramChannel = CreateServer.datagramChannel;
+            sock.setSoTimeout(5000);
             ByteBuffer byteBuffer = ByteBuffer.allocate(1000000);
-            byte[] bytes = null;
+            byte[] bytes;
+            SocketAddress sa = new InetSocketAddress(ClientMain.address, ClientMain.port);
+            DatagramChannel dc = DatagramChannel.open();
+            dc.configureBlocking(false);
+            dc.bind(sa);
             while (true) {
-                // socketAddress = (InetSocketAddress) datagramChannel.receive(byteBuffer);
-                SocketAddress socketAddress = datagramChannel.receive(byteBuffer); //
-                ServerMain.clientAdderss = socketAddress;
+                SocketAddress socketAddress = dc.receive(byteBuffer);
                 if (socketAddress != null) {
                     byteBuffer.flip();
                     int limit = byteBuffer.limit();
@@ -68,6 +69,8 @@ public class ClientReceiver {
                     return bytes;
                 }
             }
+        }catch (SocketTimeoutException e) {
+            System.out.println("Возможно сервер занят или выключен,попробуйте ещё раз.");
         } catch (IOException e) {
             System.out.println("123");
         }
