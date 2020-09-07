@@ -17,8 +17,7 @@ public class ClientSender {
     public static void send(Object o) {
         try {
             Map<Integer, Object> mapCommand = new HashMap<Integer, Object>();
-            Map<Integer, Object> mapUser = new HashMap<Integer, Object>();
-
+            Object [] array = {o, ClientMain.getLogin(), ClientMain.getPassword()};
             DatagramChannel datagramChannel = DatagramChannel.open();
             datagramChannel.bind(null);
             SocketAddress serverAddress = new InetSocketAddress(ClientMain.address, ClientMain.port);
@@ -26,14 +25,9 @@ public class ClientSender {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
 
-            mapCommand.put(ClientReceiver.clientport, o);
+            mapCommand.put(ClientReceiver.clientport, array);
             objectOutputStream.writeObject(mapCommand);
             objectOutputStream.flush();
-
-            mapUser.put(ClientReceiver.clientport,) //?? тут на вход менять на два параметра как то неоч хочется ъеъ
-            objectOutputStream.writeObject(mapUser);
-            objectOutputStream.flush();
-
             objectOutputStream.close();
             byte[] buff = byteArrayOutputStream.toByteArray();
             byteArrayOutputStream.close();
@@ -45,8 +39,8 @@ public class ClientSender {
             System.out.println("Ошибка данных.");
         }
     }
-    
-        public static void sendWithoutLogPass(Object o) {
+
+    public static void sendWithoutLogPass(Object o) {
         try {
             Map<Integer, Object> map = new HashMap<Integer, Object>();
             DatagramChannel datagramChannel = DatagramChannel.open();
@@ -67,7 +61,6 @@ public class ClientSender {
             System.out.println("Ошибка данных.");
         }
     }
-    
-    
-}
 
+
+}

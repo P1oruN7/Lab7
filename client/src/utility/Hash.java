@@ -2,6 +2,7 @@ package utility;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 public class Hash {
     public static String encryptThisString(String input) {
         try {
@@ -28,7 +29,7 @@ public class Hash {
             return hashtext;
         }
 
-        // For specifying wrong message digest algorithms
+        // For specifying wrong message digest algorithms 
         catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }

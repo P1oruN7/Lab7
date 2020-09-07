@@ -5,7 +5,6 @@ import common.commands.*;
 import common.Command;
 import sun.misc.Signal;
 import users.User;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -144,7 +143,7 @@ public class ClientMain {
                 ClientSender.send(commandparamMap);
                 try {
                     ClientReceiver.receive();
-                } catch (SocketTimeoutException e) {
+                } catch (Exception e) {
                     System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
                 }
             }
