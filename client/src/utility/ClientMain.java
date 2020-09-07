@@ -123,12 +123,19 @@ public class ClientMain {
             System.exit(0);
 
         }
-        try{
-        User.authorization(); }
-        catch (IOException e) {
-            System.out.println("Произошла ошибка. Завершение программы.");
-            System.exit(0);
+        boolean b = false;
+
+        while (!b) {
+            try {
+              b =  User.authorization();
+            } catch (IOException e) {
+                System.out.println("Произошла ошибка. Завершение программы.");
+                System.exit(0);
+            }
         }
+
+
+
         while (work) {
             Map<Command, String> commandparamMap = null;
             System.out.print("Введите команду:  ");
