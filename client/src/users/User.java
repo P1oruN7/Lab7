@@ -166,7 +166,7 @@ public class User {
             b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или нет
             if (b) System.out.println("\\nПользователя с такими именем не существует.");
             else System.out.println("Такой логин уже занят. Придумайте другой.");
-        } catch (SocketTimeoutException e) {
+        } catch (Exception e) {
             System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
         }
         return b;
@@ -204,7 +204,7 @@ public class User {
             b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или нет
             if (b) System.out.println("\nПароль верный");
             else System.out.println("Пароль неверный. Попробуйте ещё раз");
-        } catch (SocketTimeoutException e) {
+        } catch (Exception e) {
             System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
         }
         return b;
@@ -228,7 +228,7 @@ public class User {
             b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или нет
             if (b) System.out.println("\nПользователь успешно зарегестрирован");
             else System.out.println("Во время регистрации произошла ошибка. Попробуйте ещё раз");
-        } catch (SocketTimeoutException e) {
+        } catch (Exception e) {
             System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
         }
         return b;
@@ -248,7 +248,7 @@ public class User {
         try {
             String s2 = new String(ClientReceiver.receiveObject()); //попытка получить строку
             b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или неты
-        } catch (SocketTimeoutException e) {
+        } catch (Exception e) {
             System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
           //  login();
         }
