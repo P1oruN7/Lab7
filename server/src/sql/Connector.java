@@ -10,28 +10,21 @@ import java.util.Properties;
     public class Connector {
 
         public static void loading() throws ClassNotFoundException, SQLException {
-            FileInputStream fis; //файл с настройками
-            Properties property = new Properties(); // абстракция настроек
-            String user = " ";
-            String password = " ";
-            String connection = " ";
-            String driver = " ";
+            Properties config = new Properties(); // абстракция настроек
+            //String driver;
 
             try{
-                fis = new FileInputStream("config.properties");
-                property.load(fis); //загружаем в абстракцию настроек записи из файла
-                user = property.getProperty("db.login"); // закрепляем логин в переменную
-                password = property.getProperty("db.password"); //закрепляем пароль в переменную
-                connection = property.getProperty("db.host"); //закрепляем хост в переменную
-                driver = property.getProperty("db.driver"); //закрепляем драйвер в переменную
+                config.load(new FileInputStream("config.properties")); //загружаем в абстракцию настроек записи из файла
+                //driver = config.getProperty("db.driver"); //закрепляем драйвер в переменную
             } catch (IOException e){
                 System.out.println("Файл не найден. Выход");
                 System.exit(0);
             }
-            Class.forName(driver);
-            try(Connection connection1 = DriverManager.getConnection(connection,user,password); //подключаемся к бд
-                Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
-                Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
+            //Class.forName(driver);
+            try(
+                    Connection connection1 = DriverManager.getConnection(ServerMain.URL, config); //подключаемся к бд
+                    Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
+                    Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
             ) {
                 ResultSet resRoutes = statement.executeQuery("SELECT * from routes"); //заполненние запроса. возвращает результат. представляет из себя таблицу
                 while (resRoutes.next()){ //перебор строк результата
@@ -39,19 +32,12 @@ import java.util.Properties;
 
                     Long id = resRoutes.getLong("id");
                     String name = resRoutes.getString("name");
-                    //ZonedDateTime creationDate = resRoutes.getDate("creation_date").toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow"));
                     java.time.LocalDate creationDate = resRoutes.getDate("creation_date").toLocalDate();
-                    //Integer area = resRoutes.getInt("area");
-                    //Long numberOfRooms = resRoutes.getLong("number_of_rooms");
-                    //Boolean newOrNot = resRoutes.getBoolean("new");
                     Float distance = resRoutes.getFloat("distance");
                     Long creatorID = resRoutes.getLong("creator_ID");
 
                     // понятия не имею что это такое ниже написано но оно написано
                     Long idCoord = resRoutes.getLong("id_coordinates");
-                    //Long id_furnish = resRoutes.getLong("id_furnish");
-                    //Long id_transport = resRoutes.getLong("id_transport");
-                    //Long id_house = resRoutes.getLong("id_house");
                     Long idTo = resRoutes.getLong("id_to");
                     Long idFrom = resRoutes.getLong("id_from");
 
@@ -61,23 +47,6 @@ import java.util.Properties;
                     Float y = coord.getFloat("y");
                     Coordinates coordinates = new Coordinates(x,y);
                     coord.close();
-
-                    //ResultSet resFurnish = statement2.executeQuery("SELECT * from furnish where id_furnish="+id_furnish);
-                    //resFurnish.next();
-                    //Furnish furnish = Furnish.getByName(resFurnish.getString("furnish_value"));
-                    //resFurnish.close();
-
-                    //ResultSet resTransport = statement2.executeQuery("select * from transport where id_transport="+id_transport);
-                    //resTransport.next();
-                    //Transport transport = Transport.getByName(resTransport.getString("transport_value"));
-                    //resTransport.close();
-
-                    //ResultSet resHouse = statement2.executeQuery("select * from house where id_house="+id_house);
-                    //resHouse.next();
-                    //House house = new House(resHouse.getString("house_name"),
-                           // resHouse.getLong("year"),
-                           // resHouse.getLong("number_of_floors"));
-                    //resHouse.close();
 
                     ResultSet resTo = statement2.executeQuery("SELECT * from to where id_to="+idTo);
                     resTo.next();
@@ -116,26 +85,19 @@ import java.util.Properties;
         }
 
         public static void saving() throws ClassNotFoundException, SQLException {
-            FileInputStream fis;
-            Properties property = new Properties();
-            String user = " ";
-            String password = " ";
-            String connection = " ";
-            String driver = " ";
+            FileInputStream fileInputStream; //файл с настройками
+            Properties config = new Properties(); // абстракция настроек
+            //String driver;
+
             try{
-                fis = new FileInputStream("config.properties");
-                property.load(fis);
-                user = property.getProperty("db.login");
-                password = property.getProperty("db.password");
-                connection = property.getProperty("db.host");
-                driver = property.getProperty("db.driver");
+                config.load(new FileInputStream("config.properties")); //загружаем в абстракцию настроек записи из файла
+                //driver = config.getProperty("db.driver"); //закрепляем драйвер в переменную
             } catch (IOException e){
-                System.out.println("Нет файла. Выход");
+                System.out.println("Файл не найден. Выход");
                 System.exit(0);
             }
-            Class.forName(driver);
-            try(Connection connection1 = DriverManager.getConnection(connection,user,password); //в лекциях говорят не делать так чтобы подавались юзер и пассворд
-                //надо чтобы было как то через пропертиз но я в рот не е*у очевидно как и зачем и почему
+            //Class.forName(driver);
+            try(Connection connection1 = DriverManager.getConnection(ServerMain.URL, config);
                 Statement statement = connection1.createStatement(); Statement statement2 = connection1.createStatement();){
                 statement.execute("delete from relation");
                 statement.execute("delete from log_pas");

@@ -16,14 +16,11 @@ import sun.misc.Signal;
  */
 public class ServerMain {
 
-
-
-
-
-
     public static Collection c = null;
     public static Integer port;
     public static SocketAddress clientAddress;
+    public static final String URL = "jdbc:postgresql://pg:5432/studs";
+
     /**
      * psvm
      *
