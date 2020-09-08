@@ -2,14 +2,10 @@ package routes;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Класс, хранимый в Collection
  */
-@XmlRootElement
 public class Route implements Comparable<Route>, Serializable {
     private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -46,7 +42,6 @@ public class Route implements Comparable<Route>, Serializable {
                 ')';
     }
 
-    @XmlElement
     public Long getId() {
         return id;
     }
@@ -55,7 +50,6 @@ public class Route implements Comparable<Route>, Serializable {
         this.id = id;
     }
 
-    @XmlElement
     public String getName() {
         return name;
     }
@@ -64,7 +58,6 @@ public class Route implements Comparable<Route>, Serializable {
         this.name = name;
     }
 
-    @XmlElement
     public Coordinates getCoordinates() {
         return coordinates;
     }
@@ -73,8 +66,6 @@ public class Route implements Comparable<Route>, Serializable {
         this.coordinates = coordinates;
     }
 
-    @XmlJavaTypeAdapter(value = xml_managers.XmlDateAdapter.class)
-    @XmlElement
     public LocalDate getCreationDate() {
         return creationDate;
     }
@@ -83,7 +74,6 @@ public class Route implements Comparable<Route>, Serializable {
         this.creationDate = creationDate;
     }
 
-    @XmlElement
     public Location getFrom() {
         return from;
     }
@@ -92,7 +82,6 @@ public class Route implements Comparable<Route>, Serializable {
         this.from = from;
     }
 
-    @XmlElement
     public Location getTo() {
         return to;
     }
@@ -101,7 +90,6 @@ public class Route implements Comparable<Route>, Serializable {
         this.to = to;
     }
 
-    @XmlElement
     public String getCreatorLogin(){
         return creatorLogin;
     }
@@ -110,7 +98,6 @@ public class Route implements Comparable<Route>, Serializable {
         this.creatorLogin = creatorLogin;
     }
 
-    @XmlElement
     public Float getDistance() {
         return distance;
     }

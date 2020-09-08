@@ -25,9 +25,9 @@ public class ServerMain {
      * psvm
      *
      * @param args аргументики
-     * @throws IOException
      */
     public static void main(String[] args) {
+
         Signal.handle(new Signal("INT"), sig ->  {
             System.out.println("\n" + "Контрлцешное завершение программы");
             System.exit(0);
@@ -46,7 +46,7 @@ public class ServerMain {
         common.commands.Save save = new common.commands.Save();
         Sort sort = new Sort();
         Update update = new Update();
-      //  CreateServer.create();
+       // CreateServer.create();
        // System.out.println("Сервер запущен.");
        ConsoleSourceReader bufferReader = new ConsoleSourceReader();///////
 //        String path = null;
@@ -110,7 +110,7 @@ public class ServerMain {
             if (!commandStringMap.entrySet().iterator().next().getKey().getClass().getName().equals("Common.Commands.Exit"))
                 System.out.println("\nКоманда выполнена! Отправляю результат клиенту.");
         } catch (ClassCastException e) {
-            ServerSender.send("\nСообщение от Сервера:\"Возникли небольшие неполадки с вашим подключением,но сейчас всё по кайфу,ожидаю команд.\"\n", 0);
+            ServerSender.send("\nСообщение от Сервера:\"Возникли небольшие технические шоколадки с вашим подключением,но сейчас всё по кайфу,ожидаю команд.\"\n", 0);
         }
     }
 }

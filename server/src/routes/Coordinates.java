@@ -1,18 +1,11 @@
 package routes;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
  * Поле класса Route
  */
-@XmlRootElement
 public class Coordinates implements Serializable {
-    public Coordinates() {
-    }
-
-    ;
 
     /**
      * Конструктор
@@ -20,7 +13,6 @@ public class Coordinates implements Serializable {
      * @param x координата X
      * @param y координата Y
      */
-
     public Coordinates(int x, float y) {
         this.x = x;
         this.y = y;
@@ -29,7 +21,6 @@ public class Coordinates implements Serializable {
     private int x; //Значение поля должно быть больше -836
     private float y; //Максимальное значение поля: 840, Поле не может быть null
 
-    @XmlElement
     public int getX() {
         return x;
     }
@@ -38,7 +29,6 @@ public class Coordinates implements Serializable {
         this.x = x;
     }
 
-    @XmlElement
     public float getY() {
         return y;
     }

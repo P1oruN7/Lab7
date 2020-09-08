@@ -1,19 +1,14 @@
 package routes;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
  * Поле класса Route
  */
-@XmlRootElement
 public class Location implements Serializable {
     private Long x; //Поле не может быть null
     private Double y; //Поле не может быть null
     private String name; //Поле не может быть null
-
-    public Location() {}
 
     /**
      * Конструктор
@@ -28,7 +23,6 @@ public class Location implements Serializable {
         this.name = name;
     }
 
-    @XmlElement
     public Long getX() {
         return x;
     }
@@ -37,7 +31,6 @@ public class Location implements Serializable {
         this.x = x;
     }
 
-    @XmlElement
     public Double getY() {
         return y;
     }
@@ -46,7 +39,6 @@ public class Location implements Serializable {
         this.y = y;
     }
 
-    @XmlElement
     public String getName() {
         return name;
     }

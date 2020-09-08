@@ -5,27 +5,19 @@ import generators.IDGenerator;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.time.LocalDate;
-import javax.xml.bind.annotation.*;
-
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 
 /**
  * Класс-коллекция
  */
 public class Collection implements Serializable {
 
-    @XmlElement
     public static ArrayList<Route> Routes;
-
-    @XmlTransient
     private final LocalDate initializationDate;
-    @XmlTransient
     private String path;
 
 
     /**
-     * Конструктор коллекии
+     * Конструктор коллекции
      */
     public Collection() {
         this.Routes = new ArrayList<>();
@@ -41,7 +33,6 @@ public class Collection implements Serializable {
     }
 
 
-    @XmlTransient
     /**
      * Метод для получения даты
      * @return LocalDate
