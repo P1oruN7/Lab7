@@ -6,37 +6,23 @@ import routes.Route;
 import java.util.ArrayList;
 
 public class UsersCollection {
-
-    public static ArrayList<User> Users;
-
+    public static ArrayList<User> users;
     public UsersCollection(){
-        this.Users = new ArrayList<>();
+        this.users = new ArrayList<>();
     }
 
+
     /**
-     * Метод поиска пользователя по логину
+     * Метод поиска пользователя по login
      *
-     * @param login логин
      * @return элемент коллекции пользователей
      */
-    public User searchByLogin(String login) {
-        for (User u : Users) {
+    public static User searchByLogin (String login) {
+        for (User u : users) {
             if (u.getLogin().equals(login))
                 return u;
         }
         return null;
     }
 
-    /**
-     * Метод для создания уникального id пользователя
-     *
-     * @return уникальный id (long)
-     */
-    //public long generateUniqueID() {
-       // long id;
-        //do {
-          //  id = IDGenerator.generateNewID();
-        //} while (this.searchById(id) != null); // тут надо будет сделать поиск по бд
-        //return id;
-    //}
 }
