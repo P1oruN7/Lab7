@@ -4,6 +4,8 @@ import common.Command;
 import users.User;
 import users.UserCheck;
 import users.UsersCollection;
+import utility.Hash;
+
 import java.net.*;
 
 /**
@@ -29,7 +31,7 @@ public class Checking implements Command {
             case (3):
                 String [] logPass = string.split(" ");
                 URLConnection connection  ;//я хз что тут писать честно(
-                User user = new User(logPass[0], logPass[1], connection, users.TotemAnimal.randomTotemAnimal());
+                User user = new User(logPass[0], Hash.encryptThisString(logPass[1]), connection, users.TotemAnimal.randomTotemAnimal());
                 UsersCollection.users.add(user);
                 b = true;
                 //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
