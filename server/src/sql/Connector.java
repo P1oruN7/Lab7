@@ -1,6 +1,8 @@
 package sql;
 
 import routes.*;
+import users.User;
+import users.UsersCollection;
 import utility.ServerMain;
 
 import java.io.FileInputStream;
@@ -35,54 +37,58 @@ import java.util.Properties;
 
                     Long id = resRoutes.getLong("id");
                     String name = resRoutes.getString("name");
-                    java.time.LocalDate creationDate = resRoutes.getDate("creation_date").toLocalDate();
+                    java.time.LocalDate creationDate = resRoutes.getDate("date").toLocalDate();
                     Float distance = resRoutes.getFloat("distance");
-                    Long creatorID = resRoutes.getLong("creator_ID");
+                    String creatorLogin = resRoutes.getString("login");
 
                     // понятия не имею что это такое ниже написано но оно написано
-                    Long idCoord = resRoutes.getLong("id_coordinates");
-                    Long idTo = resRoutes.getLong("id_to");
-                    Long idFrom = resRoutes.getLong("id_from");
+                    Long idCoord = resRoutes.getLong("coordinates");
+                    Long idTo = resRoutes.getLong("locationTo");
+                    Long idFrom = resRoutes.getLong("locationFrom");
 
-                    ResultSet coord = statement2.executeQuery("SELECT * from coordinates where id_coordinates="+idCoord);
+                    ResultSet coord = statement2.executeQuery("SELECT * from coordinates where id="+idCoord);
                     coord.next();
                     Integer x = coord.getInt("x");
                     Float y = coord.getFloat("y");
                     Coordinates coordinates = new Coordinates(x,y);
                     coord.close();
 
-                    ResultSet resTo = statement2.executeQuery("SELECT * from to where id_to="+idTo);
+                    ResultSet resTo = statement2.executeQuery("SELECT * from locationTo where id_to="+idTo);
                     resTo.next();
-                    Location to = new Location(resRoutes.getLong("to_x"),
-                            resRoutes.getDouble("to_y"),
-                            resRoutes.getString("to_name"));
+                    Location to = new Location(resRoutes.getLong("x"),
+                            resRoutes.getDouble("y"),
+                            resRoutes.getString("name"));
                     resTo.close();
 
-                    ResultSet resFrom = statement2.executeQuery("SELECT * from to where id_from="+idFrom);
+                    ResultSet resFrom = statement2.executeQuery("SELECT * from locationFrom where id_from="+idFrom);
                     resFrom.next();
-                    Location from = new Location(resRoutes.getLong("from_x"),
-                            resRoutes.getDouble("from_y"),
-                            resRoutes.getString("from_name"));
+                    Location from = new Location(resRoutes.getLong("x"),
+                            resRoutes.getDouble("y"),
+                            resRoutes.getString("name"));
                     resFrom.close();
 
-                    Route nextRoute = new Route (id, name, coordinates, creationDate, from, to, distance, creatorID);
-                    ServerMain.routes.put(key,nextRoute); //тут у к*****а какие-то мапы зачем они там боже если бы мы знали но мы не знаем
+                    Route nextRoute = new Route (id, name, coordinates, creationDate, from, to, distance, creatorLogin);
+                    utility.ServerMain.c.Routes.add(nextRoute);
+                  //  ServerMain.routes.put(key,nextRoute); //тут у к*****а какие-то мапы зачем они там боже если бы мы знали но мы не знаем
                 }
                 resRoutes.close();
 
                 //че тут ниже два блока тоже не очень понятно но надо значит надо
-                ResultSet resultLogPass = statement.executeQuery("SELECT * from log_pas");
+                ResultSet resultLogPass = statement.executeQuery("SELECT * from users");
                 while(resultLogPass.next()){
                     String login = resultLogPass.getString("login");
                     String passwordForLog = resultLogPass.getString("password");
-                    ServerMain.loginPass.put(login,passwordForLog); //и тут
+                    String totemAnimal =  resultLogPass.getString ("totemAnimal");
+                    users.User user = new User(login,passwordForLog, , totemAnimal);
+                    UsersCollection.users.add(user);
+                   // ServerMain.loginPass.put(login,passwordForLog); //и тут
                 }
-                ResultSet resultRealtion = statement.executeQuery("select * from relation");
-                while (resultRealtion.next()){
-                    String login = resultRealtion.getString("login");
-                    Integer key = resultRealtion.getInt("key");
-                    ServerMain.relation.put(key,login); //и тут
-                }
+//                ResultSet resultRealtion = statement.executeQuery("select * from relation");
+//                while (resultRealtion.next()){
+//                    String login = resultRealtion.getString("login");
+//                    Integer key = resultRealtion.getInt("key");
+//                    ServerMain.relation.put(key,login); //и тут
+//                }
 
             }catch(SQLException e){
                 System.out.println("Ошибка подключения к базе данных. \n\n Завершение программы");
