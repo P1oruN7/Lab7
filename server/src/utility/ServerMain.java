@@ -23,7 +23,7 @@ public class ServerMain {
 
     public static Collection c = null;
     public static Integer port;
-    public static SocketAddress clientAdderss;
+    public static SocketAddress clientAddress;
     /**
      * psvm
      *
@@ -106,10 +106,10 @@ public class ServerMain {
             System.out.println("\nЖду команду от клиента.");
             Object o = ByteToObject.Cast(ServerReceiver.receive());
             commandStringMap = (Map<Command, String>) o;
-            CreateServer.serverIsAvaible = false;
+            CreateServer.serverIsAvailable = false;
             System.out.println("\nВыполняю команду " + commandStringMap.entrySet().iterator().next().getKey().getClass().getName());
             commandStringMap.entrySet().iterator().next().getKey().execute(commandStringMap.entrySet().iterator().next().getValue());
-            CreateServer.serverIsAvaible = true;
+            CreateServer.serverIsAvailable = true;
             if (!commandStringMap.entrySet().iterator().next().getKey().getClass().getName().equals("Common.Commands.Exit"))
                 System.out.println("\nКоманда выполнена! Отправляю результат клиенту.");
         } catch (ClassCastException e) {

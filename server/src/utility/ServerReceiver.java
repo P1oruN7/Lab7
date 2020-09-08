@@ -24,7 +24,7 @@ public class ServerReceiver {
             while (true) {
                 // socketAddress = (InetSocketAddress) datagramChannel.receive(byteBuffer);
                  SocketAddress socketAddress = datagramChannel.receive(byteBuffer); //
-                 ServerMain.clientAdderss = socketAddress;
+                 ServerMain.clientAddress = socketAddress;
                     if (socketAddress != null) {
                         byteBuffer.flip();
                         int limit = byteBuffer.limit();

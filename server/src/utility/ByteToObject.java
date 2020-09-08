@@ -21,7 +21,7 @@ public class ByteToObject {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(buf);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             Map<Integer, Object> map = (Map<Integer, Object>) objectInputStream.readObject();
-            if (CreateServer.serverIsAvaible) {
+            if (CreateServer.serverIsAvailable) {
                 CreateServer.currentClientPort = map.entrySet().iterator().next().getKey();
                 obj = map.entrySet().iterator().next().getValue();
             } else if (CreateServer.currentClientPort == map.entrySet().iterator().next().getKey()) {

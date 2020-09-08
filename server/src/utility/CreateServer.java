@@ -8,7 +8,7 @@ import java.nio.channels.DatagramChannel;
  * В начале был сервер...
  */
 public class CreateServer {
-    public static boolean serverIsAvaible = true;
+    public static boolean serverIsAvailable = true;
     public static int currentClientPort = 0;
     public static DatagramChannel datagramChannel;
 
