@@ -1,4 +1,5 @@
 package sql;
+
 import routes.*;
 import utility.ServerMain;
 
@@ -9,23 +10,25 @@ import java.util.Properties;
 
     public class Connector {
 
-        public static void loading() throws ClassNotFoundException, SQLException {
-            Properties config = new Properties(); // абстракция настроек
-            //String driver;
+        public static void loading(){
+            Properties config = new Properties(); // файл с логином паролем для доступа к бд
 
-            try{
-                config.load(new FileInputStream("config.properties")); //загружаем в абстракцию настроек записи из файла
-                //driver = config.getProperty("db.driver"); //закрепляем драйвер в переменную
+            try {
+                config.load(new FileInputStream("config.properties")); //загружаем етот файл
+                Class.forName("org.postgresql.Driver"); //подключение драйвера
+            } catch (ClassNotFoundException e){
+                System.out.println("Необходимый для работы драйвер не был найден. \n\n Завершение программы");
+                System.exit(0);
             } catch (IOException e){
-                System.out.println("Файл не найден. Выход");
+                System.out.println("Не найден файл, содержащий необходимые для поключения к базе данных логин и пароль. \n\n Завершение программы");
                 System.exit(0);
             }
-            //Class.forName(driver);
+
             try(
                     Connection connection1 = DriverManager.getConnection(ServerMain.URL, config); //подключаемся к бд
                     Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
                     Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
-            ) {
+            ){
                 ResultSet resRoutes = statement.executeQuery("SELECT * from routes"); //заполненние запроса. возвращает результат. представляет из себя таблицу
                 while (resRoutes.next()){ //перебор строк результата
                     Integer key = resRoutes.getInt("key");
@@ -81,34 +84,39 @@ import java.util.Properties;
                     ServerMain.relation.put(key,login); //и тут
                 }
 
+            }catch(SQLException e){
+                System.out.println("Ошибка подключения к базе данных. \n\n Завершение программы");
+                System.exit(0);
             }
         }
 
-        public static void saving() throws ClassNotFoundException, SQLException {
-            FileInputStream fileInputStream; //файл с настройками
-            Properties config = new Properties(); // абстракция настроек
-            //String driver;
+        public static void saving(){
+            Properties config = new Properties();
 
             try{
-                config.load(new FileInputStream("config.properties")); //загружаем в абстракцию настроек записи из файла
-                //driver = config.getProperty("db.driver"); //закрепляем драйвер в переменную
-            } catch (IOException e){
-                System.out.println("Файл не найден. Выход");
+                config.load(new FileInputStream("config.properties"));
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException e){
+                System.out.println("Необходимый для работы драйвер не был найден. \n\n Завершение программы");
+                System.exit(0);
+            }catch (IOException e){
+                System.out.println("Не найден файл, содержащий необходимые для поключения к базе данных логин и пароль. \n\n Завершение программы");
                 System.exit(0);
             }
-            //Class.forName(driver);
-            try(Connection connection1 = DriverManager.getConnection(ServerMain.URL, config);
-                Statement statement = connection1.createStatement(); Statement statement2 = connection1.createStatement();){
+
+            try(
+                Connection connection1 = DriverManager.getConnection(ServerMain.URL, config);
+                Statement statement = connection1.createStatement();
+                Statement statement2 = connection1.createStatement()
+            ){
                 statement.execute("delete from relation");
                 statement.execute("delete from log_pas");
-
-                //ниже закомменченно потому что че это ваще такое падажжите потом разберемся
-                //statement.execute("delete from outes");
-                //statement.execute("alter sequence flats_id_seq restart with 1");
-                //statement.execute("delete from coordinates");
-                //statement.execute("alter sequence coordinates_id_coordinates_seq restart with 1;");
-                //statement.execute("delete from house");
-                //statement.execute("alter sequence house_id_house_seq restart with 1;");
+                statement.execute("delete from outes");
+                statement.execute("alter sequence flats_id_seq restart with 1");
+                statement.execute("delete from coordinates");
+                statement.execute("alter sequence coordinates_id_coordinates_seq restart with 1;");
+                statement.execute("delete from house");
+                statement.execute("alter sequence house_id_house_seq restart with 1;");
 
 
 //вот тут ниже чета про их мапы дурацкие это я еще не понимаю так что ну тоже закомменченно
@@ -187,7 +195,10 @@ import java.util.Properties;
 //                            } catch (SQLException e) {
 //                                e.printStackTrace();
 //                            }
-//                        });
+//                        })
+            }catch(SQLException e){
+                System.out.println("Ошибка подключения к базе данных. \n\n Завершение программы");
+                System.exit(0);
             }
         }
     }
