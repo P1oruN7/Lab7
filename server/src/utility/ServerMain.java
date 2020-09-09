@@ -10,6 +10,7 @@ import java.util.Map;
 
 import readers.ConsoleSourceReader;
 import sun.misc.Signal;
+import users.UserCheck;
 
 /**
  * Главненький
@@ -102,7 +103,17 @@ public class ServerMain {
         try {
             System.out.println("\nЖду команду от клиента.");
             Object o = ByteToObject.Cast(ServerReceiver.receive());
-            commandStringMap = (Map<Command, String>) o;
+
+            try {
+                Object [] objects = (Object []) o;
+                if ( UserCheck.correctPassword((String)objects[1], Hash.encryptThisString((String)objects[2])) ) commandStringMap = (Map<Command, String>) objects[0];
+                else {
+                    //отправить сообщение об ошибке
+                    return;
+                }
+            } catch (Exception e) {
+                commandStringMap = (Map<Command, String>) o;
+            }
             CreateServer.serverIsAvailable = false;
             System.out.println("\nВыполняю команду " + commandStringMap.entrySet().iterator().next().getKey().getClass().getName());
             commandStringMap.entrySet().iterator().next().getKey().execute(commandStringMap.entrySet().iterator().next().getValue());
