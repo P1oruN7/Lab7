@@ -5,6 +5,7 @@ import users.User;
 import users.UserCheck;
 import users.UsersCollection;
 import utility.Hash;
+import utility.ServerSender;
 
 import java.net.*;
 
@@ -14,32 +15,40 @@ import java.net.*;
 public class Checking implements Command {
     @Override
     public void execute(String string, SocketAddress clientAddress) {
-        boolean b;
+        Boolean b;
         string = string.trim();
         char first = string.charAt(0);
         string = string.substring(1);
         switch (first){
             case (1):
                  b = UsersCollection.searchByLogin(string) != null;
+                ServerSender.send(b.toString(), 0, clientAddress);
                     //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
                 break;
             case (2):
                 String [] array = string.split(" ");
                 b = UserCheck.correctPassword(array[0], array[1]);
+                ServerSender.send(b.toString(), 0, clientAddress);
                 //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
                 break;
             case (3):
+                try{
                 String [] logPass = string.split(" ");
-                User user = new User(logPass[0], Hash.encryptThisString(logPass[1]), users.TotemAnimal.randomTotemAnimal());
+                User user = new User(logPass[0], Hash.encryptThisString(logPass[1]));
                 UsersCollection.users.add(user);
-                b = true;
+                b = true;}
+                catch (Exception e) {b = false;}
+                ServerSender.send(b.toString(), 0, clientAddress);
                 //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
                 break;
             case (4):
+                b = false;
                 if (string.trim().equals("") | string == null) b = true;
+                ServerSender.send(b.toString(), 0, clientAddress);
                 //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
                 break;
             default:
+                ServerSender.send("Ошибка", 0, clientAddress);
                 //Отправить сообщение об ошибке
 
         }
