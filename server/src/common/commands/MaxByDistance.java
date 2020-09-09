@@ -3,6 +3,9 @@ import common.*;
 import routes.Route;
 import utility.ServerMain;
 import utility.ServerSender;
+
+import java.net.SocketAddress;
+
 /**
  * Команда "МАКСИМАЛЬНЫЙ"
  */
@@ -13,7 +16,7 @@ public class MaxByDistance implements Command {
      * Метод для вывода элемента коллекции Routes с максимальным значением поля distance
      */
     @Override
-    public void execute(String s) {
+    public void execute(String s, SocketAddress clientAddress) {
         boolean first = true;
         if (ServerMain.c.Routes.size() > 0) {
             Route maxRoutebyDist = null;
@@ -25,9 +28,9 @@ public class MaxByDistance implements Command {
                 if (r.getDistance() != null) if (r.getDistance() > maxRoutebyDist.getDistance()) maxRoutebyDist = r;
 
             }
-            ServerSender.send("\n \n" + maxRoutebyDist + "\n \n", 0);
+            ServerSender.send("\n \n" + maxRoutebyDist + "\n \n", 0, clientAddress);
         } else
-            ServerSender.send("\nКоллекция пуста как моё сердце \n \n", 0);
+            ServerSender.send("\nКоллекция пуста как моё сердце \n \n", 0, clientAddress);
     }
     @Override
     public String getInfo() {

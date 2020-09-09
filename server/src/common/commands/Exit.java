@@ -2,14 +2,15 @@ package common.commands;
 
 import common.*;
 
+import java.net.SocketAddress;
+
 /**
  * Команда "ВЫХОДА НЕТ"
  */
-public class Exit implements Command {
+public class Exit {
     /**
      * Метод для прекращения работы программы
      */
-    @Override
     public void execute(String s) {
         if (s != null) {
             System.out.println("\nСервер завершает свою работу.");
@@ -18,7 +19,6 @@ public class Exit implements Command {
         System.out.println("Клиент нас покинул. Продолжу сидеть в одиночестве...");
     }
 
-    @Override
     public String getInfo() {
         return "exit : завершить программу ";
     }

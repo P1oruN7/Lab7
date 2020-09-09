@@ -4,6 +4,8 @@ import common.*;
 import utility.ServerMain;
 import utility.ServerSender;
 
+import java.net.SocketAddress;
+
 /**
  * Команда "ЧИСТИЛЬЩИК "
  */
@@ -14,9 +16,9 @@ public class Clear implements Command {
      * Метод для очистки коллекции, подаваемой на вход
      */
     @Override
-    public void execute(String s) {
+    public void execute(String s, SocketAddress clientAddress) {
         ServerMain.c.Routes.clear();
-        ServerSender.send("\n \nКоллекция была очищена, как картошечка для супчика \n \n", 0);
+        ServerSender.send("\n \nКоллекция была очищена, как картошечка для супчика \n \n", 0, clientAddress);
     }
 
 

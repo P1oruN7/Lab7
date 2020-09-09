@@ -5,6 +5,8 @@ import routes.Route;
 import utility.ServerMain;
 import utility.ServerSender;
 
+import java.net.SocketAddress;
+
 /**
  * Команда "ГЛЯДИ! "
  */
@@ -15,15 +17,15 @@ public class Show implements Command {
      * Метод для отображения всех элементов коллекции
      */
     @Override
-    public void execute(String S) {
+    public void execute(String S, SocketAddress clientAddress) {
         if (ServerMain.c.Routes.size() == 0) {
-            ServerSender.send("\n\nКоллекция пуста, милорд\n\n", 0);
+            ServerSender.send("\n\nКоллекция пуста, милорд\n\n", 0, clientAddress);
         } else {
             String string = "\n";
             for (Route r : ServerMain.c.Routes) {
                 string += "  " + r.toString() + "\n";
             }
-            ServerSender.send(string, 0);
+            ServerSender.send(string, 0, clientAddress);
 
         }
     }

@@ -5,6 +5,8 @@ import routes.*;
 import utility.ServerMain;
 import utility.ServerSender;
 
+import java.net.SocketAddress;
+
 /**
  * Команда "Добавить-ка ещё!"
  */
@@ -23,7 +25,7 @@ public class Add implements Command {
      * @param string строка с полями объекта route
      */
     @Override
-    public void execute(String string) {
+    public void execute(String string, SocketAddress clientAddress) {
 //        0 - name
 //        1 - Coordinate X
 //        2 - Coordinate Y
@@ -44,7 +46,7 @@ public class Add implements Command {
         route.setTo(new Location(Long.parseLong(s[6]), Double.parseDouble(s[7]), s[8]));
         if (!s[9].equals("null")) route.setDistance(Float.parseFloat(s[9]));
         ServerMain.c.Routes.add(route);
-        ServerSender.send("Объект был добавлен в коллекцию.", 0);
+        ServerSender.send("Объект был добавлен в коллекцию.", 0, clientAddress);
     }
 
     /**

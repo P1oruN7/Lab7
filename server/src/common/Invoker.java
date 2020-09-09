@@ -2,6 +2,7 @@ package common;
 
 import utility.ServerSender;
 
+import java.net.SocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -36,7 +37,7 @@ public class Invoker {
      *
      * @param s строчечка
      */
-    public static void execute(String s) {
+    public static void execute(String s, SocketAddress clientAddress) {
         Map<Command, String> commandStringMap = new HashMap<>();
         String name[] = s.split(" ", 1);
         Command command = commands.get(name[0]);
@@ -44,11 +45,11 @@ public class Invoker {
             System.out.print("$ ");
         } else if (name[0].equals("exit")) {
         } else if (command == null || name.length > 2) {
-            ServerSender.send("Такой команды не существует,попробуйте другую. Для справки введите \"help\"", 2);
+            ServerSender.send("Такой команды не существует,попробуйте другую. Для справки введите \"help\"", 2, clientAddress);
         } else if (name.length == 1) {
-            command.execute(null);
+            command.execute(null, clientAddress);
         } else if (name.length == 2) {
-            command.execute(name[1]);
+            command.execute(name[1], clientAddress);
         }
     }
 }

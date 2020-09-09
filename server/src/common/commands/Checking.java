@@ -13,7 +13,7 @@ import java.net.*;
  */
 public class Checking implements Command {
     @Override
-    public void execute(String string) {
+    public void execute(String string, SocketAddress clientAddress) {
         boolean b;
         string = string.trim();
         char first = string.charAt(0);

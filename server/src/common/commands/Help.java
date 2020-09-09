@@ -3,6 +3,8 @@ package common.commands;
 import common.Command;
 import common.Invoker;
 
+import java.net.SocketAddress;
+
 /**
  * Команда "ПОМОЩЬ"
  */
@@ -15,7 +17,7 @@ public class Help implements Command {
      * Вывод описания всех команд
      */
     @Override
-    public void execute(String s) {
+    public void execute(String s, SocketAddress clientAddress) {
 //        System.out.println("\n \n \n");
 //        for (Command command : getCommandCollection().values()) {
 //            System.out.println(command.getInfo());

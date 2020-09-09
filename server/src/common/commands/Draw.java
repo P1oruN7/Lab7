@@ -4,6 +4,8 @@ import common.Command;
 import common.Invoker;
 import utility.ServerSender;
 
+import java.net.SocketAddress;
+
 public class Draw implements Command {
     private static final long serialVersionUID = 6529685098267757690L;
 
@@ -17,7 +19,7 @@ public class Draw implements Command {
     }
 
     @Override
-    public void execute(String s) {
+    public void execute(String s, SocketAddress clientAddress) {
         double rand = Math.random() * 100;
         if (rand > 91) {
             ServerSender.send("\n" + "\n" +
@@ -49,7 +51,7 @@ public class Draw implements Command {
                     "                               _        _,p\"     |    |   `\\`;    |    |\n" +
                     "                               \"boo,._dP\"       `\\_  `\\    `\\|   `\\   ;\n" +
                     "                                 `\"7tY~'            `\\  `\\    `|_   |\n" +
-                    "                                                      `~\\  |\n", 0
+                    "                                                      `~\\  |\n", 0, clientAddress
             );
         } else if (rand > 83) {
             ServerSender.send("\n" + "\n" +
@@ -61,7 +63,7 @@ public class Draw implements Command {
                     "  \"'._.    '-.O.'\n" +
                     "       '-.  \\ \"|\\\n" +
                     "          '.,,/'.,,mrf\n" +
-                    "\n", 0
+                    "\n", 0, clientAddress
             );
         } else if (rand > 75) {
             ServerSender.send("\n" +
@@ -85,7 +87,7 @@ public class Draw implements Command {
                     "                ~--._    '   Y---.                        \\./\n" +
                     "                     ~~--._  l_   )                        \\\n" +
                     "                           ~-._~~~---._,____..---           \\\n" +
-                    "                               ~----\"~       \\\n", 0
+                    "                               ~----\"~       \\\n", 0, clientAddress
             );
         } else if (rand > 67) {
             ServerSender.send("\n" + "\n" +
@@ -102,7 +104,7 @@ public class Draw implements Command {
                     "             `.       ,.-'\"       \"'-.,       .'\n" +
                     "               `.                           .'\n" +
                     "                 `-._                   _.-'\n" +
-                    "                     `\"'--...___...--'\"`\n", 0
+                    "                     `\"'--...___...--'\"`\n", 0, clientAddress
             );
         } else if (rand > 58) {
             ServerSender.send("\n" + "\n" +
@@ -112,7 +114,7 @@ public class Draw implements Command {
                     " (_ .   /   \"        \n" +
                     "  ) _)._  _ /\n" +
                     " '.\\ \\|( / ( \n" +
-                    "   '' ''\\\\ \\\\\n", 0
+                    "   '' ''\\\\ \\\\\n", 0, clientAddress
             );
         } else if (rand > 50) {
             ServerSender.send("\n" + "\n" +
@@ -121,7 +123,7 @@ public class Draw implements Command {
                     "          <\\    .`--'''       `     /'\n" +
                     "           `-';'               ;   ; ;\n" +
                     "     __...--''     ___...--_..'  .;.'\n" +
-                    "    (,__....----'''       (,..--''   \n", 0
+                    "    (,__....----'''       (,..--''   \n", 0, clientAddress
             );
 
         } else if (rand > 42) {
@@ -137,7 +139,7 @@ public class Draw implements Command {
                     "          (        \\/        )\n" +
                     "           `.___..-'`-..___.'\n" +
                     "              \\          /\n" +
-                    "               `-.____.-'  \n", 0
+                    "               `-.____.-'  \n", 0, clientAddress
             );
 
         } else if (rand > 34) {
@@ -146,14 +148,14 @@ public class Draw implements Command {
                     "       _.-'    .-/\";  `        ``<._  ``-+'~=.\n" +
                     "   _.-' _..--.'_    \\                    `(^) )\n" +
                     "  ((..-'    (< _     ;_..__               ; `'   \n" +
-                    "             `-._,_)'      ``--...____..-'\n", 0
+                    "             `-._,_)'      ``--...____..-'\n", 0, clientAddress
             );
 
         } else if (rand > 25) {
             ServerSender.send("\n" + "\n" +
                     "               )\\._.,--....,'``.      \n" +
                     " .b--.        /;   _.. \\   _\\  (`._ ,.\n" +
-                    "`=,-,-'~~~   `----(,_..'--(,_..'`-.;.'\n", 0
+                    "`=,-,-'~~~   `----(,_..'--(,_..'`-.;.'\n", 0, clientAddress
             );
 
 
@@ -172,7 +174,7 @@ public class Draw implements Command {
                     "              | /\\ ~~~~~   \\ |\n" +
                     "              | | \\        || |\n" +
                     "              | |\\ \\       || )\n" +
-                    "             (_/ (_/      ((_/\n", 0
+                    "             (_/ (_/      ((_/\n", 0, clientAddress
             );
 
         } else if (rand > 8) {
@@ -182,7 +184,7 @@ public class Draw implements Command {
                     "    { \\    `_-''       '    /}\n" +
                     "     `;;'            ;   ; ;\n" +
                     " ._.--''     ._,,, _..'  .;.'\n" +
-                    "  (,_....----'''     (,..--''\n", 0
+                    "  (,_....----'''     (,..--''\n", 0, clientAddress
             );
 
         } else if (rand > 0) {
@@ -207,7 +209,7 @@ public class Draw implements Command {
                     "  |  |  |  | ) ) |  |  |  |  |  |  |  |  |  |\n" +
                     "  |  |  |  |(_(  |  |  |  |  |  |  |  |  |  |\n" +
                     "  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |\n" +
-                    "  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |", 0
+                    "  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |", 0, clientAddress
             );
         }
     }

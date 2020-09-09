@@ -4,6 +4,7 @@ import common.*;
 import routes.Route;
 import utility.ServerSender;
 
+import java.net.SocketAddress;
 import java.util.Arrays;
 
 /**
@@ -16,7 +17,7 @@ public class PrintFieldDescendingDistance implements Command {
      * Метод для вывода поля distance всех элементов коллекции в обратном порядке
      */
     @Override
-    public void execute(String S) {
+    public void execute(String S, SocketAddress clientAddress) {
         if (!utility.ServerMain.c.Routes.isEmpty()) {
             float[] array = new float[utility.ServerMain.c.Routes.size()]; // создаётся массив размером с коллекцию
             int i = 0;
@@ -29,9 +30,9 @@ public class PrintFieldDescendingDistance implements Command {
             Float f;
             for (i = utility.ServerMain.c.Routes.size() - 1; i >= 0; i--) {
                 f = array[i];
-                ServerSender.send(f.toString(), 0); // массив выводится в обратном порядке
+                ServerSender.send(f.toString(), 0, clientAddress); // массив выводится в обратном порядке
             }
-        } else ServerSender.send("Коллекция пуста, в отличие от моего рабочего стола.", 0);
+        } else ServerSender.send("Коллекция пуста, в отличие от моего рабочего стола.", 0, clientAddress);
     }
 
     @Override

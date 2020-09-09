@@ -4,6 +4,7 @@ import common.*;
 import utility.ServerMain;
 import utility.ServerSender;
 
+import java.net.SocketAddress;
 import java.util.Collections;
 
 /**
@@ -16,9 +17,9 @@ public class Sort implements Command {
      * Метод для сортировки коллекции в ествественном порядке (по возрастанию id)
      */
     @Override
-    public void execute(String S) {
+    public void execute(String S, SocketAddress clientAddress) {
         Collections.sort(ServerMain.c.Routes);
-        ServerSender.send("\n\nКоллекция была отсортирована.\n\n", 0);    }
+        ServerSender.send("\n\nКоллекция была отсортирована.\n\n", 0, clientAddress);    }
 
     @Override
     public String getInfo() {

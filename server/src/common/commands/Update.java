@@ -7,6 +7,8 @@ import routes.Location;
 import routes.Route;
 import utility.*;
 
+import java.net.SocketAddress;
+
 /**
  * Команда  "ПРАВКИ!"
  */
@@ -22,19 +24,21 @@ public class Update implements Command {
      * Метод для изменения значений элемента по id
      */
     @Override
-    public void execute(String s) {
+    public void execute(String s, SocketAddress clientAddress) {
         s = s.trim();
         Long id = Checker.longChecker(s);
         Route r = ServerMain.c.searchById(id);
         if (r == null) {
-            ServerSender.send("похоже элемента с таким айди не существует", 0);
+            ServerSender.send("похоже элемента с таким айди не существует", 0, clientAddress);
             return;
         }
         int index = ServerMain.c.Routes.indexOf(r);
-        ServerSender.send("Состояние элемента сейчас: " + ServerMain.c.Routes.get(index).toString(), 0);
+        ServerSender.send("Состояние элемента сейчас: " + ServerMain.c.Routes.get(index).toString(), 0, clientAddress);
         Route route = new Route();
         route.setCreationDate(ServerMain.c.Routes.get(index).getCreationDate());
-        String s2 = new String(ServerReceiver.receive());
+        Object [] array = (Object[]) ServerReceiver.receive();
+        byte[] string =  (byte[]) array [0];
+        String s2 = new String(string); //вот таккая ерундень
         String[] arrayOfStrings = s2.split(" ");
         route.setId(id);
         route.setName(arrayOfStrings[0]);
@@ -44,9 +48,9 @@ public class Update implements Command {
         route.setTo(new Location(Long.parseLong(arrayOfStrings[6]), Double.parseDouble(arrayOfStrings[7]), arrayOfStrings[8]));
         if (!arrayOfStrings[9].equals("null")) route.setDistance(Float.parseFloat(arrayOfStrings[9]));
         RemoveById remove_byId = new RemoveById();
-        remove_byId.execute(s);
+        remove_byId.execute(s, clientAddress);
         ServerMain.c.Routes.add(route);
-        ServerSender.send("\n" + "Вы достигли успеха в замене элемента по айди!", 0);
+        ServerSender.send("\n" + "Вы достигли успеха в замене элемента по айди!", 0, clientAddress);
     }
 
     @Override

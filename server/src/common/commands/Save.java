@@ -3,14 +3,16 @@ package common.commands;
 import common.*;
 import utility.ServerMain;
 
+import java.net.SocketAddress;
+
 /**
  * Команда "Сохрани мою речь"
  */
-public class Save implements Command {
+public class Save {
     /**
      * Метод для сохранения коллекции в файл
      */
-    @Override
+
     public void execute(String S) {
         try {
             //saveCollection(ServerMain.c.getPath());
@@ -20,7 +22,6 @@ public class Save implements Command {
         }
     }
 
-    @Override
     public String getInfo() {
         return "save : сохранить коллекцию в файл";
     }

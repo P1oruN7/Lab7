@@ -4,6 +4,7 @@ import common.*;
 import utility.ServerMain;
 import utility.ServerSender;
 
+import java.net.SocketAddress;
 import java.util.Collections;
 
 /**
@@ -16,9 +17,9 @@ public class Reorder implements Command {
      * Метод для разворота коллекции
      */
     @Override
-    public void execute(String S) {
+    public void execute(String S, SocketAddress clientAddress) {
         Collections.reverse(ServerMain.c.Routes);
-        ServerSender.send("\n\nКоллекция была развёрнута задом наперёд \n\n", 0);
+        ServerSender.send("\n\nКоллекция была развёрнута задом наперёд \n\n", 0, clientAddress);
     }
 
     @Override

@@ -4,6 +4,8 @@ import common.*;
 import utility.ServerMain;
 import utility.ServerSender;
 
+import java.net.SocketAddress;
+
 
 /**
  * Команда "ИНФОРМБЮРО"
@@ -15,10 +17,10 @@ public class Info implements Command {
      * Отображение актуальной информации о коллекции
      */
     @Override
-    public void execute(String s) {
+    public void execute(String s, SocketAddress clientAddress) {
         ServerSender.send("\n \nКоллекция представляет собой: " + ServerMain.c.Routes.getClass().getName() + "\n" +
                 "В коллекции: " + ServerMain.c.Routes.size() + " элементов" + "\n" +
-                "Коллеция была создана: " + ServerMain.c.getInitializationDate() + "\n \n", 0);
+                "Коллеция была создана: " + ServerMain.c.getInitializationDate() + "\n \n", 0, clientAddress);
     }
 
     @Override
