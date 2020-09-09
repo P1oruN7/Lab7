@@ -79,8 +79,8 @@ import java.util.Properties;
                     String login = resultLogPass.getString("login");
                     String passwordForLog = resultLogPass.getString("password");
                     String totemAnimal =  resultLogPass.getString ("totemAnimal");
-                    users.User user = new User(login,passwordForLog, , totemAnimal);
-                    UsersCollection.users.add(user);
+                    users.User user = new User(login,passwordForLog, totemAnimal);
+                     UsersCollection.users.add(user);
                    // ServerMain.loginPass.put(login,passwordForLog); //и тут
                 }
 //                ResultSet resultRealtion = statement.executeQuery("select * from relation");
