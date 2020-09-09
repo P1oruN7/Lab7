@@ -11,6 +11,7 @@ import java.util.Map;
 import readers.ConsoleSourceReader;
 import sun.misc.Signal;
 import users.UserCheck;
+import users.UsersCollection;
 
 /**
  * Главненький
@@ -77,7 +78,13 @@ public class ServerMain {
 //        }  //////////
 
 
-           c = new Collection(); // !!!!
+        c = new Collection(); // !!!!
+
+
+        users.User admin = new users.User ("admin", "admin", "admin");
+        UsersCollection.users.add(admin);
+
+        
         boolean serverCreated = false;
         while (!serverCreated) {
             System.out.print("Введите порт:  ");
