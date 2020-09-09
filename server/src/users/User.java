@@ -51,4 +51,17 @@ public class User {
         this.setTotemAnimal(totemAnimal);
     }
 
+
+
+    /**
+     * Другой конструктор пользователя
+     * @param login имя
+     * @param password пароль
+     */
+    public User (String login, String password){
+        this.setLogin(login);
+        this.setPassword(password);
+        this.totemAnimal = TotemAnimal.randomTotemAnimal();
+    }
+
 }
