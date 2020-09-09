@@ -30,8 +30,7 @@ public class Checking implements Command {
                 break;
             case (3):
                 String [] logPass = string.split(" ");
-                URLConnection connection  ;//я хз что тут писать честно(
-                User user = new User(logPass[0], Hash.encryptThisString(logPass[1]), connection, users.TotemAnimal.randomTotemAnimal());
+                User user = new User(logPass[0], Hash.encryptThisString(logPass[1]), users.TotemAnimal.randomTotemAnimal());
                 UsersCollection.users.add(user);
                 b = true;
                 //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
