@@ -17,7 +17,7 @@ public class ServerSender {
      * @param message    сообщенька
      * @param needAnswer нужет ли ответ от клиента
      */
-    public static void send(String message, Integer needAnswer) {
+    public static void send(String message, Integer needAnswer,SocketAddress clientAddress) {
         try {
             //Параметр needAnswer: 0 - ответ не нужен, 1 - ждём ответа
             Map<String, Integer> answer = new HashMap<>();
@@ -34,8 +34,8 @@ public class ServerSender {
             DatagramSocket datagramSocket = new DatagramSocket();
            // ServerMain.clientAdderss = datagramSocket.getInetAddress(); //
           //  ServerMain.clientAdderss =  CreateServer.datagramChannel.getRemoteAddress();
-         //   DatagramPacket dp = new DatagramPacket(buff, buff.length, ServerMain.clientAdderss);
-            DatagramPacket dp = new DatagramPacket(buff, buff.length, InetAddress.getLocalHost(), CreateServer.currentClientPort);
+            DatagramPacket dp = new DatagramPacket(buff, buff.length, clientAddress);
+       //     DatagramPacket dp = new DatagramPacket(buff, buff.length, InetAddress.getLocalHost(), CreateServer.currentClientPort); Изначально было вот это
             datagramSocket.send(dp);
             datagramSocket.close();
 

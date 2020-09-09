@@ -16,7 +16,8 @@ public class ServerReceiver {
      *
      * @return массивчик байтиков
      */
-    public static byte[] receive() {
+    public static Object receive() {
+        SocketAddress clientAddress = null;
         try {
             DatagramChannel datagramChannel = CreateServer.datagramChannel;
             ByteBuffer byteBuffer = ByteBuffer.allocate(1000000);
@@ -24,20 +25,24 @@ public class ServerReceiver {
             while (true) {
                 // socketAddress = (InetSocketAddress) datagramChannel.receive(byteBuffer);
                  SocketAddress socketAddress = datagramChannel.receive(byteBuffer); //
-                 ServerMain.clientAddress = socketAddress;
+               //  ServerMain.clientAddress = socketAddress;
+                 clientAddress = socketAddress;
                     if (socketAddress != null) {
                         byteBuffer.flip();
                         int limit = byteBuffer.limit();
                         bytes = new byte[limit];
                         byteBuffer.get(bytes, 0, limit);
                         byteBuffer.clear();
-                        return bytes;
+                        Object [] array = {bytes, clientAddress};
+                        //return bytes, clientAddress;
+                        return array;
                     }
                 }
         } catch (IOException e) {
             System.out.println("123");
         }
-        return new byte[0];
+        Object [] array = {new byte[0], clientAddress};
+        return array;
     }
 }
 

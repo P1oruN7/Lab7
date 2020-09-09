@@ -81,10 +81,10 @@ public class ServerMain {
         c = new Collection(); // !!!!
 
 
-        users.User admin = new users.User ("admin", "admin", "admin");
-        UsersCollection.users.add(admin);
+      //  users.User admin = new users.User ("admin", "admin", "admin");
+     //   UsersCollection.users.add(admin);
 
-        
+
         boolean serverCreated = false;
         while (!serverCreated) {
             System.out.print("Введите порт:  ");
@@ -106,10 +106,14 @@ public class ServerMain {
     }
 
     public static void GetCommand() {
+        SocketAddress clientAddress = null;
         Map<Command, String> commandStringMap;
         try {
             System.out.println("\nЖду команду от клиента.");
-            Object o = ByteToObject.Cast(ServerReceiver.receive());
+            Object [] received =  (Object []) ServerReceiver.receive();
+            clientAddress =  ( SocketAddress) received[1];
+            byte [] bytes = (byte[]) received[0];
+            Object o = ByteToObject.Cast(bytes);
 
             try {
                 Object [] objects = (Object []) o;
@@ -123,12 +127,12 @@ public class ServerMain {
             }
             CreateServer.serverIsAvailable = false;
             System.out.println("\nВыполняю команду " + commandStringMap.entrySet().iterator().next().getKey().getClass().getName());
-            commandStringMap.entrySet().iterator().next().getKey().execute(commandStringMap.entrySet().iterator().next().getValue());
+            commandStringMap.entrySet().iterator().next().getKey().execute(commandStringMap.entrySet().iterator().next().getValue(), clientAddress);
             CreateServer.serverIsAvailable = true;
             if (!commandStringMap.entrySet().iterator().next().getKey().getClass().getName().equals("Common.Commands.Exit"))
                 System.out.println("\nКоманда выполнена! Отправляю результат клиенту.");
         } catch (ClassCastException e) {
-            ServerSender.send("\nСообщение от Сервера:\"Возникли небольшие технические шоколадки с вашим подключением,но сейчас всё по кайфу,ожидаю команд.\"\n", 0);
+            ServerSender.send("\nСообщение от Сервера:\"Возникли небольшие технические шоколадки с вашим подключением,но сейчас всё по кайфу,ожидаю команд.\"\n", 0, clientAddress);
         }
     }
 }
