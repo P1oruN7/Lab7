@@ -83,7 +83,7 @@ public class ExecuteScript implements Command {
                             ClientSender.send(commandparamMap);
                             try {
                                 ClientReceiver.receive();
-                            } catch (SocketTimeoutException e) {
+                            } catch (Exception e) {
                                 System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
                             }
 
@@ -142,7 +142,7 @@ public class ExecuteScript implements Command {
                             ClientSender.send(commandparamMap);
                             try {
                                 ClientReceiver.receive();
-                            } catch (SocketTimeoutException e) {
+                            } catch (Exception e) {
                                 System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
                             }
                         }
@@ -152,9 +152,9 @@ public class ExecuteScript implements Command {
                 fileSourceReader.close();
                 usedFiles.clear();
                 System.out.println("Завершение скрипта");
-            } catch (IOException e) {
-                System.out.println("ошибка чтения файла");
-                usedFiles.clear();
+         //   } catch (IOException e) {
+           //     System.out.println("ошибка чтения файла");
+             //   usedFiles.clear();
             } catch (Exception e) {
                 System.out.println("непредвиденный конец файла");
                 usedFiles.clear();
