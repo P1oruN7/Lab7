@@ -84,8 +84,8 @@ public class ServerMain {
         c = new Collection(); // !!!!
 
 
-      //  users.User admin = new users.User ("admin", "admin", "admin");
-     //   UsersCollection.users.add(admin);
+        users.User admin = new users.User ("admin", "admin", "admin");
+        UsersCollection.users.add(admin);
 
 
         boolean serverCreated = false;

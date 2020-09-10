@@ -1,9 +1,6 @@
 package common.commands;
 
-import common.*;
-import utility.ServerMain;
-
-import java.net.SocketAddress;
+import static sql.Connector.saving;
 
 /**
  * Команда "Сохрани мою речь"
@@ -16,6 +13,7 @@ public class Save {
     public void execute(String S) {
         try {
             //saveCollection(ServerMain.c.getPath());
+            saving();
             System.out.println("Коллекция сохранилася.");
         } catch (Exception e) {
             System.out.println("Не удалось сохраниться.");

@@ -45,12 +45,12 @@ public class Checking implements Command {
                 ServerSender.send(b.toString(), 0, clientAddress);
                 //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
                 break;
-            case (4):
-                b = false;
-                if (string.trim().equals("") | string == null) b = true;
-                ServerSender.send(b.toString(), 0, clientAddress);
-                //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
-                break;
+//            case (4):
+//                b = false;
+//                if (string.trim().equals("") | string == null) b = true;
+//                ServerSender.send(b.toString(), 0, clientAddress);
+//                //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
+//                break;
             default:
                 ServerSender.send("Ошибка", 0, clientAddress);
                 //Отправить сообщение об ошибке
