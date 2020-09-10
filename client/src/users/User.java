@@ -19,7 +19,7 @@ public class User {
     private String password; // пароль
     private String totemAnimal; //  тотемное животное
     private static final long serialVersionUID = 6529685098267757690L; // нужная штука чтобы всё работало
-    private static boolean mistake = false;
+    public static boolean mistake = false;
 
     public String getLogin() {
         return login;
@@ -137,7 +137,7 @@ public class User {
             System.out.println("\nВведите имя пользователя: ");
             login = utility.ClientMain.reader.readLine().trim();
             if (login == "" || login == null) return false;
-            if (!checkingLogin(login)) break;
+            if (checkingLogin(login)) break;
             if (!mistake) System.out.println("\nПользователя с такими именем не существует.");
         }
         while (true) {
