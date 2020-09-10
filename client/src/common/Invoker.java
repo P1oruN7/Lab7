@@ -71,8 +71,8 @@ public class Invoker {
                 return commandStringMap;
             } else if (name[0].toLowerCase().equals("exit")) {
                 History.addInArray(name[0]);
-                commandStringMap.put(command, null);
-                ClientSender.send(commandStringMap);
+               // commandStringMap.put(command, null);
+              //  ClientSender.send(commandStringMap);
                 command.execute("");
             } else if (name[0].toLowerCase().equals("update")) {
                 History.addInArray(name[0]);

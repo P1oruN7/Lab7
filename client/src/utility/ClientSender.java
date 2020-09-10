@@ -17,7 +17,7 @@ public class ClientSender {
     public static void send(Object o) {
         try {
             Map<Integer, Object> mapCommand = new HashMap<Integer, Object>();
-            Object [] array = {o, ClientMain.getLogin(), ClientMain.getPassword()};
+            Object [] array = {o, ClientMain.getLogin(), Hash.encryptThisString( ClientMain.getPassword())};
             DatagramChannel datagramChannel = DatagramChannel.open();
             datagramChannel.bind(null);
             SocketAddress serverAddress = new InetSocketAddress(ClientMain.address, ClientMain.port);

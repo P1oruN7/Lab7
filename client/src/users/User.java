@@ -4,6 +4,7 @@ import common.Command;
 import utility.ClientMain;
 import utility.ClientReceiver;
 import utility.ClientSender;
+import utility.Hash;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -102,6 +103,10 @@ public class User {
             mistake = false;
             System.out.println("\nВведите имя пользователя: ");
             login = utility.ClientMain.reader.readLine().trim();
+            if (login.length() == 0 || login == null){
+                System.out.println("Логин не может быть пустым");
+                continue;
+            }
             if (!checkingLogin(login)) break;
             if (!mistake) System.out.println("\nДанное имя пользователя уже занято. Придумайте уникальное имя.");
         }
@@ -109,8 +114,11 @@ public class User {
             mistake = false;
             System.out.println("\nВведите пароль длиной от нуля до 20 символов");
             password = utility.ClientMain.reader.readLine().trim();
-            if (password.length() == 0 || password == null) break;
-            if (checkingNewPassword(password)) break;
+            if (password.length() == 0 || password == null) {
+                password = "0123456789012345678901234567890";
+                break;
+            }else{
+            if (checkingNewPassword(password)) break;}
             if (!mistake) System.out.println("\nПароль не соответствует критериям. Попробуйте сделать другой.");
         }
         if (registerInBase(login, password)) {
@@ -146,8 +154,10 @@ public class User {
             mistake = false;
             System.out.println("\nВведите пароль: ");
             password = utility.ClientMain.reader.readLine().trim();
-            if ((password == "" || password == null) && thisUserHasNoPassword(login)) break;
-            password = utility.Hash.encryptThisString(password);
+           // if ((password == "" || password == null) && thisUserHasNoPassword(login)) break;
+            if (password.length() == 0 || password == null) {
+                password = "0123456789012345678901234567890";
+                break;}else password = utility.Hash.encryptThisString(password);
             if (checkingPassword(login, password)) break;
             if (!mistake) System.out.println("\nНеверный пароль.");
             return false;
@@ -210,7 +220,7 @@ public class User {
         Boolean b = false; //возвращаемое значение
         Map<Command, String> commandStringMap = new HashMap<>();  //мапа для отправки (одна!)
         common.commands.Checking check = new common.commands.Checking();// создание экземпляра чек (надо)
-        commandStringMap.put(check, "2" + login.trim() + " " + password.trim()); //формирование мапы. 2 - код проверки логина+пароля
+        commandStringMap.put(check, "2" + login.trim() + " " + Hash.encryptThisString(password.trim())); //формирование мапы. 2 - код проверки логина+пароля
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
             String s2 = ClientReceiver.receiveObject(); //попытка получить строку
@@ -236,7 +246,7 @@ public class User {
         Boolean b = false; //возвращаемое значение
         Map<Command, String> commandStringMap = new HashMap<>();//мапа для отправки (одна!)
         common.commands.Checking check = new common.commands.Checking();// создание экземпляра чек (надо)
-        commandStringMap.put(check, "3" + login.trim() + " " + password.trim()); //формирование мапы. 3 - код регистрации в бд
+        commandStringMap.put(check, "3" + login.trim() + " " + Hash.encryptThisString(password.trim())); //формирование мапы. 3 - код регистрации в бд
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
             String s2 = ClientReceiver.receiveObject(); //попытка получить строку
@@ -250,25 +260,25 @@ public class User {
         return b;
     }
 
-    /**
-     * Проверка, является ли пользователь с данным логином обладателем пустого пароля
-     *
-     * @param login логин
-     * @return пустой ли пароль
-     */
-    public static boolean thisUserHasNoPassword(String login) throws IOException {
-        Boolean b = false;
-        Map<Command, String> commandStringMap = new HashMap<>(); //мапа для отправки (одна!)
-        common.commands.Checking check = new common.commands.Checking();// создание экземпляра чек (надо)
-        commandStringMap.put(check, "4" + login.trim()); //формирование мапы. 4 - код проверки пустости пароля
-        ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
-        try {
-            String s2 = ClientReceiver.receiveObject(); //попытка получить строку
-            b = Boolean.parseBoolean(s2); //парс в булиан, чтобы вернуть да или неты
-        } catch (Exception e) {
-            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
-            mistake = true;
-        }
-        return b;
-    }
+//    /**
+//     * Проверка, является ли пользователь с данным логином обладателем пустого пароля
+//     *
+//     * @param login логин
+//     * @return пустой ли пароль
+//     */
+//    public static boolean thisUserHasNoPassword(String login) throws IOException {
+//        Boolean b = false;
+//        Map<Command, String> commandStringMap = new HashMap<>(); //мапа для отправки (одна!)
+//        common.commands.Checking check = new common.commands.Checking();// создание экземпляра чек (надо)
+//        commandStringMap.put(check, "4" + login.trim()); //формирование мапы. 4 - код проверки пустости пароля
+//        ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
+//        try {
+//            String s2 = ClientReceiver.receiveObject(); //попытка получить строку
+//            b = Boolean.parseBoolean(s2); //парс в булиан, чтобы вернуть да или неты
+//        } catch (Exception e) {
+//            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
+//            mistake = true;
+//        }
+//        return b;
+//    }
 }
