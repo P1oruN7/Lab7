@@ -90,7 +90,7 @@ public class User {
         while (true) {
             System.out.println("\nВведите имя пользователя: ");
             login = utility.ClientMain.reader.readLine().trim();
-            if (!checkingLogin(login)) break;
+            if (checkingLogin(login)) break;
             System.out.println("\nДанное имя пользователя уже занято. Придумайте уникальное имя.");
         }
         while (true) {
@@ -121,7 +121,7 @@ public class User {
             System.out.println("\nВведите имя пользователя: ");
             login = utility.ClientMain.reader.readLine().trim();
             if (login == "" || login == null) return false;
-            if (checkingLogin(login)) break;
+            if (!checkingLogin(login)) break;
           //  System.out.println("\nПользователя с такими именем не существует.");
         }
         while (true) {
@@ -151,10 +151,11 @@ public class User {
         commandStringMap.put(check, "1"+login.trim()); //формирование мапы. 1 - код проверки логина
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
-            String s2 = new String(ClientReceiver.receiveObject()); //попытка получить строку
+            String s2 = ClientReceiver.receiveObject(); //попытка получить строку
+            System.out.println(s2);
             b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или нет
-            if (b) System.out.println("\\nПользователя с такими именем не существует.");
-            else System.out.println("Такой логин уже занят. Придумайте другой.");
+            if (b) {System.out.println("\nПользователя с такими именем не существует.");}
+            else {System.out.println("Такой логин уже занят. Придумайте другой.");}
         } catch (Exception e) {
             System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
         }
@@ -190,7 +191,7 @@ public class User {
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
             String s2 = new String(ClientReceiver.receiveObject()); //попытка получить строку
-            b = Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или нет
+            b = !Boolean.parseBoolean( s2 ); //парс в булиан, чтобы вернуть да или нет
             if (b) System.out.println("\nПароль верный");
             else System.out.println("Пароль неверный. Попробуйте ещё раз");
         } catch (Exception e) {
