@@ -124,7 +124,6 @@ public class ClientMain {
 
         }
         boolean b = false;
-
         while (!b) {
             try {
               b =  User.authorization();
