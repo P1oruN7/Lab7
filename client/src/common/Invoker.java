@@ -23,7 +23,7 @@ public class Invoker {
     /**
      * Регистрация команды
      *
-     * @param name    имя
+     * @param name    иня
      * @param command собсна команда
      */
     public static void regist(String name, Command command) {

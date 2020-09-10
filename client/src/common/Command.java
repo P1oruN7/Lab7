@@ -6,7 +6,6 @@ import java.io.Serializable;
  * Интерфейс Command
  */
 public interface Command extends Serializable {
-
     /**
      * Экзекьюте
      *
