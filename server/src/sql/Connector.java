@@ -16,7 +16,7 @@ public class Connector {
             Properties config = new Properties(); // файл с логином паролем для доступа к бд
 
             try {
-                config.load(new FileInputStream("config.properties")); //загружаем етот файл
+                config.load(new FileInputStream("res/config.properties")); //загружаем етот файл
                 Class.forName("org.postgresql.Driver"); //подключение драйвера
             } catch (ClassNotFoundException e){
                 System.out.println("Необходимый для работы драйвер не был найден. \n\n Завершение программы");
@@ -91,7 +91,7 @@ public class Connector {
             Properties config = new Properties();
 
             try{
-                config.load(new FileInputStream("config.properties"));
+                config.load(new FileInputStream("res/config.properties"));
                 Class.forName("org.postgresql.Driver");
             } catch (ClassNotFoundException e){
                 System.out.println("Необходимый для работы драйвер не был найден. \n\n Завершение программы");
