@@ -6,10 +6,12 @@ import routes.Collection;
 
 import java.io.IOException;
 import java.net.SocketAddress;
+import java.util.ArrayList;
 import java.util.Map;
 
 import readers.ConsoleSourceReader;
 import sun.misc.Signal;
+import users.User;
 import users.UserCheck;
 import users.UsersCollection;
 
@@ -34,7 +36,7 @@ public class ServerMain {
             System.out.println("\n" + "Контрлцешное завершение программы");
             System.exit(0);
         });
-
+        UsersCollection.users = new ArrayList<>(); ///
         Add add = new Add();
         AverageOfDistance average = new AverageOfDistance();
         Clear clear = new Clear();

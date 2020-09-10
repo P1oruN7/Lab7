@@ -34,8 +34,8 @@ public class ServerSender {
             DatagramSocket datagramSocket = new DatagramSocket();
            // ServerMain.clientAdderss = datagramSocket.getInetAddress(); //
           //  ServerMain.clientAdderss =  CreateServer.datagramChannel.getRemoteAddress();
-            DatagramPacket dp = new DatagramPacket(buff, buff.length, clientAddress);
-       //     DatagramPacket dp = new DatagramPacket(buff, buff.length, InetAddress.getLocalHost(), CreateServer.currentClientPort); Изначально было вот это
+         //   DatagramPacket dp = new DatagramPacket(buff, buff.length, clientAddress);
+            DatagramPacket dp = new DatagramPacket(buff, buff.length, InetAddress.getLocalHost(), CreateServer.currentClientPort); //Изначально было вот это
             datagramSocket.send(dp);
             datagramSocket.close();
 
