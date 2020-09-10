@@ -45,6 +45,7 @@ public class Add implements Command {
         if (!s[3].equals("null")) route.setFrom(new Location(Long.parseLong(s[3]), Double.parseDouble(s[4]), s[5]));
         route.setTo(new Location(Long.parseLong(s[6]), Double.parseDouble(s[7]), s[8]));
         if (!s[9].equals("null")) route.setDistance(Float.parseFloat(s[9]));
+        route.setCreatorLogin(s[10]);
         ServerMain.c.Routes.add(route);
         ServerSender.send("Объект был добавлен в коллекцию.", 0, clientAddress);
     }

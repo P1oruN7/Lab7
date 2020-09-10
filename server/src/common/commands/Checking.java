@@ -18,11 +18,14 @@ public class Checking implements Command {
     public void execute(String string, SocketAddress clientAddress) {
         Boolean b;
         string = string.trim();
-        char first = string.charAt(0);
+        Character c = string.charAt(0);
+        int first = Integer.parseInt( c.toString() );
         string = string.substring(1);
+        System.out.println(first + "   " + string);
         switch (first){
             case (1):
-                 b = UsersCollection.searchByLogin(string) != null;
+                b = users.UserCheck.loginIsExist(string);
+                System.out.println(b.toString());
                 ServerSender.send(b.toString(), 0, clientAddress);
                     //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
                 break;

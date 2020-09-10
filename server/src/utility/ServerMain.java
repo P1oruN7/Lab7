@@ -24,6 +24,7 @@ public class ServerMain {
     public static Integer port;
     public static SocketAddress clientAddress;
     public static final String URL = "jdbc:postgresql://pg:5432/studs";
+  //  public static Add add1 = new Add();
 
     /**
      * psvm
@@ -129,7 +130,14 @@ public class ServerMain {
             }
             CreateServer.serverIsAvailable = false;
             System.out.println("\nВыполняю команду " + commandStringMap.entrySet().iterator().next().getKey().getClass().getName());
+
+         //   if (commandStringMap.entrySet().iterator().next().getKey().equals(add1)) add1.execute(commandStringMap.entrySet().iterator().next().getValue()+" " + );
             commandStringMap.entrySet().iterator().next().getKey().execute(commandStringMap.entrySet().iterator().next().getValue(), clientAddress);
+
+
+
+
+
             CreateServer.serverIsAvailable = true;
             if (!commandStringMap.entrySet().iterator().next().getKey().getClass().getName().equals("Common.Commands.Exit"))
                 System.out.println("\nКоманда выполнена! Отправляю результат клиенту.");

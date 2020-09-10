@@ -39,6 +39,7 @@ public class Route implements Comparable<Route>, Serializable {
                 ", from = " + from +
                 ", to = " + to +
                 ", distance = " + distance +
+                ", creator (login) = " + creatorLogin +
                 ')';
     }
 
