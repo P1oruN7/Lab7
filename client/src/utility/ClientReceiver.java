@@ -39,12 +39,17 @@ public class ClientReceiver {
             }
         } catch (SocketException e) {
             System.out.println("Невозможно подключиться к серверу.");
+            users.User.mistake = true;
         } catch (SocketTimeoutException e) {
             System.out.println("Возможно сервер занят или выключен,попробуйте ещё раз.");
+            users.User.mistake = true;
         } catch (IOException e) {
             System.out.println("Ошибка ввода-вывода.");
+            users.User.mistake = true;
+
         } catch (ClassNotFoundException e) {
             System.out.println("Невозможно преобразовать данные, присланные сервером");
+            users.User.mistake = true;
         }
     }
 
@@ -68,12 +73,16 @@ public class ClientReceiver {
 
         } catch (SocketException e) {
             System.out.println("Невозможно подключиться к серверу.");
+            users.User.mistake = true;
         } catch (SocketTimeoutException e) {
             System.out.println("Возможно сервер занят или выключен,попробуйте ещё раз.");
+            users.User.mistake = true;
         } catch (IOException e) {
             System.out.println("Ошибка ввода-вывода.");
+            users.User.mistake = true;
         } catch (ClassNotFoundException e) {
             System.out.println("Невозможно преобразовать данные, присланные сервером");
+            users.User.mistake = true;
         }
         return null;
     }
