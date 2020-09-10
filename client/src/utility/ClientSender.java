@@ -24,8 +24,8 @@ public class ClientSender {
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-
-            mapCommand.put(ClientReceiver.clientport, array);
+            mapCommand.put(ClientReceiver.clientport, o); // не было
+           // mapCommand.put(ClientReceiver.clientport, array); //было
             objectOutputStream.writeObject(mapCommand);
             objectOutputStream.flush();
             objectOutputStream.close();

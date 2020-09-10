@@ -102,7 +102,7 @@ public class User {
             mistake = false;
             System.out.println("\nВведите имя пользователя: ");
             login = utility.ClientMain.reader.readLine().trim();
-            if (checkingLogin(login)) break;
+            if (!checkingLogin(login)) break;
             if (!mistake) System.out.println("\nДанное имя пользователя уже занято. Придумайте уникальное имя.");
         }
         while (true) {
@@ -114,6 +114,8 @@ public class User {
             if (!mistake) System.out.println("\nПароль не соответствует критериям. Попробуйте сделать другой.");
         }
         if (registerInBase(login, password)) {
+            ClientMain.setLogin(login);
+            ClientMain.setPassword(password);
             //System.out.println("\nПользователь успешно зарегестрирован.");
             return true;
         } else {

@@ -2,6 +2,7 @@ package common.commands;
 
 import common.*;
 import readers.*;
+import utility.ClientMain;
 
 import java.io.IOException;
 
@@ -54,7 +55,7 @@ public class Add implements Command {
         while (!hasTo) addTo();
         while (!hasDist) addDist();
         String s = name + " " + coordinateX + " " + coordinateY + " " + LocationFromX + " " + LocationFromY + " " + LocationFromName + " " +
-                LocationToX + " " + LocationToY + " " + LocationToName + " " + distance;
+                LocationToX + " " + LocationToY + " " + LocationToName + " " + distance + " " + ClientMain.getLogin();
         hasName = false;
         hasCoordinates = false;
         hasFrom = false;
