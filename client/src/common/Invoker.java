@@ -64,6 +64,10 @@ public class Invoker {
             } else if (name[0].toLowerCase().equals("execute_script")) {
                 History.addInArray(name[0]);
                 command.execute(name[1]);
+            } else if (name[0].toLowerCase().equals("my_totem_animal")) {
+                History.addInArray(name[0]);
+                commandStringMap.put(command, ClientMain.getLogin());
+                return commandStringMap;
             } else if (name[0].toLowerCase().equals("add")) {
                 History.addInArray(name[0]);
                 String string = common.commands.Add.makeString();

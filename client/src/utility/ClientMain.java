@@ -39,6 +39,7 @@ public class ClientMain {
         Clear clear = new Clear();
         ExecuteScript execute_script = new ExecuteScript();
         Exit exit = new Exit();
+        GetTotemAnimal my_totem_animal = new GetTotemAnimal();
         Help help = new Help();
         Draw draw = new Draw();
         History history = new History();
