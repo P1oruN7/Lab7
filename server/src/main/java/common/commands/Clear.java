@@ -1,12 +1,14 @@
 package common.commands;
 
 import common.*;
-
-import common.Command;
+import routes.Route;
 import utility.ServerMain;
 import utility.ServerSender;
 
 import java.net.SocketAddress;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Команда "ЧИСТИЛЬЩИК "
@@ -18,9 +20,15 @@ public class Clear implements Command {
      * Метод для очистки коллекции, подаваемой на вход
      */
     @Override
-    public void execute(String s, SocketAddress clientAddress) {
-        ServerMain.c.Routes.clear();
-        ServerSender.send("\n \nКоллекция была очищена, как картошечка для супчика \n \n", 0, clientAddress);
+    public void execute(String login, SocketAddress clientAddress) {
+        Iterator<Route> iterator = ServerMain.c.Routes.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getCreatorLogin().equals(login) ) iterator.remove();
+        }
+
+
+       // ServerMain.c.Routes.clear();
+        ServerSender.send("\n \nКоллекция была очищена от ваших элементов, как картошечка для супчика \n \n", 0, clientAddress);
     }
 
 
