@@ -26,7 +26,7 @@ public class ServerMain {
     public static Integer port;
     public static SocketAddress clientAddress;
     public static final String URL = "jdbc:postgresql://pg:5432/studs";
-  //  public static Add add1 = new Add();
+    //  public static Add add1 = new Add();
 
     /**
      * psvm
@@ -38,6 +38,13 @@ public class ServerMain {
         Signal.handle(new Signal("INT"), sig ->  {
             System.out.println("\nЗавершение программы c сохранением");
             saving();
+            System.out.println(
+                    "........|......\n" +
+                    ".......o......\n" +
+                    "....../()\\.....\n" +
+                    ".......||......\n" +
+                    "...............\n" +
+                    "......|=......");
             System.exit(0);
         });
 
@@ -48,6 +55,7 @@ public class ServerMain {
         Exit exit = new Exit();
         Info info = new Info();
         MaxByDistance max_byDistance = new MaxByDistance();
+        GetTotemAnimal getTotemAnimal = new GetTotemAnimal();
         PrintFieldDescendingDistance print_fieldDescendingDistance = new PrintFieldDescendingDistance();
         RemoveById remove_byId = new RemoveById();
         Show show = new Show();
@@ -55,9 +63,9 @@ public class ServerMain {
         common.commands.Save save = new common.commands.Save();
         Sort sort = new Sort();
         Update update = new Update();
-       // CreateServer.create();
-       // System.out.println("Сервер запущен.");
-       ConsoleSourceReader bufferReader = new ConsoleSourceReader();///////
+        // CreateServer.create();
+        // System.out.println("Сервер запущен.");
+        ConsoleSourceReader bufferReader = new ConsoleSourceReader();///////
 //        String path = null;
 //
 //        try {
@@ -86,11 +94,11 @@ public class ServerMain {
 
 
         c = new Collection(); // !!!!
-        sql.Connector.loading();
-
-        //users.User admin = new users.User ("admin", "admin", "admin");
-        //UsersCollection.users.add(admin);
-
+ //       sql.Connector.loading();
+        if (UsersCollection.searchByLogin("admin") == null) {
+            users.User admin = new users.User ("admin", "58acb7acccce58ffa8b953b12b5a7702bd42dae441c1ad85057fa70b", "admin");
+            UsersCollection.users.add(admin);
+        }
 
         boolean serverCreated = false;
         while (!serverCreated) {
@@ -135,7 +143,7 @@ public class ServerMain {
             CreateServer.serverIsAvailable = false;
             System.out.println("\nВыполняю команду " + commandStringMap.entrySet().iterator().next().getKey().getClass().getName());
 
-         //   if (commandStringMap.entrySet().iterator().next().getKey().equals(add1)) add1.execute(commandStringMap.entrySet().iterator().next().getValue()+" " + );
+            //   if (commandStringMap.entrySet().iterator().next().getKey().equals(add1)) add1.execute(commandStringMap.entrySet().iterator().next().getValue()+" " + );
             commandStringMap.entrySet().iterator().next().getKey().execute(commandStringMap.entrySet().iterator().next().getValue(), clientAddress);
 
 
@@ -150,4 +158,3 @@ public class ServerMain {
         }
     }
 }
-
