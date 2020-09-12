@@ -1,10 +1,14 @@
 package users;
 
-import common.commands.Checking;
-import utility.*;
 import common.Command;
+import utility.ClientMain;
+import utility.ClientReceiver;
+import utility.ClientSender;
+import utility.Hash;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +71,7 @@ public class User {
     public static boolean authorization() throws IOException {
         mistake = false;
         System.out.println("\n Напишите login если хотите войти. Напишите reg если хотите зарегистрироваться.");
-        switch (ClientMain.reader.readLine().trim().toLowerCase()) {
+        switch (utility.ClientMain.reader.readLine().trim().toLowerCase()) {
             case "login":
                 return login();
             case "дщпшт":
@@ -98,7 +102,7 @@ public class User {
         while (true) {
             mistake = false;
             System.out.println("\nВведите имя пользователя: ");
-            login = ClientMain.reader.readLine().trim();
+            login = utility.ClientMain.reader.readLine().trim();
             if (login.length() == 0 || login == null){
                 System.out.println("Логин не может быть пустым");
                 continue;
@@ -109,7 +113,7 @@ public class User {
         while (true) {
             mistake = false;
             System.out.println("\nВведите пароль длиной от нуля до 20 символов");
-            password = ClientMain.reader.readLine().trim();
+            password = utility.ClientMain.reader.readLine().trim();
             if (password.length() == 0 || password == null) {
                 password = "0123456789012345678901234567890";
                 break;
@@ -119,7 +123,7 @@ public class User {
         }
         if (registerInBase(login, password)) {
             ClientMain.setLogin(login);
-            ClientMain.setPassword(password);
+            ClientMain.setPassword(Hash.encryptThisString(password));
             //System.out.println("\nПользователь успешно зарегестрирован.");
             return true;
         } else {
@@ -141,7 +145,7 @@ public class User {
         while (true) {
             mistake = false;
             System.out.println("\nВведите имя пользователя: ");
-            login = ClientMain.reader.readLine().trim();
+            login = utility.ClientMain.reader.readLine().trim();
             if (login == "" || login == null) return false;
             if (checkingLogin(login)) break;
             if (!mistake) System.out.println("\nПользователя с такими именем не существует.");
@@ -149,11 +153,11 @@ public class User {
         while (true) {
             mistake = false;
             System.out.println("\nВведите пароль: ");
-            password = ClientMain.reader.readLine().trim();
+            password = utility.ClientMain.reader.readLine().trim();
            // if ((password == "" || password == null) && thisUserHasNoPassword(login)) break;
             if (password.length() == 0 || password == null) {
                 password = "0123456789012345678901234567890";
-                break;}else password = Hash.encryptThisString(password);
+                break;}else password = utility.Hash.encryptThisString(password);
             if (checkingPassword(login, password)) break;
             if (!mistake) System.out.println("\nНеверный пароль.");
             return false;
@@ -173,7 +177,7 @@ public class User {
     public static boolean checkingLogin(String login) {
         Boolean b = false; //возвращаемое значение
         Map<Command, String> commandStringMap = new HashMap<>(); //мапа для отправки (одна!)
-        Checking check = new Checking(); // создание экземпляра чек (надо)
+        common.commands.Checking check = new common.commands.Checking(); // создание экземпляра чек (надо)
         commandStringMap.put(check, "1" + login.trim()); //формирование мапы. 1 - код проверки логина
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
@@ -215,7 +219,7 @@ public class User {
     public static boolean checkingPassword(String login, String password) {
         Boolean b = false; //возвращаемое значение
         Map<Command, String> commandStringMap = new HashMap<>();  //мапа для отправки (одна!)
-        Checking check = new Checking();// создание экземпляра чек (надо)
+        common.commands.Checking check = new common.commands.Checking();// создание экземпляра чек (надо)
         commandStringMap.put(check, "2" + login.trim() + " " + Hash.encryptThisString(password.trim())); //формирование мапы. 2 - код проверки логина+пароля
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
@@ -241,7 +245,7 @@ public class User {
     public static boolean registerInBase(String login, String password) {
         Boolean b = false; //возвращаемое значение
         Map<Command, String> commandStringMap = new HashMap<>();//мапа для отправки (одна!)
-        Checking check = new Checking();// создание экземпляра чек (надо)
+        common.commands.Checking check = new common.commands.Checking();// создание экземпляра чек (надо)
         commandStringMap.put(check, "3" + login.trim() + " " + Hash.encryptThisString(password.trim())); //формирование мапы. 3 - код регистрации в бд
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
