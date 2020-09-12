@@ -97,7 +97,7 @@ public class ServerMain {
 
 
         c = new Collection(); // !!!!
- //       sql.Connector.loading();
+        sql.Connector.loading();
         if (UsersCollection.searchByLogin("admin") == null) {
             User admin = new User("admin", "58b41e4d2aa978f18bf332d4218092bedbec76199eddff465d84ef79", "admin");
             UsersCollection.users.add(admin);
@@ -150,8 +150,8 @@ public class ServerMain {
                 return;
             } catch (Exception e) {
                 commandStringMap = (Map<Command, String>) o;
-                System.out.println("ОШИБКАААА");
-                e.printStackTrace();
+               // System.out.println("ОШИБКАААА");
+              //  e.printStackTrace();
             }
             CreateServer.serverIsAvailable = false;
             System.out.println("\nВыполняю команду " + commandStringMap.entrySet().iterator().next().getKey().getClass().getName());
@@ -168,7 +168,7 @@ public class ServerMain {
                 System.out.println("\nКоманда выполнена! Отправляю результат клиенту.");
         } catch (ClassCastException e) {
             ServerSender.send("\nСообщение от Сервера:\"Возникли небольшие технические шоколадки с вашим подключением,но сейчас всё по кайфу,ожидаю команд.\"\n", 0, clientAddress);
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
 }
