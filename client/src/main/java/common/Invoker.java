@@ -96,7 +96,7 @@ public class Invoker {
                 ClientReceiver.receive();
                 if (ClientReceiver.answer.entrySet().iterator().next().getKey().startsWith("Состояние элемента сейчас:")) {
                     String s1 = Add.makeString();
-                    commandStringMap.put(command, s1);
+                    commandStringMap.put(command, s1+" " + ClientMain.getLogin());
                     try {
                         DatagramChannel datagramChannel = DatagramChannel.open();
                         datagramChannel.bind(null);
