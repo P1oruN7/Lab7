@@ -15,6 +15,8 @@ import users.User;
 import users.UserCheck;
 import users.UsersCollection;
 
+import static sql.Connector.saving;
+
 /**
  * Главненький
  */
@@ -34,9 +36,11 @@ public class ServerMain {
     public static void main(String[] args) {
 
         Signal.handle(new Signal("INT"), sig ->  {
-            System.out.println("\n" + "Контрлцешное завершение программы");
+            System.out.println("\nЗавершение программы c сохранением");
+            saving();
             System.exit(0);
         });
+
         UsersCollection.users = new ArrayList<>(); ///
         Add add = new Add();
         AverageOfDistance average = new AverageOfDistance();

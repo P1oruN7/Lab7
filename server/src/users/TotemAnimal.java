@@ -2,7 +2,7 @@ package users;
 
 public class TotemAnimal {
     public static String randomTotemAnimal(){
-        String totemAnimal = " ";
+        String totemAnimal = "lenivec";
 
         return totemAnimal;
     }
