@@ -21,11 +21,11 @@ public class Checking implements Command {
         Character c = string.charAt(0);
         int first = Integer.parseInt( c.toString() );
         string = string.substring(1);
-        System.out.println(first + "   " + string);
+       // System.out.println(first + "   " + string);
         switch (first){
             case (1):
                 b = UserCheck.loginIsExist(string);
-                System.out.println(b.toString());
+                //System.out.println(b.toString());
                 ServerSender.send(b.toString(), 0, clientAddress);
                     //каким-то магическим образом отправляет b тому клиенту, от которого пришла команда
                 break;
