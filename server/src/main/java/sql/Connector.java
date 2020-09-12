@@ -48,7 +48,7 @@ public class Connector {
                 Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
                 Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
         ){
-            ResultSet resRoutes = statement.executeQuery("SELECT * from routes"); //заполненние запроса. возвращает результат. представляет из себя таблицу
+            ResultSet resRoutes = statement.executeQuery("SELECT * from routes;"); //заполненние запроса. возвращает результат. представляет из себя таблицу
             while (resRoutes.next()){ //перебор строк результата
 
                 Long id = resRoutes.getLong("id_seq");
@@ -60,25 +60,25 @@ public class Connector {
                 Long idTo = resRoutes.getLong("location_to_id");
                 Float distance = resRoutes.getFloat("distance");
 
-                ResultSet coord = statement2.executeQuery("SELECT * from coordinates where id_seq=" +idCoord);
+                ResultSet coord = statement2.executeQuery("SELECT * from coordinates where id_seq=" +idCoord + ";");
                 coord.next();
                 Integer x = coord.getInt("x");
                 Float y = coord.getFloat("y");
                 Coordinates coordinates = new Coordinates(x,y);
                 coord.close();
 
-                ResultSet resFrom = statement2.executeQuery("SELECT * from location_from where id_seq=" +idFrom);
+                ResultSet resFrom = statement2.executeQuery("SELECT * from location_from where id_seq=" +idFrom+";");
                 resFrom.next();
-                Location from = new Location(resRoutes.getLong("x"),
-                        resRoutes.getDouble("y"),
-                        resRoutes.getString("location_from_name"));
+                Location from = new Location(resFrom.getLong("x"),
+                        resFrom.getDouble("y"),
+                        resFrom.getString("location_from_name"));
                 resFrom.close();
 
-                ResultSet resTo = statement2.executeQuery("SELECT * from location_to where id_seq=" +idTo);
+                ResultSet resTo = statement2.executeQuery("SELECT * from location_to where id_seq=" +idTo+";");
                 resTo.next();
-                Location to = new Location(resRoutes.getLong("x"),
-                        resRoutes.getDouble("y"),
-                        resRoutes.getString("location_to_name"));
+                Location to = new Location(resTo.getLong("x"),
+                        resTo.getDouble("y"),
+                        resTo.getString("location_to_name"));
                 resTo.close();
 
                 Route nextRoute = new Route (id, name, coordinates, creationDate, from, to, distance, creatorLogin);
@@ -86,7 +86,7 @@ public class Connector {
             }
             resRoutes.close();
 
-            ResultSet resultUsers = statement.executeQuery("SELECT * from users");
+            ResultSet resultUsers = statement.executeQuery("SELECT * from users;");
             while(resultUsers.next()){
                 String login = resultUsers.getString("login_id");
                 String passwordForLog = resultUsers.getString("password");
@@ -94,8 +94,6 @@ public class Connector {
                 User user = new User(login, passwordForLog, totemAnimal);
                 UsersCollection.users.add(user);
             }
-
-            System.out.println("данные из базы успешно загружены на сервер");
 
         }catch(SQLException e){
             System.out.println("Ошибка подключения к базе данных. \n\n Завершение программы");
@@ -157,8 +155,6 @@ public class Connector {
 
             statement.execute("delete from users;"); //очищение таблицы с коллекцией юзеров
 
-            System.out.println("\nбд очистилась. ща будем перезаполнять");
-
             UsersCollection.users.stream()
                     .filter(x -> !x.getPassword().equals(" "))
                     .forEach(x ->{
@@ -167,8 +163,6 @@ public class Connector {
                                     + x.getLogin() + "', '"
                                     + x.getPassword() + "', '"
                                     + x.getTotemAnimal() + "');");
-                            System.out.println("users done");
-                            System.out.println("почти молодцы");
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -182,9 +176,6 @@ public class Connector {
                                     + x.getCoordinates().getY() + ", "
                                     + "(select nextval('coordinates_id_seq_seq')));"); //заполнение новой строки таблицы координат
 
-                            System.out.println("coordinates done");
-
-
                             statement.execute("insert into location_from values ("
                                     + x.getFrom().getX() + ", "
                                     + x.getFrom().getY() + ", '"
@@ -197,8 +188,6 @@ public class Connector {
                                     + x.getTo().getName() + "', "
                                     + "(select nextval('location_to_id_seq_seq')));");
 
-                            System.out.println("both locations done");
-
                             statement.execute("insert into routes values ("
                                     + "(select nextval('routes_id_seq_seq')), '"
                                     + x.getName() +"', '"
@@ -210,9 +199,6 @@ public class Connector {
                                     + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
                                     + " and location_to_name='" + x.getTo().getName() + "'), "
                                     + x.getDistance() + ");");
-
-                            System.out.println("routes done");
-                            System.out.println("ура какие мы молодцы");
 
                         } catch (SQLException e) {
                             e.printStackTrace();
