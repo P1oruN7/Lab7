@@ -1,22 +1,17 @@
 package utility;
 
-import common.*;
-import common.commands.*;
-
 import common.Command;
+import common.commands.*;
+import readers.ConsoleSourceReader;
 import routes.Collection;
+import sun.misc.Signal;
+import users.User;
+import users.UserCheck;
+import users.UsersCollection;
 
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Map;
-
-import readers.ConsoleSourceReader;
-import common.commands.*;
-import users.User;
-import sun.misc.Signal;
-
-import users.UserCheck;
-import users.UsersCollection;
 
 import static sql.Connector.saving;
 

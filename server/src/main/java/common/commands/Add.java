@@ -1,8 +1,5 @@
 package common.commands;
 
-import common.*;
-import routes.*;
-
 import common.Command;
 import routes.Coordinates;
 import routes.Location;

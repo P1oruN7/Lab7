@@ -35,7 +35,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.java1.utility.ServerMain</mainClass>
+                            <mainClass>utility.ServerMain</mainClass>
                             <packageName>server</packageName>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>

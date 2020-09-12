@@ -3,16 +3,14 @@ package sql;
 import routes.Coordinates;
 import routes.Location;
 import routes.Route;
-import utility.ServerMain;
-
-import routes.*;
-import java.sql.*;
-
 import users.User;
 import users.UsersCollection;
+import utility.ServerMain;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class Connector {
@@ -183,7 +181,7 @@ public class Connector {
                                     + x.getName() +"', '"
                                     + x.getCreatorLogin()+ "', "
                                     + "select id_seq from coordinates where x=" + x.getCoordinates().getX() + " and y=" + x.getCoordinates().getY() + "), "
-                                    + "date(" + Date.valueOf(x.getCreationDate()) + "), "
+                                    + "date('" + x.getCreationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm")) + "'),"
                                     + "select id_seq from location_from where x=" + x.getFrom().getX() + " and y=" + x.getFrom().getY() + " and location_from_name='" + x.getFrom().getName() + "'), "
                                     + "select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY() + " and location_to_name='" + x.getTo().getName() + "'), "
                                     + x.getDistance() + ");");
