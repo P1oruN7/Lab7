@@ -2,16 +2,9 @@ package common.commands;
 
 import common.*;
 import readers.*;
-
-import common.Command;
-import readers.Checker;
 import routes.Coordinates;
 import routes.Location;
 import routes.Route;
-import utility.ServerMain;
-import utility.ServerReceiver;
-import utility.ServerSender;
-
 import utility.*;
 
 import java.net.SocketAddress;
@@ -39,6 +32,7 @@ public class Update implements Command {
             ServerSender.send("похоже элемента с таким айди не существует", 0, clientAddress);
             return;
         }
+
         int index = ServerMain.c.Routes.indexOf(r);
         ServerSender.send("Состояние элемента сейчас: " + ServerMain.c.Routes.get(index).toString(), 0, clientAddress);
         Route route = new Route();
@@ -47,6 +41,10 @@ public class Update implements Command {
         byte[] string =  (byte[]) array [0];
         String s2 = new String(string); //вот таккая ерундень
         String[] arrayOfStrings = s2.split(" ");
+        if (!arrayOfStrings[10].equals(r.getCreatorLogin())) {
+            ServerSender.send("Вы не имеете доступа к редактированию этого элемента, поскольку вы не являетесь его создателем. (простите пожалуйста, но не мы придумываем правила)", 0, clientAddress);
+            return;
+        }
         route.setId(id);
         route.setName(arrayOfStrings[0]);
         route.setCoordinates(new Coordinates(Integer.parseInt(arrayOfStrings[1]), Float.parseFloat(arrayOfStrings[2])));
