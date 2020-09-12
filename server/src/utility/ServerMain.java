@@ -36,7 +36,6 @@ public class ServerMain {
     public static void main(String[] args) {
 
         Signal.handle(new Signal("INT"), sig ->  {
-            System.out.println("\nЗавершение программы c сохранением");
             saving();
             System.out.println(
                     "........|......\n" +
