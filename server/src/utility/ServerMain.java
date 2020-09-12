@@ -2,9 +2,12 @@ package utility;
 
 import common.*;
 import common.commands.*;
+import org.w3c.dom.ls.LSOutput;
 import routes.Collection;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Map;
@@ -36,6 +39,7 @@ public class ServerMain {
     public static void main(String[] args) {
 
         Signal.handle(new Signal("INT"), sig ->  {
+            System.out.println("\nЗавершение программы c сохранением");
             saving();
             System.out.println(
                     "........|......\n" +
@@ -95,7 +99,7 @@ public class ServerMain {
         c = new Collection(); // !!!!
  //       sql.Connector.loading();
         if (UsersCollection.searchByLogin("admin") == null) {
-            users.User admin = new users.User ("admin", "58acb7acccce58ffa8b953b12b5a7702bd42dae441c1ad85057fa70b", "admin");
+            users.User admin = new users.User ("admin", "58b41e4d2aa978f18bf332d4218092bedbec76199eddff465d84ef79", "admin");
             UsersCollection.users.add(admin);
         }
 
@@ -130,14 +134,24 @@ public class ServerMain {
             Object o = ByteToObject.Cast(bytes);
 
             try {
-                Object [] objects = (Object []) o;
-                if ( UserCheck.correctPassword((String)objects[1], Hash.encryptThisString((String)objects[2])) ) commandStringMap = (Map<Command, String>) objects[0];
+                //  ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(buf);
+                // ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                //Object [] objects = (Object []) objectInputStream.readObject();
+
+                Object[] objects = (Object[]) o;
+                boolean correctPass = UserCheck.correctPassword((String) objects[1], (String) objects[2]);
+                if (correctPass) commandStringMap = (Map<Command, String>) objects[0];
                 else {
                     //отправить сообщение об ошибке
                     return;
                 }
+            } catch (NullPointerException e){
+                ServerSender.send("Данный пользователь не был найден. Возможно, данные были стёрты.", 0, clientAddress);
+                return;
             } catch (Exception e) {
                 commandStringMap = (Map<Command, String>) o;
+                System.out.println("ОШИБКАААА");
+                e.printStackTrace();
             }
             CreateServer.serverIsAvailable = false;
             System.out.println("\nВыполняю команду " + commandStringMap.entrySet().iterator().next().getKey().getClass().getName());
@@ -154,6 +168,7 @@ public class ServerMain {
                 System.out.println("\nКоманда выполнена! Отправляю результат клиенту.");
         } catch (ClassCastException e) {
             ServerSender.send("\nСообщение от Сервера:\"Возникли небольшие технические шоколадки с вашим подключением,но сейчас всё по кайфу,ожидаю команд.\"\n", 0, clientAddress);
+            e.printStackTrace();
         }
     }
 }

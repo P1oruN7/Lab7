@@ -25,4 +25,10 @@ public class UsersCollection {
         return null;
     }
 
+    public static void seeUsers(){
+        for (User u : users){
+            System.out.println("  " + u.getLogin());
+        }
+    }
+
 }

@@ -6,7 +6,7 @@ import utility.ServerMain;
 public class UserCheck {
     public static boolean loginIsExist(String login){
         boolean isExist = false;
-        isExist = UsersCollection.searchByLogin(login) != null;
+         isExist = UsersCollection.searchByLogin(login) != null;
         return isExist;
     }
     public static boolean isThisRouteYours (String login, Long ObjectID){
@@ -14,9 +14,12 @@ public class UserCheck {
     }
 
     public static boolean correctPassword (String login, String password){
+        String hashedPass = Hash.encryptThisString(password);
         boolean isPasswordCorrect = false;
-        User u = UsersCollection.searchByLogin(login);
-        if (u != null) isPasswordCorrect = u.getPassword().equals(Hash.encryptThisString(password));
+        User u;
+        u = UsersCollection.searchByLogin(login);
+        System.out.println(u.getPassword() +"    "+hashedPass);
+        isPasswordCorrect = u.getPassword().equals( hashedPass);
         return isPasswordCorrect;
     }
 }

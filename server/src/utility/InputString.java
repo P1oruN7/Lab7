@@ -22,6 +22,8 @@ public class InputString extends Thread  {
         common.commands.Save saveCommand = new common.commands.Save();
         Exit exit = new Exit();
         Help help = new Help();
+        SeeUsers seeUsers = new SeeUsers();
+        ClearEverything clearEverything = new ClearEverything();
         while (true) {
             try {
                 System.out.print("Введите команду для сервера: ");
@@ -42,8 +44,16 @@ public class InputString extends Thread  {
                         System.out.println("Список всех доступных команд:\n   " +
                                 saveCommand.getInfo() +
                                 "\n   " + exit.getInfo() +
-                                "\n   " + help.getInfo()
+                                "\n   " + help.getInfo() +
+                                "\n   " + seeUsers.getInfo() +
+                                "\n   " + clearEverything.getInfo()
                         );
+                        break;
+                    case "see_users":
+                        seeUsers.execute("NotNull");
+                        break;
+                    case "clear_everything":
+                        clearEverything.execute("NotNull");
                         break;
                     default:
                         System.out.println("Неизвестная команда.");
