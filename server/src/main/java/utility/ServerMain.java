@@ -34,15 +34,18 @@ public class ServerMain {
     public static void main(String[] args) {
 
         Signal.handle(new Signal("INT"), sig ->  {
-            System.out.println("\nЗавершение программы c сохранением");
-            saving();
+            try {
+                saving();
+            }catch (Exception e){
+                System.out.println("\n\nЛучше бы exit вызвали\n");
+            }
             System.out.println(
                     "........|......\n" +
                     ".......o......\n" +
                     "....../()\\.....\n" +
                     ".......||......\n" +
                     "...............\n" +
-                    "......|=......");
+                    "......|=......\n\n\n");
             System.exit(0);
         });
 

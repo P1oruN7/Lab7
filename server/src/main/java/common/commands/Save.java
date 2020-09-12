@@ -11,13 +11,13 @@ public class Save {
      */
 
     public void execute(String S) {
-        try {
+        //try {
             //saveCollection(ServerMain.c.getPath());
             saving();
             System.out.println("Коллекция сохранилася.");
-        } catch (Exception e) {
-            System.out.println("Не удалось сохраниться.");
-        }
+        //} catch (Exception e) {
+           // System.out.println("Не удалось сохраниться.");
+       // }
     }
 
     public String getInfo() {

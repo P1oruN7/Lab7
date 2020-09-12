@@ -95,6 +95,8 @@ public class Connector {
                 UsersCollection.users.add(user);
             }
 
+            System.out.println("данные из базы успешно загружены на сервер");
+
         }catch(SQLException e){
             System.out.println("Ошибка подключения к базе данных. \n\n Завершение программы");
             System.out.println("|___|___|___|___|___|___|___|___|___|___|___|___|\n" +
@@ -141,19 +143,36 @@ public class Connector {
                 Connection connection1 = DriverManager.getConnection(ServerMain.URL, config);
                 Statement statement = connection1.createStatement();
         ){
-            statement.execute("delete from routes"); //очищение таблицы с коллекцией рутов и рестарт отсчета айди
-            statement.execute("SELECT SETVAL((SELECT pg_get_serial_sequence('routes', 'id_seq')), 1, false)");
+            statement.execute("delete from routes;"); //очищение таблицы с коллекцией рутов и рестарт отсчета айди
+            statement.execute("SELECT SETVAL('routes_id_seq_seq', 1, false);");
 
-            statement.execute("delete from coordinates"); //очищение таблицы с коллекцией координат и рестарт отсчета айди
-            statement.execute("SELECT SETVAL((SELECT pg_get_serial_sequence('coordinates', 'id_seq')), 1, false)");
+            statement.execute("delete from coordinates;"); //очищение таблицы с коллекцией координат и рестарт отсчета айди
+            statement.execute("SELECT SETVAL('coordinates_id_seq_seq', 1, false);");
 
-            statement.execute("delete from location_to");//очищение таблицы с коллекцией локейшенов ту и рестарт отсчета айди
-            statement.execute("SELECT SETVAL((SELECT pg_get_serial_sequence('location_to', 'id_seq')), 1, false)");
+            statement.execute("delete from location_from;");//очищение таблицы с коллекцией локейшенов ту и рестарт отсчета айди
+            statement.execute("SELECT SETVAL('location_from_id_seq_seq', 1, false);");
 
-            statement.execute("delete from location_from");//очищение таблицы с коллекцией локейшенов фром и рестарт отсчета айди
-            statement.execute("SELECT SETVAL((SELECT pg_get_serial_sequence('location_from', 'id_seq')), 1, false)");
+            statement.execute("delete from location_to;");//очищение таблицы с коллекцией локейшенов фром и рестарт отсчета айди
+            statement.execute("SELECT SETVAL('location_to_id_seq_seq', 1, false);");
 
-            statement.execute("delete from users"); //очищение таблицы с коллекцией юзеров
+            statement.execute("delete from users;"); //очищение таблицы с коллекцией юзеров
+
+            System.out.println("\nбд очистилась. ща будем перезаполнять");
+
+            UsersCollection.users.stream()
+                    .filter(x -> !x.getPassword().equals(" "))
+                    .forEach(x ->{
+                        try {
+                            statement.execute("insert into users values('"
+                                    + x.getLogin() + "', '"
+                                    + x.getPassword() + "', '"
+                                    + x.getTotemAnimal() + "');");
+                            System.out.println("users done");
+                            System.out.println("почти молодцы");
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    });
 
             ServerMain.c.Routes.stream()
                     .forEach(x -> {
@@ -162,6 +181,8 @@ public class Connector {
                                     + x.getCoordinates().getX() + ", "
                                     + x.getCoordinates().getY() + ", "
                                     + "(select nextval('coordinates_id_seq_seq')));"); //заполнение новой строки таблицы координат
+
+                            System.out.println("coordinates done");
 
 
                             statement.execute("insert into location_from values ("
@@ -176,33 +197,27 @@ public class Connector {
                                     + x.getTo().getName() + "', "
                                     + "(select nextval('location_to_id_seq_seq')));");
 
+                            System.out.println("both locations done");
+
                             statement.execute("insert into routes values ("
                                     + "(select nextval('routes_id_seq_seq')), '"
                                     + x.getName() +"', '"
                                     + x.getCreatorLogin()+ "', "
-                                    + "select id_seq from coordinates where x=" + x.getCoordinates().getX() + " and y=" + x.getCoordinates().getY() + "), "
-                                    + "date('" + x.getCreationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm")) + "'),"
-                                    + "select id_seq from location_from where x=" + x.getFrom().getX() + " and y=" + x.getFrom().getY() + " and location_from_name='" + x.getFrom().getName() + "'), "
-                                    + "select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY() + " and location_to_name='" + x.getTo().getName() + "'), "
+                                    + "(select id_seq from coordinates where x=" + x.getCoordinates().getX() + " and y=" + x.getCoordinates().getY() + "), "
+                                    + "date('" + x.getCreationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'), "
+                                    + "(select id_seq from location_from where x=" + x.getFrom().getX() + " and y=" + x.getFrom().getY()
+                                    + " and location_from_name='" + x.getFrom().getName() + "'), "
+                                    + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
+                                    + " and location_to_name='" + x.getTo().getName() + "'), "
                                     + x.getDistance() + ");");
 
+                            System.out.println("routes done");
+                            System.out.println("ура какие мы молодцы");
+
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
 
-                    });
-
-            UsersCollection.users.stream()
-                    .filter(x -> !x.getPassword().equals(" "))
-                    .forEach(x ->{
-                        try {
-                            statement.execute("insert into users values('"
-                                    + x.getLogin() + "', '"
-                                    + x.getPassword() + "', '"
-                                    + x.getTotemAnimal() + "')");
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
                     });
 
         }catch(SQLException e){
