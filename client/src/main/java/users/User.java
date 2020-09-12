@@ -70,7 +70,7 @@ public class User {
 
     public static boolean authorization() throws IOException {
         mistake = false;
-        System.out.println("\n Напишите login если хотите войти. Напишите reg если хотите зарегистрироваться.");
+        System.out.println("\n Напишите \"login\" если хотите войти. Напишите \"reg\" если хотите зарегистрироваться. (Команда \\q возвратит вас сюда )");
         switch (utility.ClientMain.reader.readLine().trim().toLowerCase()) {
             case "login":
                 return login();
@@ -103,6 +103,7 @@ public class User {
             mistake = false;
             System.out.println("\nВведите имя пользователя: ");
             login = utility.ClientMain.reader.readLine().trim();
+            if (login.trim().toLowerCase().equals( "\\q")) return false;
             if (login.length() == 0 || login == null){
                 System.out.println("Логин не может быть пустым");
                 continue;
@@ -114,6 +115,7 @@ public class User {
             mistake = false;
             System.out.println("\nВведите пароль длиной от нуля до 20 символов");
             password = utility.ClientMain.reader.readLine().trim();
+            if (password.trim().toLowerCase().equals( "\\q")) return false;
             if (password.length() == 0 || password == null) {
                 password = "0123456789012345678901234567890";
                 break;
@@ -146,6 +148,7 @@ public class User {
             mistake = false;
             System.out.println("\nВведите имя пользователя: ");
             login = utility.ClientMain.reader.readLine().trim();
+            if (login.trim().toLowerCase().equals( "\\q")) return false;
             if (login == "" || login == null) return false;
             if (checkingLogin(login)) break;
             if (!mistake) System.out.println("\nПользователя с такими именем не существует.");
@@ -155,6 +158,7 @@ public class User {
             System.out.println("\nВведите пароль: ");
             password = utility.ClientMain.reader.readLine().trim();
            // if ((password == "" || password == null) && thisUserHasNoPassword(login)) break;
+            if (password.trim().toLowerCase().equals( "\\q")) return false;
             if (password.length() == 0 || password == null) {
                 password = "0123456789012345678901234567890";
                 break;}else password = utility.Hash.encryptThisString(password);
