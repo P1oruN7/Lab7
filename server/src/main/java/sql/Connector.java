@@ -195,7 +195,7 @@ public class Connector {
                                         + "(select nextval('coordinates_id_seq_seq')));"); //заполнение новой строки таблицы координат
                             }
 
-                            if(locationFromNum == 0){
+                            if(locationFromNum == 0 && x.getFrom() != null){
                                 savingStatement.execute("insert into location_from values ("
                                         + x.getFrom().getX() + ", "
                                         + x.getFrom().getY() + ", '"
@@ -211,18 +211,30 @@ public class Connector {
                                         + "(select nextval('location_to_id_seq_seq')));");
                             }
 
-                            savingStatement.execute("insert into routes values ("
-                                    + "(select nextval('routes_id_seq_seq')), '"
-                                    + x.getName() +"', '"
-                                    + x.getCreatorLogin()+ "', "
-                                    + "(select id_seq from coordinates where x=" + x.getCoordinates().getX() + " and y=" + x.getCoordinates().getY() + "), "
-                                    + "date('" + x.getCreationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'), "
-                                    + "(select id_seq from location_from where x=" + x.getFrom().getX() + " and y=" + x.getFrom().getY()
-                                    + " and location_from_name='" + x.getFrom().getName() + "'), "
-                                    + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
-                                    + " and location_to_name='" + x.getTo().getName() + "'), "
-                                    + x.getDistance() + ");");
-
+                            if(x.getDistance() != null) {
+                                savingStatement.execute("insert into routes values ("
+                                        + "(select nextval('routes_id_seq_seq')), '"
+                                        + x.getName() + "', '"
+                                        + x.getCreatorLogin() + "', "
+                                        + "(select id_seq from coordinates where x=" + x.getCoordinates().getX() + " and y=" + x.getCoordinates().getY() + "), "
+                                        + "date('" + x.getCreationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'), "
+                                        + "(select id_seq from location_from where x=" + x.getFrom().getX() + " and y=" + x.getFrom().getY()
+                                        + " and location_from_name='" + x.getFrom().getName() + "'), "
+                                        + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
+                                        + " and location_to_name='" + x.getTo().getName() + "'), "
+                                        + x.getDistance() + ");");
+                            }else{
+                                savingStatement.execute("insert into routes values ("
+                                        + "(select nextval('routes_id_seq_seq')), '"
+                                        + x.getName() + "', '"
+                                        + x.getCreatorLogin() + "', "
+                                        + "(select id_seq from coordinates where x=" + x.getCoordinates().getX() + " and y=" + x.getCoordinates().getY() + "), "
+                                        + "date('" + x.getCreationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'), "
+                                        + "(select id_seq from location_from where x=" + x.getFrom().getX() + " and y=" + x.getFrom().getY()
+                                        + " and location_from_name='" + x.getFrom().getName() + "'), "
+                                        + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
+                                        + " and location_to_name='" + x.getTo().getName() + "'), null);");
+                            }
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
