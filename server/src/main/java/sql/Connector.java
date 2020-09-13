@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Properties;
 
 public class Connector {
@@ -82,6 +83,7 @@ public class Connector {
                 resTo.close();
 
                 Route nextRoute = new Route (id, name, coordinates, creationDate, from, to, distance, creatorLogin);
+
                 ServerMain.c.Routes.add(nextRoute);
             }
             resRoutes.close();
@@ -111,6 +113,7 @@ public class Connector {
     public synchronized static void saving(){
 
         Properties config = new Properties();
+        Collections.sort(ServerMain.c.Routes);
 
         try{
             config.load(new FileInputStream("res/config.properties"));
@@ -139,27 +142,28 @@ public class Connector {
 
         try(
                 Connection connection1 = DriverManager.getConnection(ServerMain.URL, config);
-                Statement statement = connection1.createStatement();
+                Statement savingStatement = connection1.createStatement();
+                Statement checkingStatement = connection1.createStatement()
         ){
-            statement.execute("delete from routes;"); //очищение таблицы с коллекцией рутов и рестарт отсчета айди
-            statement.execute("SELECT SETVAL('routes_id_seq_seq', 1, false);");
+            savingStatement.execute("delete from routes;"); //очищение таблицы с коллекцией рутов и рестарт отсчета айди
+            savingStatement.execute("SELECT SETVAL('routes_id_seq_seq', 1, false);");
 
-            statement.execute("delete from coordinates;"); //очищение таблицы с коллекцией координат и рестарт отсчета айди
-            statement.execute("SELECT SETVAL('coordinates_id_seq_seq', 1, false);");
+            savingStatement.execute("delete from coordinates;"); //очищение таблицы с коллекцией координат и рестарт отсчета айди
+            savingStatement.execute("SELECT SETVAL('coordinates_id_seq_seq', 1, false);");
 
-            statement.execute("delete from location_from;");//очищение таблицы с коллекцией локейшенов ту и рестарт отсчета айди
-            statement.execute("SELECT SETVAL('location_from_id_seq_seq', 1, false);");
+            savingStatement.execute("delete from location_from;");//очищение таблицы с коллекцией локейшенов ту и рестарт отсчета айди
+            savingStatement.execute("SELECT SETVAL('location_from_id_seq_seq', 1, false);");
 
-            statement.execute("delete from location_to;");//очищение таблицы с коллекцией локейшенов фром и рестарт отсчета айди
-            statement.execute("SELECT SETVAL('location_to_id_seq_seq', 1, false);");
+            savingStatement.execute("delete from location_to;");//очищение таблицы с коллекцией локейшенов фром и рестарт отсчета айди
+            savingStatement.execute("SELECT SETVAL('location_to_id_seq_seq', 1, false);");
 
-            statement.execute("delete from users;"); //очищение таблицы с коллекцией юзеров
+            savingStatement.execute("delete from users;"); //очищение таблицы с коллекцией юзеров
 
             UsersCollection.users.stream()
                     .filter(x -> !x.getPassword().equals(" "))
                     .forEach(x ->{
                         try {
-                            statement.execute("insert into users values('"
+                            savingStatement.execute("insert into users values('"
                                     + x.getLogin() + "', '"
                                     + x.getPassword() + "', '"
                                     + x.getTotemAnimal() + "');");
@@ -171,24 +175,43 @@ public class Connector {
             ServerMain.c.Routes.stream()
                     .forEach(x -> {
                         try {
-                            statement.execute("insert into coordinates values ("
-                                    + x.getCoordinates().getX() + ", "
-                                    + x.getCoordinates().getY() + ", "
-                                    + "(select nextval('coordinates_id_seq_seq')));"); //заполнение новой строки таблицы координат
+                            ResultSet coordinatesRS = checkingStatement.executeQuery("select count(*) as row_count from coordinates where x = " + x.getCoordinates().getX() + " and y = " + x.getCoordinates().getY() + ";");
+                            coordinatesRS.next();
+                            Integer coordinatesNum = coordinatesRS.getInt("row_count");
+                            ResultSet locationFromRS = checkingStatement.executeQuery("select count(*) as row_count from location_from where location_from_name = '" + x.getFrom().getName() + "' and x =" + x.getFrom().getX() +" and y ="+ x.getFrom().getY() + ";");
+                            coordinatesRS.close();
+                            locationFromRS.next();
+                            Integer locationFromNum = locationFromRS.getInt("row_count");
+                            ResultSet locationToRS = checkingStatement.executeQuery("select count(*) as row_count from location_to where location_to_name = '" + x.getTo().getName() + "' and x =" + x.getTo().getX() +" and y ="+ x.getTo().getY() + ";");
+                            locationFromRS.close();
+                            locationToRS.next();
+                            Integer locationToNum = locationToRS.getInt("row_count");
+                            locationToRS.close();
 
-                            statement.execute("insert into location_from values ("
-                                    + x.getFrom().getX() + ", "
-                                    + x.getFrom().getY() + ", '"
-                                    + x.getFrom().getName() + "', "
-                                    + "(select nextval('location_from_id_seq_seq')));");
+                            if(coordinatesNum == 0){
+                                savingStatement.execute("insert into coordinates values ("
+                                        + x.getCoordinates().getX() + ", "
+                                        + x.getCoordinates().getY() + ", "
+                                        + "(select nextval('coordinates_id_seq_seq')));"); //заполнение новой строки таблицы координат
+                            }
 
-                            statement.execute("insert into location_to values ("
-                                    + x.getTo().getX() + ", "
-                                    + x.getTo().getY() + ", '"
-                                    + x.getTo().getName() + "', "
-                                    + "(select nextval('location_to_id_seq_seq')));");
+                            if(locationFromNum == 0){
+                                savingStatement.execute("insert into location_from values ("
+                                        + x.getFrom().getX() + ", "
+                                        + x.getFrom().getY() + ", '"
+                                        + x.getFrom().getName() + "', "
+                                        + "(select nextval('location_from_id_seq_seq')));");
+                            }
 
-                            statement.execute("insert into routes values ("
+                            if(locationToNum == 0){
+                                savingStatement.execute("insert into location_to values ("
+                                        + x.getTo().getX() + ", "
+                                        + x.getTo().getY() + ", '"
+                                        + x.getTo().getName() + "', "
+                                        + "(select nextval('location_to_id_seq_seq')));");
+                            }
+
+                            savingStatement.execute("insert into routes values ("
                                     + "(select nextval('routes_id_seq_seq')), '"
                                     + x.getName() +"', '"
                                     + x.getCreatorLogin()+ "', "

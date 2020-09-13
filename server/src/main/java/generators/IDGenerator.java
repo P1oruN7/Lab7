@@ -1,5 +1,6 @@
 package generators;
 
+import routes.Route;
 import utility.ServerMain;
 
 /**
@@ -12,7 +13,16 @@ public class IDGenerator {
      * @return id (Long)
      */
     public static long generateNewID() {
-        return ServerMain.c.Routes.size()+1;
+        int num = 0;
+        boolean isIdExist = true;
+
+        while (isIdExist){;
+            num++;
+            Route r = ServerMain.c.searchById(num);
+            if (r == null) isIdExist = false;
+        }
+
+        return num;
     }
 
 }

@@ -28,8 +28,12 @@ public class ServerMain {
     public static void main(String[] args) {
 
         Signal.handle(new Signal("INT"), sig ->  {
-            System.out.println("\nЗавершение программы c сохранением");
-            saving();
+            try {
+                saving();
+                System.out.println("\nЗавершение программы c сохранением");
+            }catch (Exception e){
+                System.out.println("\nЛучше бы exit вызвали");
+            }
             System.out.println("\n\n"+
                     "........|......\n" +
                     ".......o......\n" +

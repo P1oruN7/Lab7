@@ -31,7 +31,7 @@ public class ClientMain {
     public static void main(String[] args) {
 
         Signal.handle(new Signal("INT"), sig ->  {
-            System.out.println(
+            System.out.println("\n\n" +
                     "........|......\n" +
                     ".......o......\n" +
                     "....../()\\.....\n" +
