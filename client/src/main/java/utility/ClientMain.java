@@ -29,10 +29,18 @@ public class ClientMain {
      * @param args аргументики
      */
     public static void main(String[] args) {
+
         Signal.handle(new Signal("INT"), sig ->  {
-            System.out.println("\n" + "Контрлцешное завершение программы");
+            System.out.println(
+                    "........|......\n" +
+                    ".......o......\n" +
+                    "....../()\\.....\n" +
+                    ".......||......\n" +
+                    "...............\n" +
+                    "......|=......\n\n\n");
             System.exit(0);
         });
+
         Add add = new Add();
         AverageOfDistance average = new AverageOfDistance();
         Clear clear = new Clear();

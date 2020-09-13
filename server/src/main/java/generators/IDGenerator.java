@@ -1,5 +1,7 @@
 package generators;
 
+import utility.ServerMain;
+
 /**
  * Генератор id
  */
@@ -10,7 +12,7 @@ public class IDGenerator {
      * @return id (Long)
      */
     public static long generateNewID() {
-        return (long) (1 + Math.random() * (Long.MAX_VALUE - 1));
+        return ServerMain.c.Routes.size()+1;
     }
 
 }

@@ -2,6 +2,7 @@ package common.commands;
 
 import common.*;
 import routes.Route;
+import utility.ServerMain;
 import utility.ServerSender;
 
 import java.net.SocketAddress;
@@ -18,20 +19,19 @@ public class PrintFieldDescendingDistance implements Command {
      */
     @Override
     public synchronized void execute(String S, SocketAddress clientAddress) {
-        if (!utility.ServerMain.c.Routes.isEmpty()) {
-            float[] array = new float[utility.ServerMain.c.Routes.size()]; // создаётся массив размером с коллекцию
-            int i = 0;
-            for (Route r : utility.ServerMain.c.Routes) {
-                if (r.getDistance() != null) array[i] = r.getDistance(); // в массив вносятся значения distance
-                i++;
-            }
-
-            Arrays.sort(array); // массив сортируется в порядке возрастания
-            Float f;
-            for (i = utility.ServerMain.c.Routes.size() - 1; i >= 0; i--) {
-                f = array[i];
-                ServerSender.send(f.toString(), 0, clientAddress); // массив выводится в обратном порядке
-            }
+        if (!ServerMain.c.Routes.isEmpty()) {
+            String[] q = {"\n"};
+            ServerMain.c.Routes.stream()
+                    .map(Route::getDistance)
+                    .mapToDouble((t) -> {
+                        if ((t) == null) (t) = Float.valueOf(0);
+                        return (t);
+                    })
+                    .map((t) -> 0 - t)
+                    .sorted()
+                    .map((t) -> 0 - t)
+                    .forEachOrdered(x -> q[0] += Double.toString(x) + "\n");
+            ServerSender.send("Значения distance: " + q[0], 0, clientAddress);
         } else ServerSender.send("Коллекция пуста, в отличие от моего рабочего стола.", 0, clientAddress);
     }
 
