@@ -24,7 +24,7 @@ public class Update implements Command {
      * Метод для изменения значений элемента по id
      */
     @Override
-    public void execute(String s, SocketAddress clientAddress) {
+    public synchronized void execute(String s, SocketAddress clientAddress) {
         s = s.trim();
         Long id = Checker.longChecker(s);
         Route r = ServerMain.c.searchById(id);

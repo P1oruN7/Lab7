@@ -37,7 +37,7 @@ public class Invoker {
      *
      * @param s строчечка
      */
-    public static void execute(String s, SocketAddress clientAddress) {
+    public synchronized static void execute(String s, SocketAddress clientAddress) {
         Map<Command, String> commandStringMap = new HashMap<>();
         String name[] = s.split(" ", 1);
         Command command = commands.get(name[0]);

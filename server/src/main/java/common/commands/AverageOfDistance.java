@@ -1,9 +1,6 @@
 package common.commands;
 
 import common.*;
-
-import common.Command;
-import routes.Route;
 import utility.ServerMain;
 import utility.ServerSender;
 
@@ -20,11 +17,11 @@ public class AverageOfDistance implements Command {
      * Метод для вывода среднего значения поля distance для всех элементов коллекции
      */
     @Override
-    public void execute(String s, SocketAddress clientAddress) {
+    public synchronized void execute(String s, SocketAddress clientAddress) {
         if (ServerMain.c.Routes.size() > 0) {
             Float sum = 0f;
             int countOfNull = 0;
-            for (Route r : ServerMain.c.Routes) {
+            for (routes.Route r : ServerMain.c.Routes) {
                 if (r.getDistance() != null)
                     sum += r.getDistance();
                 else

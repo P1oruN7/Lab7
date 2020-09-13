@@ -1,5 +1,9 @@
 package common.commands;
 
+import common.*;
+
+import java.net.SocketAddress;
+
 import static sql.Connector.saving;
 
 /**
@@ -9,7 +13,7 @@ public class Exit {
     /**
      * Метод для прекращения работы программы
      */
-    public void execute(String s) {
+    public synchronized void execute(String s) {
         if (s != null) {
             saving();
             System.out.println("\nСервер завершает свою работу.А пока посмотрите на художницу.");

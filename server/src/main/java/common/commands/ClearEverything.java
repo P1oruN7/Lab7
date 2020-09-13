@@ -4,7 +4,7 @@ import users.UsersCollection;
 import utility.ServerMain;
 
 public class ClearEverything {
-    public static void execute( String par) {
+    public synchronized static void execute( String par) {
         ServerMain.c.Routes.clear();
         UsersCollection.users.clear();
         System.out.println("Все данные успешно стёрты");

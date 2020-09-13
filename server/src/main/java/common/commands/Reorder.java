@@ -1,10 +1,8 @@
 package common.commands;
 
-import common.Command;
+import common.*;
 import utility.ServerMain;
 import utility.ServerSender;
-
-import common.*;
 
 import java.net.SocketAddress;
 import java.util.Collections;
@@ -19,7 +17,7 @@ public class Reorder implements Command {
      * Метод для разворота коллекции
      */
     @Override
-    public void execute(String S, SocketAddress clientAddress) {
+    public synchronized void execute(String S, SocketAddress clientAddress) {
         Collections.reverse(ServerMain.c.Routes);
         ServerSender.send("\n\nКоллекция была развёрнута задом наперёд \n\n", 0, clientAddress);
     }

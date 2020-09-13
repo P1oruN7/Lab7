@@ -1,7 +1,5 @@
 package common.commands;
 import common.*;
-
-import common.Command;
 import routes.Route;
 import utility.ServerMain;
 import utility.ServerSender;
@@ -18,7 +16,7 @@ public class MaxByDistance implements Command {
      * Метод для вывода элемента коллекции Routes с максимальным значением поля distance
      */
     @Override
-    public void execute(String s, SocketAddress clientAddress) {
+    public synchronized void execute(String s, SocketAddress clientAddress) {
         boolean first = true;
         if (ServerMain.c.Routes.size() > 0) {
             Route maxRoutebyDist = null;

@@ -1,10 +1,8 @@
 package common.commands;
 
-import common.Command;
+import common.*;
 import utility.ServerMain;
 import utility.ServerSender;
-
-import common.*;
 
 import java.net.SocketAddress;
 import java.util.Collections;
@@ -19,7 +17,7 @@ public class Sort implements Command {
      * Метод для сортировки коллекции в ествественном порядке (по возрастанию id)
      */
     @Override
-    public void execute(String S, SocketAddress clientAddress) {
+    public synchronized void execute(String S, SocketAddress clientAddress) {
         Collections.sort(ServerMain.c.Routes);
         ServerSender.send("\n\nКоллекция была отсортирована.\n\n", 0, clientAddress);    }
 

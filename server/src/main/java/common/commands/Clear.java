@@ -20,7 +20,7 @@ public class Clear implements Command {
      * Метод для очистки коллекции, подаваемой на вход
      */
     @Override
-    public void execute(String login, SocketAddress clientAddress) {
+    public synchronized void execute(String login, SocketAddress clientAddress) {
         Iterator<Route> iterator = ServerMain.c.Routes.iterator();
         while (iterator.hasNext()) {
             if (iterator.next().getCreatorLogin().equals(login) ) iterator.remove();

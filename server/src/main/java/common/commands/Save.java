@@ -10,14 +10,9 @@ public class Save {
      * Метод для сохранения коллекции в файл
      */
 
-    public void execute(String S) {
-        //try {
-            //saveCollection(ServerMain.c.getPath());
+    public synchronized void execute(String S) {
             saving();
             System.out.println("Коллекция сохранилася.");
-        //} catch (Exception e) {
-           // System.out.println("Не удалось сохраниться.");
-       // }
     }
 
     public String getInfo() {

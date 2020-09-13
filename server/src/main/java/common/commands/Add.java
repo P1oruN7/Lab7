@@ -1,9 +1,7 @@
 package common.commands;
 
-import common.Command;
-import routes.Coordinates;
-import routes.Location;
-import routes.Route;
+import common.*;
+import routes.*;
 import utility.ServerMain;
 import utility.ServerSender;
 
@@ -27,7 +25,7 @@ public class Add implements Command {
      * @param string строка с полями объекта route
      */
     @Override
-    public void execute(String string, SocketAddress clientAddress) {
+    public synchronized void  execute(String string, SocketAddress clientAddress) {
 //        0 - name
 //        1 - Coordinate X
 //        2 - Coordinate Y

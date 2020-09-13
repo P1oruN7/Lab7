@@ -1,8 +1,6 @@
 package common.commands;
 
 import common.*;
-
-import common.Command;
 import routes.Route;
 import utility.ServerMain;
 import utility.ServerSender;
@@ -19,7 +17,7 @@ public class Show implements Command {
      * Метод для отображения всех элементов коллекции
      */
     @Override
-    public void execute(String S, SocketAddress clientAddress) {
+    public synchronized void execute(String S, SocketAddress clientAddress) {
         if (ServerMain.c.Routes.size() == 0) {
             ServerSender.send("\n\nКоллекция пуста, милорд\n\n", 0, clientAddress);
         } else {

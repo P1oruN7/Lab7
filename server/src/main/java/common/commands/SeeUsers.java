@@ -1,9 +1,10 @@
 package common.commands;
 
+import users.User;
 import users.UsersCollection;
 
 public class SeeUsers {
-    public static void execute(String S){
+    public synchronized static void execute(String S){
         UsersCollection.seeUsers();
     }
     public String getInfo() {
