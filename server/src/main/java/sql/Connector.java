@@ -15,7 +15,7 @@ import java.util.Properties;
 
 public class Connector {
 
-    public static void loading(){
+    public synchronized static void loading(){
         Properties config = new Properties(); // файл с логином паролем для доступа к бд
 
         try {
@@ -108,7 +108,7 @@ public class Connector {
         }
     }
 
-    public static void saving(){
+    public synchronized static void saving(){
 
         Properties config = new Properties();
 
