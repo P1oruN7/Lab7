@@ -1,5 +1,7 @@
 package users;
 
+import java.net.URLConnection;
+
 /**
  * Класс пользователя
  */
