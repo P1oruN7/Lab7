@@ -15,7 +15,7 @@ import java.net.*;
 public class Checking implements Command {
     private static final long serialVersionUID = 6529685098267757690L;
     @Override
-    public void execute(String string, SocketAddress clientAddress) {
+    public synchronized void execute(String string, SocketAddress clientAddress) {
         Boolean b;
         string = string.trim();
         Character c = string.charAt(0);
