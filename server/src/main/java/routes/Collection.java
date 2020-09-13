@@ -48,7 +48,7 @@ public class Collection implements Serializable {
      * @param id id
      * @return элемент коллекции
      */
-    public Route searchById(long id) {
+    public static synchronized Route searchById(long id) {
         for (Route r : Routes) {
             if (r.getId().equals(id))
                 return r;
@@ -61,12 +61,11 @@ public class Collection implements Serializable {
      *
      * @return уникальный id (long)
      */
-    public long generateUniqueID() {
+    public synchronized long generateUniqueID() {
         long id;
         do {
             id = IDGenerator.generateNewID();
         } while (this.searchById(id) != null);
         return id;
     }
-
 }
