@@ -18,7 +18,7 @@ public class UserCheck {
         boolean isPasswordCorrect = false;
         User u;
         u = UsersCollection.searchByLogin(login);
-        System.out.println("u.getPassword()= " + u.getPassword() + "    "+"hashedPass=" + hashedPass + "    password=" + password);
+        //System.out.println("u.getPassword()= " + u.getPassword() + "    "+"hashedPass=" + hashedPass + "    password=" + password);
         isPasswordCorrect = u.getPassword().equals( hashedPass);
         return isPasswordCorrect;
     }
