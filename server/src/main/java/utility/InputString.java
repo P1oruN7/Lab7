@@ -1,11 +1,13 @@
 package utility;
 
 import common.commands.*;
-
-import common.commands.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.UnknownHostException;
 
 /**
  * Класс - обработчик сигналов с консоли сервера
@@ -17,7 +19,7 @@ public class InputString extends Thread  {
      */
     public void run() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Save saveCommand = new Save();
+        common.commands.Save saveCommand = new common.commands.Save();
         Exit exit = new Exit();
         Help help = new Help();
         SeeUsers seeUsers = new SeeUsers();
