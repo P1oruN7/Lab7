@@ -68,6 +68,10 @@ public class Invoker {
                 History.addInArray(name[0]);
                 commandStringMap.put(command, ClientMain.getLogin());
                 return commandStringMap;
+            } else if (name[0].toLowerCase().equals("remove_by_id")) {
+                History.addInArray(name[0]);
+                commandStringMap.put(command, name[1] +" "+ ClientMain.getLogin());
+                return commandStringMap;
             } else if (name[0].toLowerCase().equals("clear")) {
                 History.addInArray(name[0]);
                 commandStringMap.put(command, ClientMain.getLogin());
