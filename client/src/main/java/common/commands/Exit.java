@@ -6,6 +6,7 @@ import common.Invoker;
 /**
  * Команда "ВЫХОДА НЕТ"
  */
+
 public class Exit implements Command {
     public Exit() {
         Invoker.regist("exit", this);

@@ -4,7 +4,6 @@ import common.*;
 import routes.*;
 import utility.ServerMain;
 import utility.ServerSender;
-
 import java.net.SocketAddress;
 
 /**
@@ -25,7 +24,7 @@ public class Add implements Command {
      * @param string строка с полями объекта route
      */
     @Override
-    public synchronized void  execute(String string, SocketAddress clientAddress) {
+    public synchronized void execute(String string, SocketAddress clientAddress) {
 //        0 - name
 //        1 - Coordinate X
 //        2 - Coordinate Y
@@ -34,7 +33,7 @@ public class Add implements Command {
 //        5 - Location from name
 //        6 - Location to X
 //        7 - Location to Y
-//        8 - Location to qeqweq
+//        8 - Location to name
 //        9 - distance
         String[] s = string.split(" ");
         Route route = new Route();

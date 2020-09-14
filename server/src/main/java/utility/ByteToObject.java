@@ -27,8 +27,8 @@ public class ByteToObject {
             } else if (CreateServer.currentClientPort == map.entrySet().iterator().next().getKey()) {
                 obj = map.entrySet().iterator().next().getValue();
             } else {
-                Object [] array = (Object[]) ServerReceiver.receive();
-                return ByteToObject.Cast((byte[]) array [0]);
+                Object[] array = (Object[]) ServerReceiver.receive();
+                return ByteToObject.Cast((byte[]) array[0]);
             }
             byteArrayInputStream.close();
             objectInputStream.close();

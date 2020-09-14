@@ -2,7 +2,6 @@ package common.commands;
 
 import common.Command;
 import common.Invoker;
-
 import java.net.SocketAddress;
 
 /**
@@ -18,11 +17,6 @@ public class Help implements Command {
      */
     @Override
     public void execute(String s, SocketAddress clientAddress) {
-//        System.out.println("\n \n \n");
-//        for (Command command : getCommandCollection().values()) {
-//            System.out.println(command.getInfo());
-//        }
-//        System.out.println("\n \n \n");
     }
 
     @Override

@@ -5,13 +5,11 @@ import common.commands.History;
 import utility.ClientMain;
 import utility.ClientReceiver;
 import utility.ClientSender;
-
 import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -45,7 +43,7 @@ public class Invoker {
      * @param s строчечка
      */
     public static Map<Command, String> execute(String s) {
-        if (s == null ) return null;
+        if (s == null) return null;
         try {
             Map<Command, String> commandStringMap = new HashMap<>();
             String name[] = s.split(" ", 2);
@@ -70,7 +68,7 @@ public class Invoker {
                 return commandStringMap;
             } else if (name[0].toLowerCase().equals("remove_by_id")) {
                 History.addInArray(name[0]);
-                commandStringMap.put(command, name[1] +" "+ ClientMain.getLogin());
+                commandStringMap.put(command, name[1] + " " + ClientMain.getLogin());
                 return commandStringMap;
             } else if (name[0].toLowerCase().equals("clear")) {
                 History.addInArray(name[0]);
@@ -83,8 +81,8 @@ public class Invoker {
                 return commandStringMap;
             } else if (name[0].toLowerCase().equals("exit")) {
                 History.addInArray(name[0]);
-               // commandStringMap.put(command, null);
-              //  ClientSender.send(commandStringMap);
+                // commandStringMap.put(command, null);
+                //  ClientSender.send(commandStringMap);
                 command.execute("");
             } else if (name[0].toLowerCase().equals("update")) {
                 History.addInArray(name[0]);
@@ -100,7 +98,7 @@ public class Invoker {
                 ClientReceiver.receive();
                 if (ClientReceiver.answer.entrySet().iterator().next().getKey().startsWith("Состояние элемента сейчас:")) {
                     String s1 = Add.makeString();
-                    commandStringMap.put(command, s1+" " + ClientMain.getLogin());
+                    commandStringMap.put(command, s1 + " " + ClientMain.getLogin());
                     try {
                         DatagramChannel datagramChannel = DatagramChannel.open();
                         datagramChannel.bind(null);

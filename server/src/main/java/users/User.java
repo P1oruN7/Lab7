@@ -1,6 +1,5 @@
 package users;
 
-import java.net.URLConnection;
 
 /**
  * Класс пользователя
@@ -20,14 +19,13 @@ public class User {
         this.login = login;
     }
 
-    public void setPassword (String password){
+    public void setPassword(String password) {
         this.password = password;
     }
 
     public String getPassword() {
         return password;
     }
-
 
 
     public String getTotemAnimal() {
@@ -41,24 +39,25 @@ public class User {
 
     /**
      * Конструктор пользователя
-     * @param login имя
-     * @param password пароль
+     *
+     * @param login       имя
+     * @param password    пароль
      * @param totemAnimal тотемное животное
      */
-    public User (String login, String password, String totemAnimal){
+    public User(String login, String password, String totemAnimal) {
         this.setLogin(login);
         this.setPassword(password);
         this.setTotemAnimal(totemAnimal);
     }
 
 
-
     /**
      * Другой конструктор пользователя
-     * @param login имя
+     *
+     * @param login    имя
      * @param password пароль
      */
-    public User (String login, String password){
+    public User(String login, String password) {
         this.setLogin(login);
         this.setPassword(password);
         this.totemAnimal = TotemAnimal.randomTotemAnimal();

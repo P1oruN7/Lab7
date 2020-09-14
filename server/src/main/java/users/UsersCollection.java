@@ -1,13 +1,15 @@
 package users;
 
-import generators.IDGenerator;
-import routes.Route;
 
 import java.util.ArrayList;
 
+/**
+ * Класс для коллекции пользователей
+ */
 public class UsersCollection {
     public static ArrayList<User> users;
-    public UsersCollection(){
+
+    public UsersCollection() {
         this.users = new ArrayList<>();
     }
 
@@ -17,7 +19,7 @@ public class UsersCollection {
      *
      * @return элемент коллекции пользователей
      */
-    public synchronized static User searchByLogin (String login) {
+    public synchronized static User searchByLogin(String login) {
         for (User u : users) {
             if (u.getLogin().equals(login))
                 return u;
@@ -25,8 +27,8 @@ public class UsersCollection {
         return null;
     }
 
-    public synchronized static void seeUsers(){
-        for (User u : users){
+    public synchronized static void seeUsers() {
+        for (User u : users) {
             System.out.println("  " + u.getLogin());
         }
     }

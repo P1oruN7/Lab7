@@ -9,7 +9,6 @@ import java.util.concurrent.Executors;
 import readers.ConsoleSourceReader;
 import sun.misc.Signal;
 import users.UsersCollection;
-
 import static sql.Connector.saving;
 
 /**
@@ -20,6 +19,7 @@ public class ServerMain {
     public static Integer port;
     public static SocketAddress clientAddress;
     public static final String URL = "jdbc:postgresql://pg:5432/studs";
+
     /**
      * psvm
      *
@@ -27,14 +27,14 @@ public class ServerMain {
      */
     public static void main(String[] args) {
 
-        Signal.handle(new Signal("INT"), sig ->  {
+        Signal.handle(new Signal("INT"), sig -> {
             try {
                 saving();
                 System.out.println("\nЗавершение программы c сохранением");
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("\nЛучше бы exit вызвали");
             }
-            System.out.println("\n\n"+
+            System.out.println("\n\n" +
                     "........|......\n" +
                     ".......o......\n" +
                     "....../()\\.....\n" +
@@ -66,7 +66,7 @@ public class ServerMain {
         c = new Collection();
         sql.Connector.loading();
         if (UsersCollection.searchByLogin("admin") == null) {
-            users.User admin = new users.User ("admin", "58b41e4d2aa978f18bf332d4218092bedbec76199eddff465d84ef79", "admin");
+            users.User admin = new users.User("admin", "58b41e4d2aa978f18bf332d4218092bedbec76199eddff465d84ef79", "admin");
             UsersCollection.users.add(admin);
         }
 
@@ -76,7 +76,7 @@ public class ServerMain {
 
             try {
                 port = Integer.parseInt(bufferReader.getLine());
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Формат неправильный");
                 continue;
             }
@@ -94,12 +94,12 @@ public class ServerMain {
         SocketAddress clientAddress = null;
         try {
             System.out.println("\nЖду команду от клиента.");
-            Object [] received =  (Object []) ServerReceiver.receive();
-            clientAddress =  ( SocketAddress) received[1];
-            byte [] bytes = (byte[]) received[0];
+            Object[] received = (Object[]) ServerReceiver.receive();
+            clientAddress = (SocketAddress) received[1];
+            byte[] bytes = (byte[]) received[0];
             Object o = ByteToObject.Cast(bytes);
             ExecutorService cache = Executors.newCachedThreadPool();
-            GetCommand getCommand = new GetCommand(o,clientAddress);
+            GetCommand getCommand = new GetCommand(o, clientAddress);
             cache.submit(getCommand);
 
         } catch (ClassCastException e) {

@@ -35,6 +35,7 @@ public class Collection implements Serializable {
 
     /**
      * Метод для получения даты
+     *
      * @return LocalDate
      */
     public LocalDate getInitializationDate() {

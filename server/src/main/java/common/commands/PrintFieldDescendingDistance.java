@@ -4,9 +4,7 @@ import common.*;
 import routes.Route;
 import utility.ServerMain;
 import utility.ServerSender;
-
 import java.net.SocketAddress;
-import java.util.Arrays;
 
 /**
  * Команда "Выведи-ка мне поле distance всех элементов коллекции, да в обратном порядке!"

@@ -6,6 +6,7 @@ import common.Invoker;
 /**
  * Команда "ЧИСТИЛЬЩИК "
  */
+
 public class Clear implements Command {
     private static final long serialVersionUID = 6529685098267757690L;
 

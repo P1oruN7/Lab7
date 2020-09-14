@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,7 +17,7 @@ public class ServerSender implements Runnable {
     private Integer needAnswer;
     private SocketAddress clientAddress;
 
-    public ServerSender (String message, Integer needAnswer,SocketAddress clientAddress){
+    public ServerSender(String message, Integer needAnswer, SocketAddress clientAddress) {
         this.message = message;
         this.needAnswer = needAnswer;
         this.clientAddress = clientAddress;
@@ -30,15 +29,15 @@ public class ServerSender implements Runnable {
      * @param message    сообщенька
      * @param needAnswer нужет ли ответ от клиента
      */
-    public static void send(String message, Integer needAnswer,SocketAddress clientAddress) {
-        ServerSender serverSender = new ServerSender(message, needAnswer,clientAddress);
+    public static void send(String message, Integer needAnswer, SocketAddress clientAddress) {
+        ServerSender serverSender = new ServerSender(message, needAnswer, clientAddress);
         ExecutorService service = Executors.newFixedThreadPool(3);
         service.submit(serverSender);
         service.shutdown();
     }
 
     @Override
-    public void run(){
+    public void run() {
         try {
             //Параметр needAnswer: 0 - ответ не нужен, 1 - ждём ответа
             Map<String, Integer> answer = new HashMap<>();
@@ -53,9 +52,6 @@ public class ServerSender implements Runnable {
             objectOutputStream.close();
             byte[] buff = byteArrayOutputStream.toByteArray();
             DatagramSocket datagramSocket = new DatagramSocket();
-            // ServerMain.clientAdderss = datagramSocket.getInetAddress(); //
-            //  ServerMain.clientAdderss =  CreateServer.datagramChannel.getRemoteAddress();
-            //   DatagramPacket dp = new DatagramPacket(buff, buff.length, clientAddress);
             DatagramPacket dp = new DatagramPacket(buff, buff.length, InetAddress.getLocalHost(), CreateServer.currentClientPort); //Изначально было вот это
             datagramSocket.send(dp);
             datagramSocket.close();

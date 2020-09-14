@@ -4,7 +4,18 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+
+/**
+ * Класс для хэширования строк (SHA-224)
+ */
 public class Hash {
+
+    /**
+     * Метод для хэширования строк (SHA-224)
+     *
+     * @param input Строка для хэширования
+     * @return хэш строки
+     */
     public static String encryptThisString(String input) {
         try {
             // getInstance() method is called with algorithm SHA-224
@@ -35,4 +46,4 @@ public class Hash {
             throw new RuntimeException(e);
         }
     }
-    }
+}

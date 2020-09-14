@@ -1,18 +1,18 @@
 package common.commands;
 
+
 import common.Command;
 import common.Invoker;
-
 import readers.Checker;
 import utility.ClientMain;
-
 import java.io.IOException;
 
 /**
  * Команда "Добавить-ка ещё!"
  */
 
-public class Add implements Command {
+public class
+Add implements Command {
     static boolean hasName = false;  // показывает, было ли добавлено имя элемента
     static boolean hasCoordinates = false; // показывает, было ли добавлено поле coordinates
     static boolean hasFrom = false; //показывает, было ли добавлено поле from
