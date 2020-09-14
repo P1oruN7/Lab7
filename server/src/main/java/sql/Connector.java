@@ -52,37 +52,49 @@ public class Connector {
             ResultSet resRoutes = statement.executeQuery("SELECT * from routes;"); //заполненние запроса. возвращает результат. представляет из себя таблицу
             while (resRoutes.next()){ //перебор строк результата
 
-                Long id = resRoutes.getLong("id_seq");
-                String name = resRoutes.getString("route_name");
-                String creatorLogin = resRoutes.getString("creator_name");
-                Long idCoord = resRoutes.getLong("coordinates_id");
-                java.time.LocalDate creationDate = resRoutes.getDate("creation_date").toLocalDate();
-                Long idFrom = resRoutes.getLong("location_from_id");
-                Long idTo = resRoutes.getLong("location_to_id");
-                Float distance = resRoutes.getFloat("distance");
-
-                ResultSet coord = statement2.executeQuery("SELECT * from coordinates where id_seq=" +idCoord + ";");
-                coord.next();
-                Integer x = coord.getInt("x");
-                Float y = coord.getFloat("y");
-                Coordinates coordinates = new Coordinates(x,y);
-                coord.close();
-
-                ResultSet resFrom = statement2.executeQuery("SELECT * from location_from where id_seq=" +idFrom+";");
-                resFrom.next();
-                Location from = new Location(resFrom.getLong("x"),
-                        resFrom.getDouble("y"),
-                        resFrom.getString("location_from_name"));
-                resFrom.close();
-
-                ResultSet resTo = statement2.executeQuery("SELECT * from location_to where id_seq=" +idTo+";");
-                resTo.next();
-                Location to = new Location(resTo.getLong("x"),
-                        resTo.getDouble("y"),
-                        resTo.getString("location_to_name"));
-                resTo.close();
-
-                Route nextRoute = new Route (id, name, coordinates, creationDate, from, to, distance, creatorLogin);
+                Route nextRoute = new Route ();
+                nextRoute.setId(resRoutes.getLong("id_seq"));
+                nextRoute.setName(resRoutes.getString("route_name"));
+                nextRoute.setCreatorLogin(resRoutes.getString("creator_name"));
+                long idCoord = resRoutes.getLong("coordinates_id");
+                {
+                    ResultSet coord = statement2.executeQuery("SELECT * from coordinates where id_seq=" + idCoord + ";");
+                    coord.next();
+                    Coordinates coordinates = new Coordinates(
+                            coord.getInt("x"),
+                            coord.getFloat("y")
+                    );
+                    coord.close();
+                    nextRoute.setCoordinates(coordinates);
+                }
+                nextRoute.setCreationDate(resRoutes.getDate("creation_date").toLocalDate());
+                long idFrom = resRoutes.getLong("location_from_id");
+                {
+                    if (idFrom!=0) {
+                    ResultSet resFrom = statement2.executeQuery("SELECT * from location_from where id_seq=" + idFrom + ";");
+                    resFrom.next();
+                    Location from = new Location(
+                            resFrom.getLong("x"),
+                            resFrom.getDouble("y"),
+                            resFrom.getString("location_from_name")
+                    );
+                    resFrom.close();
+                    nextRoute.setFrom(from);
+                    }
+                }
+                long idTo = resRoutes.getLong("location_to_id");
+                {
+                    ResultSet resTo = statement2.executeQuery("SELECT * from location_to where id_seq=" +idTo+";");
+                    resTo.next();
+                    Location to = new Location(resTo.getLong("x"),
+                            resTo.getDouble("y"),
+                            resTo.getString("location_to_name"));
+                    resTo.close();
+                    nextRoute.setTo(to);
+                }
+                if(resRoutes.getFloat("distance")!= 0){
+                    nextRoute.setDistance(resRoutes.getFloat("distance"));
+                }
 
                 ServerMain.c.Routes.add(nextRoute);
             }
@@ -177,15 +189,15 @@ public class Connector {
                         try {
                             ResultSet coordinatesRS = checkingStatement.executeQuery("select count(*) as row_count from coordinates where x = " + x.getCoordinates().getX() + " and y = " + x.getCoordinates().getY() + ";");
                             coordinatesRS.next();
-                            Integer coordinatesNum = coordinatesRS.getInt("row_count");
+                            int coordinatesNum = coordinatesRS.getInt("row_count");
                             ResultSet locationFromRS = checkingStatement.executeQuery("select count(*) as row_count from location_from where location_from_name = '" + x.getFrom().getName() + "' and x =" + x.getFrom().getX() +" and y ="+ x.getFrom().getY() + ";");
                             coordinatesRS.close();
                             locationFromRS.next();
-                            Integer locationFromNum = locationFromRS.getInt("row_count");
+                            int locationFromNum = locationFromRS.getInt("row_count");
                             ResultSet locationToRS = checkingStatement.executeQuery("select count(*) as row_count from location_to where location_to_name = '" + x.getTo().getName() + "' and x =" + x.getTo().getX() +" and y ="+ x.getTo().getY() + ";");
                             locationFromRS.close();
                             locationToRS.next();
-                            Integer locationToNum = locationToRS.getInt("row_count");
+                            int locationToNum = locationToRS.getInt("row_count");
                             locationToRS.close();
 
                             if(coordinatesNum == 0){
@@ -211,7 +223,7 @@ public class Connector {
                                         + "(select nextval('location_to_id_seq_seq')));");
                             }
 
-                            if(x.getDistance() != null) {
+                            if(x.getDistance() != null && x.getFrom()!=null) {
                                 savingStatement.execute("insert into routes values ("
                                         + "(select nextval('routes_id_seq_seq')), '"
                                         + x.getName() + "', '"
@@ -223,7 +235,7 @@ public class Connector {
                                         + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
                                         + " and location_to_name='" + x.getTo().getName() + "'), "
                                         + x.getDistance() + ");");
-                            }else{
+                            }else if (x.getDistance() == null && x.getFrom() != null){
                                 savingStatement.execute("insert into routes values ("
                                         + "(select nextval('routes_id_seq_seq')), '"
                                         + x.getName() + "', '"
@@ -232,6 +244,26 @@ public class Connector {
                                         + "date('" + x.getCreationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'), "
                                         + "(select id_seq from location_from where x=" + x.getFrom().getX() + " and y=" + x.getFrom().getY()
                                         + " and location_from_name='" + x.getFrom().getName() + "'), "
+                                        + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
+                                        + " and location_to_name='" + x.getTo().getName() + "'), null);");
+                            }else if (x.getDistance() != null && x.getFrom() == null){
+                                savingStatement.execute("insert into routes values ("
+                                        + "(select nextval('routes_id_seq_seq')), '"
+                                        + x.getName() + "', '"
+                                        + x.getCreatorLogin() + "', "
+                                        + "(select id_seq from coordinates where x=" + x.getCoordinates().getX() + " and y=" + x.getCoordinates().getY() + "), "
+                                        + "date('" + x.getCreationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'), "
+                                        + "null, "
+                                        + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
+                                        + " and location_to_name='" + x.getTo().getName() + "'), "+ x.getDistance()+");");
+                            }else {
+                                savingStatement.execute("insert into routes values ("
+                                        + "(select nextval('routes_id_seq_seq')), '"
+                                        + x.getName() + "', '"
+                                        + x.getCreatorLogin() + "', "
+                                        + "(select id_seq from coordinates where x=" + x.getCoordinates().getX() + " and y=" + x.getCoordinates().getY() + "), "
+                                        + "date('" + x.getCreationDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "'), "
+                                        + "null, "
                                         + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
                                         + " and location_to_name='" + x.getTo().getName() + "'), null);");
                             }
