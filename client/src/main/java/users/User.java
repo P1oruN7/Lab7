@@ -224,9 +224,8 @@ public class User {
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
             String s2 = ClientReceiver.receiveObject(); //попытка получить строку
-            b = !Boolean.parseBoolean(s2); //парс в булиан, чтобы вернуть да или нет
+            b = Boolean.parseBoolean(s2); //парс в булиан, чтобы вернуть да или нет
             if (b) System.out.println("\nПароль верный");
-            else System.out.println("Пароль неверный. Попробуйте ещё раз");
         } catch (Exception e) {
             System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
             mistake = true;
