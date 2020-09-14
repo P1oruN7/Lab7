@@ -28,7 +28,7 @@ public class GetCommand extends Thread {
             boolean correctPass = UserCheck.correctPassword((String) objects[1], (String) objects[2]);
             if (correctPass) commandStringMap = (Map<Command, String>) objects[0];
             else {
-                ServerSender.send("Произошла ошибка, попробуйте повторить команду", 0, clientAddress);   //отправить сообщение об ошибке
+                ServerSender.send("Пароль в базе не совпадает с паролем при входе. Попробуйте выйти и пройти авторизацию заново", 0, clientAddress);   //отправить сообщение об ошибке
                 return;
             }
         } catch (NullPointerException e) {

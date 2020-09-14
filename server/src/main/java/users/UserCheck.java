@@ -19,7 +19,6 @@ public class UserCheck {
 
     public synchronized static boolean correctPassword(String login, String password) {
         String hashedPass = Hash.encryptThisString(password);
-        System.out.println(password);
         boolean isPasswordCorrect = false;
         User u;
         try {

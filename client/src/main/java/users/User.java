@@ -228,7 +228,7 @@ public class User {
             if (b) System.out.println("\nПароль верный");
             //      else System.out.println("Пароль неверный. Попробуйте ещё раз");
         } catch (Exception e) {
-            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
+            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз.");
             mistake = true;
         }
         return b;
@@ -254,7 +254,7 @@ public class User {
             if (b) System.out.println("\nПользователь успешно зарегестрирован");
             else System.out.println("Во время регистрации произошла ошибка.");
         } catch (Exception e) {
-            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
+            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз.");
             mistake = true;
         }
         return b;
