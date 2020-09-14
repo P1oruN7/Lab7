@@ -23,10 +23,9 @@ public class UserCheck {
         boolean isPasswordCorrect = false;
         User u;
         try {
-        u = UsersCollection.searchByLogin(login);
-        isPasswordCorrect = u.getPassword().equals(hashedPass);
-        }
-        catch (NullPointerException e) {
+            u = UsersCollection.searchByLogin(login);
+            isPasswordCorrect = u.getPassword().equals(hashedPass);
+        } catch (NullPointerException e) {
             return false;
         }
         return isPasswordCorrect;
