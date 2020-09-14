@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class ExecuteScript implements Command {
             }
             System.out.println("спасибо, но в следующий раз введите его в той же строке, что и команду" + "\n");
         }
-        Map<String, Command> commands = Invoker.getCommandCollection();
+        Map<String, Command> commands = common.Invoker.getCommandCollection();
         if (theSameExist(s2)) {
             System.out.println("\n" + "-ать с рекурсией не надо игр-" + "\n");
             System.out.println("Рекурсивное чтение файла было завершено во избежание разрыва пространственно-временного континуума.");
@@ -65,20 +66,20 @@ public class ExecuteScript implements Command {
                         History.addInArray(s[0]);
                         try {
                             String[] array = {
-                                    fileSourceReader.getLine(), // 1 Name
-                                    fileSourceReader.getLine(), // 2 Coord X
-                                    fileSourceReader.getLine(), // 3 Coord Y
-                                    fileSourceReader.getLine(), // 4 Loc From X
-                                    fileSourceReader.getLine(), // 5 Loc From Y
-                                    fileSourceReader.getLine(), // 6 Loc From Name
-                                    fileSourceReader.getLine(), // 7 Loc To X
-                                    fileSourceReader.getLine(), // 8 Loc To Y
-                                    fileSourceReader.getLine(), // 9 Loc To Name
-                                    fileSourceReader.getLine(), // 10 Dist
+                                    fileSourceReader.getLine(), // 0 Name
+                                    fileSourceReader.getLine(), // 1 Coord X
+                                    fileSourceReader.getLine(), // 2 Coord Y
+                                    fileSourceReader.getLine(), // 3 Loc From X
+                                    fileSourceReader.getLine(), // 4 Loc From Y
+                                    fileSourceReader.getLine(), // 5 Loc From Name
+                                    fileSourceReader.getLine(), // 6 Loc To X
+                                    fileSourceReader.getLine(), // 7 Loc To Y
+                                    fileSourceReader.getLine(), // 8 Loc To Name
+                                    fileSourceReader.getLine(), // 9 Dist
                             };
-                            String string = Add.makeString(array);
+                            String string = common.commands.Add.makeString(array);
                             Map<Command, String> commandparamMap = new HashMap<>();
-                            commandparamMap.put(command, string);
+                            commandparamMap.put(command, string+ " " + ClientMain.getLogin());
                             ClientSender.send(commandparamMap);
                             try {
                                 ClientReceiver.receive();
@@ -106,19 +107,19 @@ public class ExecuteScript implements Command {
                         ClientReceiver.receive();
                         if (ClientReceiver.answer.entrySet().iterator().next().getKey().startsWith("Состояние элемента сейчас:")) {
                             String[] array = {
-                                    fileSourceReader.getLine(), // 1 Name
-                                    fileSourceReader.getLine(), // 2 Coord X
-                                    fileSourceReader.getLine(), // 3 Coord Y
-                                    fileSourceReader.getLine(), // 4 Loc From X
-                                    fileSourceReader.getLine(), // 5 Loc From Y
-                                    fileSourceReader.getLine(), // 6 Loc From Name
-                                    fileSourceReader.getLine(), // 7 Loc To X
-                                    fileSourceReader.getLine(), // 8 Loc To Y
-                                    fileSourceReader.getLine(), // 9 Loc To Name
-                                    fileSourceReader.getLine(), // 10 Dist
+                                    fileSourceReader.getLine(), // 0 Name
+                                    fileSourceReader.getLine(), // 1 Coord X
+                                    fileSourceReader.getLine(), // 2 Coord Y
+                                    fileSourceReader.getLine(), // 3 Loc From X
+                                    fileSourceReader.getLine(), // 4 Loc From Y
+                                    fileSourceReader.getLine(), // 5 Loc From Name
+                                    fileSourceReader.getLine(), // 6 Loc To X
+                                    fileSourceReader.getLine(), // 7 Loc To Y
+                                    fileSourceReader.getLine(), // 8 Loc To Name
+                                    fileSourceReader.getLine(), // 9 Dist
                             };
                             String s1 = Add.makeString(array);
-                            commandparamMap.put(command, s1);
+                            commandparamMap.put(command, s1 + " " + ClientMain.getLogin());
                             try {
                                 DatagramChannel datagramChannel = DatagramChannel.open();
                                 datagramChannel.bind(null);
