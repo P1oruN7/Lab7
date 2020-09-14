@@ -4,6 +4,7 @@ import utility.ServerSender;
 import java.net.SocketAddress;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.Map;
 
 /**
  * Класс - сортировщик
