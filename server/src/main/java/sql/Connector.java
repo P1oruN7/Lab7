@@ -21,9 +21,7 @@ public class Connector {
 
         try {
             config.load(new FileInputStream("res/config.properties")); //загружаем етот файл
-            System.out.println("Пропертис загружены");
             Class.forName("org.postgresql.Driver"); //подключение драйвера
-            System.out.println("Драйвер подключен");
         } catch (ClassNotFoundException e){
             System.out.println("Необходимый для работы драйвер не был найден. \n\nЗавершение программы");
             System.out.println("|___|___|___|___|___|___|___|___|___|___|___|___|\n" +
@@ -47,22 +45,18 @@ public class Connector {
         }
 
         try(
-                Connection connection1 = DriverManager.getConnection(ServerMain.URL, config); //подключаемся к бд
-                Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
-                Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
+            Connection connection1 = DriverManager.getConnection(ServerMain.URL, config); //подключаемся к бд
+            Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
+            Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
         ){
-            System.out.println("Подключение к бд прошло");
             ResultSet resRoutes = statement.executeQuery("SELECT * from routes;"); //заполненние запроса. возвращает результат. представляет из себя таблицу
-            System.out.println("Таблица рутов получена");
+
             while (resRoutes.next()){ //перебор строк результата
 
                 Route nextRoute = new Route ();
                 nextRoute.setId(resRoutes.getLong("id_seq"));
-                System.out.println("Id загружено");
                 nextRoute.setName(resRoutes.getString("route_name"));
-                System.out.println("Имя рута загружено");
                 nextRoute.setCreatorLogin(resRoutes.getString("creator_name"));
-                System.out.println("creator_name загружено");
                 long idCoord = resRoutes.getLong("coordinates_id");
                 {
                     ResultSet coord = statement2.executeQuery("SELECT * from coordinates where id_seq=" + idCoord + ";");
@@ -73,10 +67,8 @@ public class Connector {
                     );
                     coord.close();
                     nextRoute.setCoordinates(coordinates);
-                    System.out.println("coordinates загружено");
                 }
                 nextRoute.setCreationDate(resRoutes.getDate("creation_date").toLocalDate());
-                System.out.println("creation_date загружено");                   
                 long idFrom = resRoutes.getLong("location_from_id");
                 {
                     if (idFrom!=0) {
@@ -89,7 +81,6 @@ public class Connector {
                     );
                     resFrom.close();
                     nextRoute.setFrom(from);
-                    System.out.println("from загружено");                   
 
                     }
                 }
@@ -102,30 +93,22 @@ public class Connector {
                             resTo.getString("location_to_name"));
                     resTo.close();
                     nextRoute.setTo(to);
-                    System.out.println("to загружено");     
                 }
                 if(resRoutes.getFloat("distance")!= 0){
                     nextRoute.setDistance(resRoutes.getFloat("distance"));
-                    System.out.println("from загружено");     
                 }
 
                 ServerMain.c.Routes.add(nextRoute);
-                System.out.println("Рут добавлен в коллекцию: " + nextRoute.toString());     
             }
             resRoutes.close();
 
             ResultSet resultUsers = statement.executeQuery("SELECT * from users;");
-            System.out.println("Таблица юзеров загружена");                          
             while(resultUsers.next()){
                 String login = resultUsers.getString("login_id");
-                System.out.println("Логин загружен");   
                 String passwordForLog = resultUsers.getString("password");
-                System.out.println("Пароль загружено");   
                 String totemAnimal =  resultUsers.getString ("totem_animal");
-                System.out.println("Тотеманимал загружено");   
                 User user = new User(login, passwordForLog, totemAnimal);
                 UsersCollection.users.add(user);
-                System.out.println("Пользователь добавлен в коллекцию");   
             }
 
         }catch(SQLException e){
@@ -148,9 +131,7 @@ public class Connector {
 
         try{
             config.load(new FileInputStream("res/config.properties"));
-            System.out.println("Пропертис загружены");
             Class.forName("org.postgresql.Driver");
-            System.out.println("Драйвер подключен");
         } catch (ClassNotFoundException e){
             System.out.println("Необходимый для работы драйвер не был найден. \n\n Завершение программы");
             System.out.println("|___|___|___|___|___|___|___|___|___|___|___|___|\n" +
@@ -174,11 +155,10 @@ public class Connector {
         }
 
         try(
-                Connection connection1 = DriverManager.getConnection(ServerMain.URL, config);
-                Statement savingStatement = connection1.createStatement();
-                Statement checkingStatement = connection1.createStatement();
+            Connection connection1 = DriverManager.getConnection(ServerMain.URL, config);
+            Statement savingStatement = connection1.createStatement();
+            Statement checkingStatement = connection1.createStatement();
         ){
-            System.out.println("Подключение к бд");
             savingStatement.execute("delete from routes;"); //очищение таблицы с коллекцией рутов и рестарт отсчета айди
             savingStatement.execute("SELECT SETVAL('routes_id_seq_seq', 1, false);");
 
@@ -192,8 +172,6 @@ public class Connector {
             savingStatement.execute("SELECT SETVAL('location_to_id_seq_seq', 1, false);");
 
             savingStatement.execute("delete from users;"); //очищение таблицы с коллекцией юзеров
-            
-            System.out.println("Все таблицы очищены");
 
             UsersCollection.users.stream()
                     .filter(x -> !x.getPassword().equals(" "))
@@ -203,7 +181,6 @@ public class Connector {
                                     + x.getLogin() + "', '"
                                     + x.getPassword() + "', '"
                                     + x.getTotemAnimal() + "');");
-                            System.out.println("Пользователь " + x.getLogin() + " сохранён в бд");
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -215,32 +192,36 @@ public class Connector {
                             ResultSet coordinatesRS = checkingStatement.executeQuery("select count(*) as row_count from coordinates where x = " + x.getCoordinates().getX() + " and y = " + x.getCoordinates().getY() + ";");
                             coordinatesRS.next();
                             int coordinatesNum = coordinatesRS.getInt("row_count");
-                            ResultSet locationFromRS = checkingStatement.executeQuery("select count(*) as row_count from location_from where location_from_name = '" + x.getFrom().getName() + "' and x =" + x.getFrom().getX() +" and y ="+ x.getFrom().getY() + ";");
                             coordinatesRS.close();
-                            locationFromRS.next();
-                            int locationFromNum = locationFromRS.getInt("row_count");
+
+                            int locationFromNum;
+                            if (x.getFrom() != null) {
+                                ResultSet locationFromRS = checkingStatement.executeQuery("select count(*) as row_count from location_from where location_from_name = '" + x.getFrom().getName() + "' and x =" + x.getFrom().getX() + " and y =" + x.getFrom().getY() + ";");
+                                locationFromRS.next();
+                                locationFromNum = locationFromRS.getInt("row_count");
+                                locationFromRS.close();
+                            } else {
+                                locationFromNum = 1;
+                            }
+
                             ResultSet locationToRS = checkingStatement.executeQuery("select count(*) as row_count from location_to where location_to_name = '" + x.getTo().getName() + "' and x =" + x.getTo().getX() +" and y ="+ x.getTo().getY() + ";");
-                            locationFromRS.close();
                             locationToRS.next();
                             int locationToNum = locationToRS.getInt("row_count");
                             locationToRS.close();
-                            System.out.println("coordinatesNum = " + coordinatesNum + "       locationFromNum = " + locationFromNum + "         locationToNum = " +locationToNum);
 
                             if(coordinatesNum == 0){
                                 savingStatement.execute("insert into coordinates values ("
                                         + x.getCoordinates().getX() + ", "
                                         + x.getCoordinates().getY() + ", "
                                         + "(select nextval('coordinates_id_seq_seq')));"); //заполнение новой строки таблицы координат
-                                System.out.println("Новая строка координат добавлена");
                             }
 
-                            if(locationFromNum == 0 && x.getFrom() != null){
+                            if(locationFromNum == 0){
                                 savingStatement.execute("insert into location_from values ("
                                         + x.getFrom().getX() + ", "
                                         + x.getFrom().getY() + ", '"
                                         + x.getFrom().getName() + "', "
                                         + "(select nextval('location_from_id_seq_seq')));");
-                                System.out.println("Новая строка фром добавлена");
                             }
 
                             if(locationToNum == 0){
@@ -249,11 +230,9 @@ public class Connector {
                                         + x.getTo().getY() + ", '"
                                         + x.getTo().getName() + "', "
                                         + "(select nextval('location_to_id_seq_seq')));");
-                                System.out.println("Новая строка ту добавлена");
                             }
 
                             if(x.getDistance() != null && x.getFrom()!=null) {
-                                System.out.println("x.getDistance() != null && x.getFrom()!=null");
                                 savingStatement.execute("insert into routes values ("
                                         + "(select nextval('routes_id_seq_seq')), '"
                                         + x.getName() + "', '"
@@ -265,9 +244,7 @@ public class Connector {
                                         + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
                                         + " and location_to_name='" + x.getTo().getName() + "'), "
                                         + x.getDistance() + ");");
-                                         System.out.println("Сохранён рут " + x.toString());
                             }else if (x.getDistance() == null && x.getFrom() != null){
-                                System.out.println("x.getDistance() == null && x.getFrom() != null ");
                                 savingStatement.execute("insert into routes values ("
                                         + "(select nextval('routes_id_seq_seq')), '"
                                         + x.getName() + "', '"
@@ -278,10 +255,7 @@ public class Connector {
                                         + " and location_from_name='" + x.getFrom().getName() + "'), "
                                         + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
                                         + " and location_to_name='" + x.getTo().getName() + "'), null);");
-                                
-                                System.out.println("Сохранён рут " + x.toString());
                             }else if (x.getDistance() != null && x.getFrom() == null){
-                                System.out.println("x.getDistance() != null && x.getFrom() == null");
                                 savingStatement.execute("insert into routes values ("
                                         + "(select nextval('routes_id_seq_seq')), '"
                                         + x.getName() + "', '"
@@ -291,9 +265,7 @@ public class Connector {
                                         + "null, "
                                         + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
                                         + " and location_to_name='" + x.getTo().getName() + "'), "+ x.getDistance()+");");
-                                         System.out.println("Сохранён рут " + x.toString());
                             }else {
-                                System.out.println("else");
                                 savingStatement.execute("insert into routes values ("
                                         + "(select nextval('routes_id_seq_seq')), '"
                                         + x.getName() + "', '"
@@ -303,7 +275,6 @@ public class Connector {
                                         + "null, "
                                         + "(select id_seq from location_to where x=" + x.getTo().getX() + " and y=" + x.getTo().getY()
                                         + " and location_to_name='" + x.getTo().getName() + "'), null);");
-                                        System.out.println("Сохранён рут " + x.toString());
                             }
                         } catch (SQLException e) {
                             e.printStackTrace();
