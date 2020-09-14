@@ -106,7 +106,7 @@ public class User {
                 System.out.println("Логин не может быть пустым");
                 continue;
             }
-            if (login.trim().split(" ").size() >1) {
+            if (login.trim().split(" ").length() >1) {
             System.out.println("Логин может состоять только из одного слова");
             continue;
                 }
@@ -153,7 +153,7 @@ public class User {
             login = utility.ClientMain.reader.readLine().trim();
             if (login.trim().toLowerCase().equals("\\q")) return false;
             if (login == "" || login == null) return false;
-             if (login.trim().split(" ").size() >1) {
+             if (login.trim().split(" ").length() >1) {
             System.out.println("Логин может состоять только из одного слова");
             continue;
                 }
