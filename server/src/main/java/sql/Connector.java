@@ -1,5 +1,6 @@
 package sql;
 
+import readers.PropertiesReader;
 import routes.Coordinates;
 import routes.Location;
 import routes.Route;
@@ -7,20 +8,15 @@ import users.User;
 import users.UsersCollection;
 import utility.ServerMain;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-import java.util.Properties;
 
 public class Connector {
 
     public synchronized static void loading(){
-        Properties config = new Properties(); // файл с логином паролем для доступа к бд
 
         try {
-            config.load(new FileInputStream("res/config.properties")); //загружаем етот файл
             Class.forName("org.postgresql.Driver"); //подключение драйвера
         } catch (ClassNotFoundException e){
             System.out.println("Необходимый для работы драйвер не был найден. \n\nЗавершение программы");
@@ -32,22 +28,12 @@ public class Connector {
                     "__|___|___|___|___|___|___|___|___|___|___|___|___\n" +
                     "|___|___|___|___|___|___|___|___|___|___|___|___|");
             System.exit(0);
-        } catch (IOException e){
-            System.out.println("Не найден файл, содержащий необходимые для поключения к базе данных логин и пароль. \n\nЗавершение программы");
-            System.out.println("|___|___|___|___|___|___|___|___|___|___|___|___|\n" +
-                    "__|___|___|___|___|___|___|___|___|___|___|___|___\n" +
-                    "|___|___|___|___|___|___|___|___|___|___|___|___|\n" +
-                    "__|___|___|___|__бицца галавой сюда___|___|___|___\n" +
-                    "|___|___|___|___|___|___|___|___|___|___|___|___|\n" +
-                    "__|___|___|___|___|___|___|___|___|___|___|___|___\n" +
-                    "|___|___|___|___|___|___|___|___|___|___|___|___|");
-            System.exit(0);
         }
 
         try(
-            Connection connection1 = DriverManager.getConnection(ServerMain.URL, config); //подключаемся к бд
-            Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
-            Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
+                Connection connection1 = DriverManager.getConnection(ServerMain.URL, PropertiesReader.readResource("config.properties")); //подключаемся к бд
+                Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
+                Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
         ){
             ResultSet resRoutes = statement.executeQuery("SELECT * from routes;"); //заполненние запроса. возвращает результат. представляет из себя таблицу
 
@@ -126,11 +112,9 @@ public class Connector {
 
     public synchronized static void saving(){
 
-        Properties config = new Properties();
         Collections.sort(ServerMain.c.Routes);
 
         try{
-            config.load(new FileInputStream("res/config.properties"));
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e){
             System.out.println("Необходимый для работы драйвер не был найден. \n\n Завершение программы");
@@ -142,20 +126,10 @@ public class Connector {
                     "__|___|___|___|___|___|___|___|___|___|___|___|___\n" +
                     "|___|___|___|___|___|___|___|___|___|___|___|___|");
             System.exit(0);
-        }catch (IOException e){
-            System.out.println("Не найден файл, содержащий необходимые для поключения к базе данных логин и пароль. \n\n Завершение программы");
-            System.out.println("|___|___|___|___|___|___|___|___|___|___|___|___|\n" +
-                    "__|___|___|___|___|___|___|___|___|___|___|___|___\n" +
-                    "|___|___|___|___|___|___|___|___|___|___|___|___|\n" +
-                    "__|___|___|___|__бицца галавой сюда___|___|___|___\n" +
-                    "|___|___|___|___|___|___|___|___|___|___|___|___|\n" +
-                    "__|___|___|___|___|___|___|___|___|___|___|___|___\n" +
-                    "|___|___|___|___|___|___|___|___|___|___|___|___|");
-            System.exit(0);
         }
 
         try(
-            Connection connection1 = DriverManager.getConnection(ServerMain.URL, config);
+            Connection connection1 = DriverManager.getConnection(ServerMain.URL, PropertiesReader.readResource("config.properties"));
             Statement savingStatement = connection1.createStatement();
             Statement checkingStatement = connection1.createStatement();
         ){
