@@ -1,9 +1,13 @@
 package users;
 
+
+/**
+ * Класс для штук, связанных с тотемным животным
+ */
 public class TotemAnimal {
-    public static String randomTotemAnimal(){
-        int rand = (int) (Math.random()*18);
-        switch (rand){
+    public static String randomTotemAnimal() {
+        int rand = (int) (Math.random() * 18);
+        switch (rand) {
             case 1:
                 return "Panda";
             case 2:
@@ -44,7 +48,8 @@ public class TotemAnimal {
 
         }
     }
-    public static String getImage (String totemAnimal) {
+
+    public static String getImage(String totemAnimal) {
         switch (totemAnimal) {
             case ("Panda"):
                 return "___________________________,ad8888888ba, \n" +
@@ -400,7 +405,8 @@ public class TotemAnimal {
         }
 
     }
-    public static String getInfo (String totemAnimal) {
+
+    public static String getInfo(String totemAnimal) {
         switch (totemAnimal) {
             case ("Panda"):
                 return "Панда выглядит как большинство программистов: большой азиат с мешками под глазами. Так что у вас есть все шансы стать успешным в этом направлении!";

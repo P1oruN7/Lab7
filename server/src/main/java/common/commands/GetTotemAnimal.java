@@ -3,18 +3,20 @@ package common.commands;
 import common.Command;
 import users.TotemAnimal;
 import users.UsersCollection;
-
 import java.net.SocketAddress;
 
+/**
+ * Команда получения своего тотемного животного
+ */
 public class GetTotemAnimal implements Command {
     private static final long serialVersionUID = 6529685098267757690L;
 
     @Override
     public synchronized void execute(String login, SocketAddress socketAddress) {
-    String totemAnimal = UsersCollection.searchByLogin(login).getTotemAnimal();
+        String totemAnimal = UsersCollection.searchByLogin(login).getTotemAnimal();
         utility.ServerSender.send("\n                  Your totem animal is " + totemAnimal + ".  ;)\n\n"
-        +TotemAnimal.getImage(totemAnimal) + "\n\n"
-        +"             "+ TotemAnimal.getInfo(totemAnimal), 0, socketAddress);
+                + TotemAnimal.getImage(totemAnimal) + "\n\n"
+                + "             " + TotemAnimal.getInfo(totemAnimal), 0, socketAddress);
     }
 
     @Override

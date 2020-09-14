@@ -6,26 +6,27 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * Отдаватель
  */
 public class ClientSender {
     /**
      * Отправить
+     *
      * @param o объектик для отправочки
      */
     public static void send(Object o) {
         try {
             Map<Integer, Object> mapCommand = new HashMap<Integer, Object>();
-            Object [] array = {o, ClientMain.getLogin(), ClientMain.getPassword()};
+            Object[] array = {o, ClientMain.getLogin(), ClientMain.getPassword()};
             DatagramChannel datagramChannel = DatagramChannel.open();
             datagramChannel.bind(null);
             SocketAddress serverAddress = new InetSocketAddress(ClientMain.address, ClientMain.port);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-            //mapCommand.put(ClientReceiver.clientport, o); // не было
-            mapCommand.put(ClientReceiver.clientport, array); //было
+            mapCommand.put(ClientReceiver.clientport, array);
             objectOutputStream.writeObject(mapCommand);
             objectOutputStream.flush();
             objectOutputStream.close();

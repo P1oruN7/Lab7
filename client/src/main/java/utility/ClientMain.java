@@ -4,11 +4,11 @@ import common.commands.*;
 import common.*;
 import sun.misc.Signal;
 import users.User;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
-import java.util.Map;
 
 /**
  * Главненький
@@ -30,7 +30,7 @@ public class ClientMain {
      */
     public static void main(String[] args) {
 
-        Signal.handle(new Signal("INT"), sig ->  {
+        Signal.handle(new Signal("INT"), sig -> {
             System.out.println("\n\n" +
                     "........|......\n" +
                     ".......o......\n" +
@@ -61,43 +61,20 @@ public class ClientMain {
 
         reader = new BufferedReader(new InputStreamReader(System.in));
 
-//        boolean hasAdderss = false;
-//        while (!hasAdderss) {
-//            System.out.print("Введите адрес сервера (нажмите энтер, если приложение запущено на сервере):  ");
-           try{
-//                String s = reader.readLine().trim();
-//                if (s.equals("") | s == null) {
-                    address = InetAddress.getLocalHost();
-//                }
-//                else {
-//                address = InetAddress.getByName(s);
-//                }
-          } catch (UnknownHostException e) {
-               System.out.println("Невозможно найти сервер с таким адресом");
-               System.exit(0); //
-           }  //
-//                continue;
-//            } catch (IOException e) {
-//                System.out.println("Ошибка ввода");
-//                continue;
-//            }
-//            try{
-//            if (!address.isReachable(2500) ) {
-//                System.out.println("Невозможно достучаться до сервера");
-//                continue;
-//            } } catch (IOException e ){
-//                System.out.println("Ошибка ввода.");
-//                continue;
-//            }
-//            hasAdderss = true;
-//        }
+        try {
+            address = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            System.out.println("Невозможно найти сервер с таким адресом");
+            System.exit(0);
+        }
+
 
         boolean hasPort = false;
         while (!hasPort) {
             System.out.print("Введите порт:  ");
             try {
                 port = Integer.parseInt(reader.readLine().trim());
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Формат неправильный");
                 continue;
             } catch (IOException e) {
@@ -106,20 +83,6 @@ public class ClientMain {
             }
             hasPort = true;
         }
-//        System.out.println("Тестовый котик: ");
-//        Map<Command, String> commandparamMap;
-//        commandparamMap = Invoker.execute("draw   ");
-//        ClientSender.send(commandparamMap);
-//        try {
-//            ClientReceiver.receive();
-//        } catch (SocketTimeoutException e) {
-//            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
-//        } catch (NullPointerException e) {
-//            System.out.println("123");
-//        }
-
-
-
 
 
         try {
@@ -134,13 +97,12 @@ public class ClientMain {
         boolean b = false;
         while (!b) {
             try {
-              b =  User.authorization();
+                b = User.authorization();
             } catch (IOException e) {
                 System.out.println("Произошла ошибка. Завершение программы.");
                 System.exit(0);
             }
         }
-
 
 
         while (work) {

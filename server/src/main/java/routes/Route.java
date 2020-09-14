@@ -16,7 +16,8 @@ public class Route implements Comparable<Route>, Serializable {
     private Float distance; //Поле может быть null, Значение поля должно быть больше 1
     private String creatorLogin; //Поле не может быть null. Значение id создателя объекта
 
-    public Route() {}
+    public Route() {
+    }
 
     public Route(Long id, String name, Coordinates coordinates, LocalDate creationDate, Location from, Location to, Float distance, String creatorLogin) {
         this.id = id;
@@ -91,11 +92,11 @@ public class Route implements Comparable<Route>, Serializable {
         this.to = to;
     }
 
-    public String getCreatorLogin(){
+    public String getCreatorLogin() {
         return creatorLogin;
     }
 
-    public void setCreatorLogin(String creatorLogin){
+    public void setCreatorLogin(String creatorLogin) {
         this.creatorLogin = creatorLogin;
     }
 
@@ -111,8 +112,8 @@ public class Route implements Comparable<Route>, Serializable {
     public int compareTo(Route r) {
         if (this.getId().equals(r.getId())) {    //сравнение на одинаковость  id
             return 0;
-        } else if (this.getName().toLowerCase().equals( r.getName().toLowerCase())){ //сравнение на одинаковость имён
-            if(this.getId() > r.getId()) return 1;  // при одинаковых именах сравнение по ID
+        } else if (this.getName().toLowerCase().equals(r.getName().toLowerCase())) { //сравнение на одинаковость имён
+            if (this.getId() > r.getId()) return 1;  // при одинаковых именах сравнение по ID
             else return -1; // при одинаковых именах сравнение по ID
         } else return this.getName().toLowerCase().compareTo(r.getName().toLowerCase()); // сранение по имени
 

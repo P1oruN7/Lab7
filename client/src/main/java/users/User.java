@@ -7,8 +7,6 @@ import utility.ClientSender;
 import utility.Hash;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,8 +101,8 @@ public class User {
             mistake = false;
             System.out.println("\nВведите имя пользователя: ");
             login = utility.ClientMain.reader.readLine().trim();
-            if (login.trim().toLowerCase().equals( "\\q")) return false;
-            if (login.length() == 0 || login == null){
+            if (login.trim().toLowerCase().equals("\\q")) return false;
+            if (login.length() == 0 || login == null) {
                 System.out.println("Логин не может быть пустым");
                 continue;
             }
@@ -115,12 +113,13 @@ public class User {
             mistake = false;
             System.out.println("\nВведите пароль длиной от нуля до 20 символов");
             password = utility.ClientMain.reader.readLine().trim();
-            if (password.trim().toLowerCase().equals( "\\q")) return false;
+            if (password.trim().toLowerCase().equals("\\q")) return false;
             if (password.length() == 0 || password == null) {
                 password = "0123456789012345678901234567890";
                 break;
-            }else{
-            if (checkingNewPassword(password)) break;}
+            } else {
+                if (checkingNewPassword(password)) break;
+            }
             if (!mistake) System.out.println("\nПароль не соответствует критериям. Попробуйте сделать другой.");
         }
         if (registerInBase(login, password)) {
@@ -148,7 +147,7 @@ public class User {
             mistake = false;
             System.out.println("\nВведите имя пользователя: ");
             login = utility.ClientMain.reader.readLine().trim();
-            if (login.trim().toLowerCase().equals( "\\q")) return false;
+            if (login.trim().toLowerCase().equals("\\q")) return false;
             if (login == "" || login == null) return false;
             if (checkingLogin(login)) break;
             if (!mistake) System.out.println("\nПользователя с такими именем не существует.");
@@ -157,11 +156,11 @@ public class User {
             mistake = false;
             System.out.println("\nВведите пароль: ");
             password = utility.ClientMain.reader.readLine().trim();
-           // if ((password == "" || password == null) && thisUserHasNoPassword(login)) break;
-            if (password.trim().toLowerCase().equals( "\\q")) return false;
+            if (password.trim().toLowerCase().equals("\\q")) return false;
             if (password.length() == 0 || password == null) {
                 password = "0123456789012345678901234567890";
-                break;}else password = utility.Hash.encryptThisString(password);
+                break;
+            } else password = utility.Hash.encryptThisString(password);
             if (checkingPassword(login, password)) break;
             if (!mistake) System.out.println("\nНеверный пароль.");
             return false;
@@ -186,10 +185,7 @@ public class User {
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
             String s2 = ClientReceiver.receiveObject(); //попытка получить строку
-            //System.out.println(s2);
             b = Boolean.parseBoolean(s2); //парс в булиан, чтобы вернуть да или нет
-            //if (b) {System.out.println("\nПользователя с такими именем не существует.");}
-            //else {System.out.println("Такой логин уже занят. Придумайте другой.");}
         } catch (Exception e) {
             System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
             mistake = true;
@@ -263,26 +259,4 @@ public class User {
         }
         return b;
     }
-
-//    /**
-//     * Проверка, является ли пользователь с данным логином обладателем пустого пароля
-//     *
-//     * @param login логин
-//     * @return пустой ли пароль
-//     */
-//    public static boolean thisUserHasNoPassword(String login) throws IOException {
-//        Boolean b = false;
-//        Map<Command, String> commandStringMap = new HashMap<>(); //мапа для отправки (одна!)
-//        common.commands.Checking check = new common.commands.Checking();// создание экземпляра чек (надо)
-//        commandStringMap.put(check, "4" + login.trim()); //формирование мапы. 4 - код проверки пустости пароля
-//        ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
-//        try {
-//            String s2 = ClientReceiver.receiveObject(); //попытка получить строку
-//            b = Boolean.parseBoolean(s2); //парс в булиан, чтобы вернуть да или неты
-//        } catch (Exception e) {
-//            System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
-//            mistake = true;
-//        }
-//        return b;
-//    }
 }

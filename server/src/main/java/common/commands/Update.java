@@ -6,7 +6,6 @@ import routes.Coordinates;
 import routes.Location;
 import routes.Route;
 import utility.*;
-
 import java.net.SocketAddress;
 
 /**
@@ -37,8 +36,8 @@ public class Update implements Command {
         ServerSender.send("Состояние элемента сейчас: " + ServerMain.c.Routes.get(index).toString(), 0, clientAddress);
         Route route = new Route();
         route.setCreationDate(ServerMain.c.Routes.get(index).getCreationDate());
-        Object [] array = (Object[]) ServerReceiver.receive();
-        byte[] string =  (byte[]) array [0];
+        Object[] array = (Object[]) ServerReceiver.receive();
+        byte[] string = (byte[]) array[0];
         String s2 = new String(string); //вот таккая ерундень
         String[] arrayOfStrings = s2.split(" ");
         if (!arrayOfStrings[10].equals(r.getCreatorLogin())) {

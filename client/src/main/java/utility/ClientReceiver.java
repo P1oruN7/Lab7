@@ -5,6 +5,7 @@ import users.User;
 import java.io.*;
 import java.net.*;
 import java.util.Map;
+
 /**
  * Получатель
  */
@@ -16,7 +17,7 @@ public class ClientReceiver {
     /**
      * Получить массивчик байтиков
      */
-    public static void receive(){
+    public static void receive() {
         byte[] buffer = new byte[1000000];
         try {
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
@@ -54,9 +55,7 @@ public class ClientReceiver {
     }
 
 
-
-
-    public static String receiveObject(){
+    public static String receiveObject() {
         byte[] buffer = new byte[1000000];
         try {
             DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
@@ -86,34 +85,4 @@ public class ClientReceiver {
         }
         return null;
     }
-
-
-//    public static byte[] receiveObject (){
-//        try {
-//            sock.setSoTimeout(5000);
-//            ByteBuffer byteBuffer = ByteBuffer.allocate(1000000);
-//            byte[] bytes;
-//            SocketAddress sa = new InetSocketAddress(ClientMain.address, ClientMain.port);
-//            DatagramChannel dc = DatagramChannel.open();
-//            dc.configureBlocking(false);
-//            dc.bind(sa);
-//            while (true) {
-//                SocketAddress socketAddress = dc.receive(byteBuffer);
-//                if (socketAddress != null) {
-//                    byteBuffer.flip();
-//                    int limit = byteBuffer.limit();
-//                    bytes = new byte[limit];
-//                    byteBuffer.get(bytes, 0, limit);
-//                    byteBuffer.clear();
-//                    return bytes;
-//                }
-//            }
-//        }catch (SocketTimeoutException e) {
-//            System.out.println("Возможно сервер занят или выключен,попробуйте ещё раз.");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            System.out.println("1232wertyuiop");
-//        }
-//        return new byte[0];
-//    }
 }

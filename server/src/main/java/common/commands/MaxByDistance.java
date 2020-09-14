@@ -1,9 +1,9 @@
 package common.commands;
+
 import common.*;
 import routes.Route;
 import utility.ServerMain;
 import utility.ServerSender;
-
 import java.net.SocketAddress;
 
 /**
@@ -21,15 +21,18 @@ public class MaxByDistance implements Command {
             double[] d = {0, 0};
             Route maxRouteByDistance = ServerMain.c.Routes.stream()
                     .max((p1, p2) -> {
-                        if (p1.getDistance() == null) d[0] = 0; else d[0] = p1.getDistance();
-                        if (p2.getDistance() == null) d[1] = 0; else d[1] = p2.getDistance();
-                        return Double.compare(d[0],d[1]);
+                        if (p1.getDistance() == null) d[0] = 0;
+                        else d[0] = p1.getDistance();
+                        if (p2.getDistance() == null) d[1] = 0;
+                        else d[1] = p2.getDistance();
+                        return Double.compare(d[0], d[1]);
                     })
                     .get();
             ServerSender.send("\n \n" + maxRouteByDistance + "\n \n", 0, clientAddress);
         } else
             ServerSender.send("\nКоллекция пуста как моё сердце \n \n", 0, clientAddress);
     }
+
     @Override
     public String getInfo() {
         return "max_by_distance: вывести любой объект из коллекции, значение поля distance которого является максимальным";

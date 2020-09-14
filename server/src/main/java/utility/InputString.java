@@ -4,15 +4,12 @@ import common.commands.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.UnknownHostException;
+
 
 /**
  * Класс - обработчик сигналов с консоли сервера
  */
-public class InputString extends Thread  {
+public class InputString extends Thread {
 
     /**
      * Бег
@@ -32,7 +29,7 @@ public class InputString extends Thread  {
                 switch (s.trim().toLowerCase()) {
                     case "save":
                         System.out.println("Пытаюсь сохранянить");
-                        saveCommand.execute(null );
+                        saveCommand.execute(null);
                         break;
                     case "exit":
                         System.out.println("Выхожу с сохранением");

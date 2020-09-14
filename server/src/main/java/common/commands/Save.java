@@ -11,8 +11,8 @@ public class Save {
      */
 
     public synchronized void execute(String S) {
-            saving();
-            System.out.println("Коллекция сохранилася.");
+        saving();
+        System.out.println("Коллекция сохранилася.");
     }
 
     public String getInfo() {

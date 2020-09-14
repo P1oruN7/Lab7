@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public class ExecuteScript implements Command {
                             };
                             String string = common.commands.Add.makeString(array);
                             Map<Command, String> commandparamMap = new HashMap<>();
-                            commandparamMap.put(command, string+ " " + ClientMain.getLogin());
+                            commandparamMap.put(command, string + " " + ClientMain.getLogin());
                             ClientSender.send(commandparamMap);
                             try {
                                 ClientReceiver.receive();
@@ -152,9 +151,9 @@ public class ExecuteScript implements Command {
                 fileSourceReader.close();
                 usedFiles.clear();
                 System.out.println("Завершение скрипта");
-         //   } catch (IOException e) {
-           //     System.out.println("ошибка чтения файла");
-             //   usedFiles.clear();
+                //   } catch (IOException e) {
+                //     System.out.println("ошибка чтения файла");
+                //   usedFiles.clear();
             } catch (Exception e) {
                 System.out.println("непредвиденный конец файла");
                 usedFiles.clear();

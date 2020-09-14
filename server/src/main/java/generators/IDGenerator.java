@@ -16,7 +16,8 @@ public class IDGenerator {
         int num = 0;
         boolean isIdExist = true;
 
-        while (isIdExist){;
+        while (isIdExist) {
+            ;
             num++;
             Route r = ServerMain.c.searchById(num);
             if (r == null) isIdExist = false;

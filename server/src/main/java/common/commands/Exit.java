@@ -1,9 +1,6 @@
 package common.commands;
 
 import common.*;
-
-import java.net.SocketAddress;
-
 import static sql.Connector.saving;
 
 /**
@@ -44,7 +41,6 @@ public class Exit {
                     "                                      ,___/|   ");
             System.exit(0);
         }
-       // System.out.println("Клиент нас покинул. Продолжу сидеть в одиночестве...");
     }
 
     public String getInfo() {
