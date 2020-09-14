@@ -106,6 +106,10 @@ public class User {
                 System.out.println("Логин не может быть пустым");
                 continue;
             }
+            if (login.trim().split(" ").size() >1) {
+            System.out.println("Логин может состоять только из одного слова");
+            continue;
+                }
             if (!checkingLogin(login)) break;
             if (!mistake) System.out.println("\nДанное имя пользователя уже занято. Придумайте уникальное имя.");
         }
@@ -149,6 +153,10 @@ public class User {
             login = utility.ClientMain.reader.readLine().trim();
             if (login.trim().toLowerCase().equals("\\q")) return false;
             if (login == "" || login == null) return false;
+             if (login.trim().split(" ").size() >1) {
+            System.out.println("Логин может состоять только из одного слова");
+            continue;
+                }
             if (checkingLogin(login)) break;
             if (!mistake) System.out.println("\nПользователя с такими именем не существует.");
         }
