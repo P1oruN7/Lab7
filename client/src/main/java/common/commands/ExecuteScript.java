@@ -79,7 +79,7 @@ public class ExecuteScript implements Command {
                             };
                             String string = common.commands.Add.makeString(array);
                             Map<Command, String> commandparamMap = new HashMap<>();
-                            commandparamMap.put(command, string);
+                            commandparamMap.put(command, string+ " " + ClientMain.getLogin());
                             ClientSender.send(commandparamMap);
                             try {
                                 ClientReceiver.receive();
