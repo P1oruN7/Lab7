@@ -220,7 +220,7 @@ public class User {
         Boolean b = false; //возвращаемое значение
         Map<Command, String> commandStringMap = new HashMap<>();  //мапа для отправки (одна!)
         common.commands.Checking check = new common.commands.Checking();// создание экземпляра чек (надо)
-        commandStringMap.put(check, "2" + login.trim() + " " + Hash.encryptThisString(password.trim())); //формирование мапы. 2 - код проверки логина+пароля
+        commandStringMap.put(check, "2" + login.trim() + " " + password.trim()); //формирование мапы. 2 - код проверки логина+пароля
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
             String s2 = ClientReceiver.receiveObject(); //попытка получить строку

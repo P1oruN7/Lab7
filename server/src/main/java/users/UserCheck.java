@@ -18,10 +18,11 @@ public class UserCheck {
     }
 
     public synchronized static boolean correctPassword(String login, String password) {
+        String hashedPass = Hash.encryptThisString(password);
         boolean isPasswordCorrect = false;
         User u;
         u = UsersCollection.searchByLogin(login);
-        isPasswordCorrect = u.getPassword().equals(password);
+        isPasswordCorrect = u.getPassword().equals(hashedPass);
         return isPasswordCorrect;
     }
 }
