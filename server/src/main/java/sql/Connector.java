@@ -48,19 +48,17 @@ public class Connector {
 
         try(
                 Connection connection1 = DriverManager.getConnection(ServerMain.URL, config); //подключаемся к бд
-            System.out.println("Подключение к бд прошло");
                 Statement statement = connection1.createStatement(); //штука для взаимодействия с бд, создание запроса1
-            System.out.println("Запрос 1 составлен");
                 Statement statement2 = connection1.createStatement(); //ещё одна штука для взаимодействия с бд, создание запроса2
-            System.out.println("Запрос 2 составлен");
         ){
+            System.out.println("Подключение к бд прошло");
             ResultSet resRoutes = statement.executeQuery("SELECT * from routes;"); //заполненние запроса. возвращает результат. представляет из себя таблицу
             System.out.println("Таблица рутов получена");
             while (resRoutes.next()){ //перебор строк результата
 
                 Route nextRoute = new Route ();
                 nextRoute.setId(resRoutes.getLong("id_seq"));
-                System.out.println("Id загружено);
+                System.out.println("Id загружено");
                 nextRoute.setName(resRoutes.getString("route_name"));
                 System.out.println("Имя рута загружено");
                 nextRoute.setCreatorLogin(resRoutes.getString("creator_name"));
@@ -177,12 +175,10 @@ public class Connector {
 
         try(
                 Connection connection1 = DriverManager.getConnection(ServerMain.URL, config);
-                System.out.println("Подключение к бд");   
                 Statement savingStatement = connection1.createStatement();
-                System.out.println("savingStatement");   
                 Statement checkingStatement = connection1.createStatement();
-                System.out.println("checkingStatement");
         ){
+            System.out.println("Подключение к бд");
             savingStatement.execute("delete from routes;"); //очищение таблицы с коллекцией рутов и рестарт отсчета айди
             savingStatement.execute("SELECT SETVAL('routes_id_seq_seq', 1, false);");
 
