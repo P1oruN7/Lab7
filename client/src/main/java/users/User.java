@@ -220,12 +220,13 @@ public class User {
         Boolean b = false; //возвращаемое значение
         Map<Command, String> commandStringMap = new HashMap<>();  //мапа для отправки (одна!)
         common.commands.Checking check = new common.commands.Checking();// создание экземпляра чек (надо)
-        commandStringMap.put(check, "2" + login.trim() + " " + Hash.encryptThisString(password.trim())); //формирование мапы. 2 - код проверки логина+пароля
+        commandStringMap.put(check, "2" + login.trim() + " " + password.trim()); //формирование мапы. 2 - код проверки логина+пароля
         ClientSender.sendWithoutLogPass(commandStringMap); //отправка (без логина и пароля)
         try {
             String s2 = ClientReceiver.receiveObject(); //попытка получить строку
             b = Boolean.parseBoolean(s2); //парс в булиан, чтобы вернуть да или нет
             if (b) System.out.println("\nПароль верный");
+            //      else System.out.println("Пароль неверный. Попробуйте ещё раз");
         } catch (Exception e) {
             System.out.println("Сервер не отвечает или занят,попробуйте ещё раз и убедитесь,что сервер работает.");
             mistake = true;
